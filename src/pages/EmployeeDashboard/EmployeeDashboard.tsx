@@ -4,15 +4,17 @@ import CertificationTable from '../../components/UserCertificationsTable/UserCer
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-const UserCertificationsPage: React.FC = () => {
+
+const EmployeeDashboard: React.FC = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box p={3}>
         <Typography variant="h4" gutterBottom>User Certifications</Typography>
         <CertificationTable />
       </Box>
+
     </LocalizationProvider>
   );
 };
 
-export default UserCertificationsPage;
+export default EmployeeDashboard

@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -9,21 +8,17 @@ import Typography from "@mui/material/Typography";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { fetchFinancialYear, submitNomination } from "../../api/NominationApi";
+import { submitNomination } from "../../api/NominationApi";
 import { showToast } from "../../utils/toastUtils";
+import {NominationData} from "../../types/NominationForm.types"
 
 interface NominationFormModalProps {
   open: boolean;
   onClose: () => void;
   id: number;
   certificationName: string;
-}
-
-interface NominationData {
-  certification_id: number;
-  planned_exam_month: string;
-  motivation_description: string;
-  employee_id: number;
+  nomination_open_date: string; 
+  nomination_close_date: string; 
 }
 
 const NominationFormModal: React.FC<NominationFormModalProps> = ({
@@ -31,22 +26,10 @@ const NominationFormModal: React.FC<NominationFormModalProps> = ({
   onClose,
   id,
   certificationName,
+  nomination_open_date,
+  nomination_close_date,
 }) => {
-  const [financialYear, setFinancialYear] = useState<{ from_date: string; to_date: string } | null>(null);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const getFinancialYear = async () => {
-      try {
-        const data = await fetchFinancialYear();
-        setFinancialYear(data);
-      } catch {
-        showToast("Failed to fetch financial year.", "error");
-      }
-    };
-
-    getFinancialYear();
-  }, []);
 
   const initialValues = {
     plannedExamMonth: "",
@@ -78,8 +61,15 @@ const NominationFormModal: React.FC<NominationFormModalProps> = ({
     }
   };
 
-  const minDate = financialYear ? new Date(financialYear.from_date).toISOString().slice(0, 7) : "";
-  const maxDate = financialYear ? new Date(financialYear.to_date).toISOString().slice(0, 7) : "";
+  const minDate = new Date(
+    Math.max(new Date(nomination_open_date).getTime(), new Date().setDate(1))
+  )
+    .toISOString()
+    .slice(0, 7);
+
+  const maxDate = new Date(nomination_close_date)
+    .toISOString()
+    .slice(0, 7);
 
   return (
     <Dialog

@@ -2,11 +2,10 @@ import React from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import Chip from "@mui/material/Chip";
+import Box from "@mui/material/Box";
 import { CertificationLevel } from "../../types/AllCertifications.types";
 
 // Define the prop types
@@ -20,6 +19,8 @@ interface CertificationCardViewModalProps {
   tags: string[];
   officialLink: string;
   onNominate: () => void;
+  nominationOpenDate: string; 
+  nominationCloseDate: string;
 }
 
 const CertificationCardViewModal: React.FC<CertificationCardViewModalProps> = ({
@@ -32,6 +33,7 @@ const CertificationCardViewModal: React.FC<CertificationCardViewModalProps> = ({
   tags,
   officialLink,
   onNominate,
+  nominationCloseDate, // Use the new prop
 }) => {
   const getBorderColor = () => {
     switch (level) {
@@ -59,34 +61,39 @@ const CertificationCardViewModal: React.FC<CertificationCardViewModalProps> = ({
         },
       }}
     >
-      <DialogTitle sx={{ borderRadius: "10px 10px 0 0" }}>
+      <DialogTitle
+        sx={{
+          borderRadius: "10px 10px 0 0",
+          fontWeight: "bold",
+          fontSize: "1.5rem",
+          color: "#1976d2",
+        }}
+      >
         {certificationName}
       </DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          <Typography variant="subtitle1" gutterBottom>
+        <Box>
+          <Typography variant="subtitle1" color="grey" gutterBottom>
             <strong>Provider:</strong> {provider}
           </Typography>
-          <Typography variant="subtitle1" gutterBottom>
+          <Typography variant="subtitle1" color="grey" gutterBottom>
             <strong>Level:</strong>{" "}
             <span style={{ color: getBorderColor() }}>{level}</span>
           </Typography>
-          <Typography variant="subtitle1" gutterBottom>
+          <Typography variant="subtitle1" color="grey" gutterBottom>
             <strong>Description:</strong> {description}
           </Typography>
-          <Typography variant="subtitle1" gutterBottom>
-            <strong>Tags:</strong>{" "}
+          <Typography
+            variant="subtitle1"
+            gutterBottom
+            component="div"
+            sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}
+          >
             {tags.map((tag, index) => (
-              <Chip
-                key={index}
-                label={tag}
-                sx={{
-                  fontSize: 10,
-                  height: "1.1rem",
-                  margin: ".11rem",
-                  backgroundColor: `hsl(${index * 40}, 70%, 80%)`,
-                }}
-              />
+              <span key={index} style={{fontWeight: "bold", color:"grey" }}>
+                {tag}
+                {index < tags.length - 1 && <span style={{ margin: "0.5rem" }}>•</span>}
+              </span>
             ))}
           </Typography>
           <Typography variant="subtitle1" gutterBottom>
@@ -94,7 +101,20 @@ const CertificationCardViewModal: React.FC<CertificationCardViewModalProps> = ({
               Want to learn more about the certification?
             </a>
           </Typography>
-        </DialogContentText>
+          <Box
+            sx={{
+              backgroundColor: "rgba(255, 193, 7, 0.15)", // Light warning color
+              padding: "8px",
+              borderRadius: "5px",
+              textAlign: "center",
+              marginTop: "10px",
+            }}
+          >
+            <Typography variant="body2" sx={{ fontWeight: "bold", color: "#d32f2f" }}>
+              Nomination is open until {nominationCloseDate}.
+            </Typography>
+          </Box>
+        </Box>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Close</Button>
