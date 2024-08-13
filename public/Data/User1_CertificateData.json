@@ -1,0 +1,69 @@
+{
+    "user_id": 123,
+    "certifications": [
+      {
+        "certification_id": 1,
+        "certificationName": "AWS Certified Solutions Architect – Associate",
+        "provider": "AWS",
+        "level": "Intermediate",
+        "category": "Cloud Engineer",
+        "fromDate": "2023-01-15",
+        "expiryDate": "2026-01-15"
+      },
+      {
+        "certification_id": 2,
+        "certificationName": "Google Cloud Professional Data Engineer",
+        "provider": "GCP",
+        "level": "Expert",
+        "category": "Data Scientist",
+        "fromDate": "2022-08-22",
+        "expiryDate": "2025-08-22"
+      },
+      {
+        "certification_id": 3,
+        "certificationName": "Microsoft Certified: Azure Fundamentals",
+        "provider": "Azure",
+        "level": "Beginner",
+        "category": "IT Support Specialist",
+        "fromDate": "2023-03-10",
+        "expiryDate": "2026-03-10"
+      },
+      {
+        "certification_id": 4,
+        "certificationName": "AWS Certified Developer – Associate",
+        "provider": "AWS",
+        "level": "Intermediate",
+        "category": "Software Developer",
+        "fromDate": "2023-05-20",
+        "expiryDate": "2026-05-20"
+      },
+      {
+        "certification_id": 5,
+        "certificationName": "Google Cloud Professional Cloud Architect",
+        "provider": "GCP",
+        "level": "Expert",
+        "category": "Cloud Architect",
+        "fromDate": "2022-11-05",
+        "expiryDate": "2025-11-05"
+      },
+      {
+        "certification_id": 6,
+        "certificationName": "Microsoft Certified: Azure Administrator Associate",
+        "provider": "Azure",
+        "level": "Intermediate",
+        "category": "Systems Administrator",
+        "fromDate": "2023-06-18",
+        "expiryDate": "2026-06-18"
+      },
+      {
+        "certification_id": 7,
+        "certificationName": "AWS Certified Security – Specialty",
+        "provider": "AWS",
+        "level": "Expert",
+        "category": "Security Analyst",
+        "fromDate": "2023-04-12",
+        "expiryDate": "2026-04-12"
+      }
+    ]
+  }
+  
