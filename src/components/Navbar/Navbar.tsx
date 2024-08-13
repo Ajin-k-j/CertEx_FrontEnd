@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
       });
 
     if (location.pathname === '/') {
-      navigate('/', { replace: true });
+      navigate('/user', { replace: true });
     }
   }, [navigate, location.pathname]);
 
@@ -45,7 +45,7 @@ const Navbar: React.FC = () => {
     if (newView !== null) {
       setView(newView);
       if (newView === 'user') {
-        navigate('/', { replace: true });
+        navigate('/user', { replace: true });
       } else {
         switch (userRole) {
           case 'departmentHead':
@@ -69,7 +69,7 @@ const Navbar: React.FC = () => {
           CertEx
         </Typography>
 
-        {(location.pathname === '/' || location.pathname === '/dashboard') && (
+        {(location.pathname === '/user' || location.pathname === '/dashboard') && (
           <>
             <Button
               color="inherit"
@@ -80,10 +80,10 @@ const Navbar: React.FC = () => {
                 display: 'flex',
                 alignItems: 'center',
                 height: '70%',
-                color: location.pathname === '/' ? 'blue' : 'inherit',
-                borderBottom: location.pathname === '/' ? '2px solid blue' : 'none',
+                color: location.pathname === '/user' ? 'blue' : 'inherit',
+                borderBottom: location.pathname === '/user' ? '2px solid blue' : 'none',
                 '& .MuiSvgIcon-root': {
-                  display: location.pathname === '/' ? 'inline-block' : 'none',
+                  display: location.pathname === '/user' ? 'inline-block' : 'none',
                 },
                 '&:hover': {
                   color: 'blue',
@@ -94,7 +94,7 @@ const Navbar: React.FC = () => {
                   },
                 },
               }}
-              onClick={() => navigate('/', { replace: true })}
+              onClick={() => navigate('/user', { replace: true })}
             >
               <CertificateIcon sx={{ marginRight: 0.5, fontSize: '0.75rem' }} />
               Available Certifications

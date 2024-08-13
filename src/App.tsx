@@ -21,7 +21,7 @@ function App() {
       <Router>
       <Navbar />
         <Routes>
-        <Route path="/" element={<AllCertifications />} />
+        <Route path="/user" element={<AllCertifications />} />
         <Route path="/user-dashboard" element={<UserDashboard />} />
         <Route path="/department" element={<Department />} />
         <Route path="/ld-admin" element={<LDAdmin />} />
