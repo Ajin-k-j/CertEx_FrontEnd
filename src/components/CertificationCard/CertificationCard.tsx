@@ -2,9 +2,7 @@ import React from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import Chip from "@mui/material/Chip";
 import { CertificationLevel } from "../../types/AllCertifications.types";
-
 
 interface CertificationCardProps {
   id: number;
@@ -16,6 +14,7 @@ interface CertificationCardProps {
   official_link: string;
   onClick: () => void;  // Function to handle click event
 }
+
 const CertificationCard: React.FC<CertificationCardProps> = ({
   provider,
   certification_name,
@@ -85,16 +84,19 @@ const CertificationCard: React.FC<CertificationCardProps> = ({
         </Typography>
         <div style={{ display: "flex", flexWrap: "wrap", marginTop: "0.5rem" }}>
           {tags.map((tag, index) => (
-            <Chip
+            <Typography
               key={index}
-              label={tag}
+              variant="body2"
               sx={{
-                fontSize: 10,
-                height: "1.1rem",
-                margin: ".11rem",
-                backgroundColor: `hsl(${index * 40}, 70%, 80%)`,
+                fontWeight: "bold",
+                color:"grey"
               }}
-            />
+            >
+              {tag}
+              {index < tags.length - 1 && (
+                <span style={{ margin: "0.3rem" }}>•</span>
+              )}
+            </Typography>
           ))}
         </div>
       </CardContent>

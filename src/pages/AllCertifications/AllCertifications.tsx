@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchCertifications, CertificationData } from "../../api/AllCertificationsApi";
+import { fetchCertifications } from "../../api/AllCertificationsApi";
 import { Box, Typography } from "@mui/material";
 import { InfoOutlined } from "@mui/icons-material";
 import styles from "./AllCertifications.module.css";
@@ -10,7 +10,7 @@ import TopFilter from "../../components/TopFilter/TopFilter";
 import LeftFilter from "../../components/LeftFilter/LeftFilter";
 import CertificationCardViewModal from "../../components/CertificationCardViewModal/CertificationCardViewModal";
 import NominationFormModal from "../../components/NominationFormModal/NominationFormModal";
-import { SortOption, CertificationLevel } from "../../types/AllCertifications.types";
+import { SortOption, CertificationLevel, CertificationData } from "../../types/AllCertifications.types";
 
 const AllCertifications: React.FC = () => {
   const [data, setData] = useState<CertificationData[]>([]);
@@ -142,8 +142,8 @@ const AllCertifications: React.FC = () => {
               justifyContent="center"
               height="400px"
               textAlign="center"
-              bgcolor="white" // Set the background color to white
-              p={3} // Optional: Add some padding for better spacing
+              bgcolor="white"
+              p={3}
             >
               <InfoOutlined
                 sx={{
@@ -183,6 +183,8 @@ const AllCertifications: React.FC = () => {
           description={selectedCertification.description}
           tags={selectedCertification.tags}
           officialLink={selectedCertification.official_link}
+          nominationOpenDate={selectedCertification.nomination_open_date} 
+          nominationCloseDate={selectedCertification.nomination_close_date} 
           onNominate={handleNominateClick}
         />
       )}
@@ -194,6 +196,8 @@ const AllCertifications: React.FC = () => {
           onClose={handleCloseNominationModal}
           id={selectedCertification.id}
           certificationName={selectedCertification.certification_name}
+          nomination_open_date={selectedCertification.nomination_open_date} 
+          nomination_close_date={selectedCertification.nomination_close_date} 
         />
       )}
     </div>
