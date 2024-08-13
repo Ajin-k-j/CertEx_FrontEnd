@@ -50,7 +50,7 @@ const CertificationCard: React.FC<CertificationCardProps> = ({
         display: "flex",
         flexDirection: "column",
         "&:hover": {
-          transform: "scale(1.05)",
+          transform: "scale(1.03)",
         },
       }}
       onClick={onClick}
