@@ -7,7 +7,7 @@ import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar';
 
 import UserDashboard from './pages/EmployeeDashboard/EmployeeDashboard';
-import UserPage from './pages/AllCertifications/AllCertifications';
+import AllCertifications from './pages/AllCertifications/AllCertifications';
 import Department from './pages/DepartmentPage/DepartmentTotalCard/DepartmentTotalDataCard';
 import LDAdmin from './pages/LDPage/LDDemo';
 import AWSAdmin from './pages/AWSPage/AWSTotalDataCard/AWSTotalDataCard'
@@ -21,8 +21,8 @@ function App() {
       <Router>
       <Navbar />
         <Routes>
-        <Route path="/user" element={<UserPage />} />
-        <Route path="/dashboard" element={<UserDashboard />} />
+        <Route path="/" element={<AllCertifications />} />
+        <Route path="/user-dashboard" element={<UserDashboard />} />
         <Route path="/department" element={<Department />} />
         <Route path="/ld-admin" element={<LDAdmin />} />
         <Route path="/aws-admin" element={<AWSAdmin />} />
