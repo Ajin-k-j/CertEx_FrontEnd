@@ -1,20 +1,25 @@
-import React from 'react';
-import { Box, Typography } from '@mui/material';
-import CertificationTable from '../../components/UserCertificationsTable/UserCertificationsTable';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-
+import React from "react";
+import { Box } from "@mui/material";
+import SimilarCertifications from "../../components/SimilarCertifications/SimilarCertifications";
+import UpcomingExams from "../../components/UpcomingExams/UpcomingExams";
 
 const EmployeeDashboard: React.FC = () => {
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box p={3}>
-        <Typography variant="h4" gutterBottom>User Certifications</Typography>
-        <CertificationTable />
-      </Box>
+    <Box
+      sx={{
+        padding: "2rem",
+        display: "flex",
+        flexDirection: "row",
+        gap: "1rem",
+        justifyContent: "center",
+        flexWrap: "wrap",
+      }}
+    >
+      <UpcomingExams />
 
-    </LocalizationProvider>
+      <SimilarCertifications />
+    </Box>
   );
 };
 
-export default EmployeeDashboard
+export default EmployeeDashboard;
