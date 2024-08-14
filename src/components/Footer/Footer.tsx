@@ -10,9 +10,8 @@ const Footer: React.FC = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#ffff', 
-        borderTop: '1px solid #e0e0e0',
-        position: 'fixed',
+        backgroundColor: '#ffff',
+        borderTop: '1px solid #e0e0e0', 
         bottom: 0,
         left: 0,
       }}
