@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 
-interface TotalDataCardProps {
+interface StatisticsCardProps {
   data: {
     department: string;
     employees: number;
@@ -19,7 +19,7 @@ interface TotalDataCardProps {
   };
 }
 
-const TotalDataCard: React.FC<TotalDataCardProps> = ({ data, icons, labels }) => {
+const StatisticsCard: React.FC<StatisticsCardProps> = ({ data, icons, labels }) => {
   const isEmpty = Object.values(data).every(value => value === '' || value === 0);
 
   return (
@@ -86,4 +86,4 @@ const TotalDataCard: React.FC<TotalDataCardProps> = ({ data, icons, labels }) =>
   );
 };
 
-export default TotalDataCard;
+export default StatisticsCard;
