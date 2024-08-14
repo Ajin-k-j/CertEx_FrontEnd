@@ -11,7 +11,7 @@ type Role = 'user' | 'departmentHead' | 'LDAdmin' | 'AWSAdmin';
 
 const fetchUserRole = (): Role => {
   // Dummy function to simulate fetching user role
-  return 'departmentHead';
+  return 'AWSAdmin';
 };
 
 const Navbar: React.FC = () => {

@@ -1,4 +1,4 @@
-import DepartmentStatistics from "../../components/DepartmentStatistics/DepartmentStatisticsPage"
+import DepartmentStatistics from "../../components/DepartmentStatistics/DepartmentStatisticsCard"
 
 const DepartmentAdminDashboard = () => {
   return (
