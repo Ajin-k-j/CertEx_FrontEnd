@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { fetchAwsTotalData, AwsTotalData } from '../../../api/AWSTotalDataCard'; // Adjust path if necessary
 import TotalDataCard from '../../../components/TotalDataCard/TotalDataCard'; // Adjust path if necessary
 import { People, Done, Cancel } from '@mui/icons-material';
+import AWSAdminBarGraph from '../../../components/AWSAdminBarGraph/AWSAdminBarGraph';
 
 interface TotalData {
   department: string;
@@ -45,7 +46,12 @@ const DashboardPage: React.FC = () => {
     certifications: 'Certifications',
   };
 
-  return <TotalDataCard data={data} icons={icons} labels={labels} />;
+  return (
+    <>
+    <AWSAdminBarGraph />
+    <TotalDataCard data={data} icons={icons} labels={labels} />
+    </>
+  );
 };
 
 export default DashboardPage;
