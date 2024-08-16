@@ -1,12 +1,15 @@
-// api.ts
-import axios from 'axios';
+// BarGraphApi.ts
+import apiClient from './BaseApi';
 
 export const fetchCertificationData = async () => {
   try {
-    const response = await axios.get('../../public/Data/BarGraphData.json'); // Adjust the path as needed
-    if (response.data && response.data.certificationData && response.data.certificationData.length > 0) {
-        console.log("success");
-      return response.data.certificationData[0]; // Assuming certificationData is an array with one object
+    // Use the correct path to fetch data from the JSON server
+    const response = await apiClient.get('/certificationData');
+
+    // Check if the response has the expected data structure
+    if (response.data && Array.isArray(response.data) && response.data.length > 0) {
+      console.log("success");
+      return response.data[0]; // Return the first object in the data array
     } else {
       console.error('No data found in the response.');
       throw new Error('No data found.');

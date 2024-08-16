@@ -7,36 +7,41 @@ import MenuItem from '@mui/material/MenuItem';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { fetchCertificationData } from '../../api/BarGraphApi';
-import { fetchProviders } from '../../api/FetchProviderApi';
 import ReusableBarChart from '../ReusableBarChart/ReusableBarChart';
-import { Box, Typography } from '@mui/material';
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 type CertificationData = {
   [key: string]: {
-    [key: string]: {
     [key: string]: number[];
   };
 };
-};
+
 const months = [
-  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
 ];
 
 const DUBarGraph: React.FC = () => {
   const [certificationData, setCertificationData] = useState<CertificationData>({});
   const [year, setYear] = useState<string>('All');
   const [provider, setProvider] = useState<string>('All');
-  const [providerOptions, setProviderOptions] = useState<string[]>([]); // New state for providers
+
   const [data, setData] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [noData, setNoData] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-  const du = "DU1";
+  const du ="DU1";
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-
 
   useEffect(() => {
     const loadCertificationData = async () => {
@@ -44,48 +49,27 @@ const DUBarGraph: React.FC = () => {
         const data = await fetchCertificationData();
         setCertificationData(data as CertificationData); // Ensure correct typing
       } catch (err) {
-        console.log({ err });
         setError('Failed to fetch data.');
       } finally {
         setLoading(false);
       }
     };
+
     loadCertificationData();
-},[]);
-
-  useEffect(()=>{
-    const loadProviders = async () => {
-        try {
-          const fetchProvider = await fetchProviders();
-          if (Array.isArray(fetchProvider)) {
-            setProviderOptions(fetchProvider);
-
-        } 
-        else {
-            throw new Error('Invalid data format');
-          }
-        }
-        catch (err) {
-          setError('Failed to fetch providers.');
-          setProviderOptions([]);
-        }
-      };
-      loadProviders();
-  },[])
+  }, []);
 
   useEffect(() => {
     if (loading || error) return;
 
     const yearData = certificationData[year] || certificationData['All'];
-    const duData = yearData[du];
-    const providerData = duData?.[provider];
+    const duData = yearData[du] || yearData['All'];
+    const providerData = duData[provider];
 
-    if (providerData && Array.isArray(providerData)) {
+    if (Array.isArray(providerData)) {
       setData(providerData);
-      setNoData(false);
     } else {
+      console.error('Data for the selected options is not an array.');
       setData([]);
-      setNoData(true);
     }
   }, [certificationData, year, provider, loading, error]);
 
@@ -101,11 +85,7 @@ const DUBarGraph: React.FC = () => {
   const handleProviderChange = (event: SelectChangeEvent<string>) => {
     setProvider(event.target.value);
   };
- 
-  const getYearsOptions = () => {
-    const currentYear = new Date().getFullYear();
-    return Array.from({ length: 5 }, (_, i) => (currentYear - i).toString());
-  };
+
   return (
     <Stack
       direction="column"
@@ -120,14 +100,13 @@ const DUBarGraph: React.FC = () => {
         height: isMobile ? 'auto' : '40vh',
         justifyContent: 'flex-end',
       }}
-    > 
-      {!loading && (
+    >
       <Stack
         direction={isMobile ? 'column' : 'row'}
         spacing={2}
         justifyContent="right"
       >
-        <FormControl sx={{ minWidth: isMobile ? 120 : 120 }}>
+        <FormControl sx={{ minWidth: isMobile ? 120 : 120}}>
           <InputLabel>Financial Year</InputLabel>
           <Select
             value={year}
@@ -135,12 +114,11 @@ const DUBarGraph: React.FC = () => {
             label="Year"
             sx={{ height: isMobile ? '7vh' : '5vh', fontSize: '2vh' }}
           >
-           <MenuItem value="All">All</MenuItem>
-           {getYearsOptions().map((yearOption) => (
-               <MenuItem key={yearOption} value={yearOption}>
-               {yearOption}
-             </MenuItem>
-            ))}
+            <MenuItem value="All">All</MenuItem>
+            <MenuItem value="2021">2021</MenuItem>
+            <MenuItem value="2022">2022</MenuItem>
+            <MenuItem value="2023">2023</MenuItem>
+            <MenuItem value="2024">2024</MenuItem>
           </Select>
         </FormControl>
 
@@ -151,63 +129,25 @@ const DUBarGraph: React.FC = () => {
             onChange={handleProviderChange}
             label="Provider"
             sx={{
-              height: isMobile ? '7vh' : '5vh',
-              fontSize: '2vh',
-              marginRight: isMobile ? 0 : '2vh',
-            }}
+                height: isMobile ? '7vh' : '5vh',
+                fontSize: '2vh',
+                marginRight: isMobile ? 0 : '2vh',
+              }}
           >
-              <MenuItem value="All">All</MenuItem>
-            {providerOptions.length > 0 ? (
-                providerOptions.map((providerOption) => (
-              <MenuItem key={providerOption} value={providerOption}>
-                {providerOption}
-              </MenuItem>
-            ))
-        ):(
-            <MenuItem disabled>No DUs available</MenuItem> 
-        )}
+            <MenuItem value="All">All</MenuItem>
+            <MenuItem value="AWS">AWS</MenuItem>
+            <MenuItem value="Azure">Azure</MenuItem>
+            <MenuItem value="GCP">GCP</MenuItem>
           </Select>
         </FormControl>
       </Stack>
-      )}
 
       {loading ? (
         <div>Loading...</div>
       ) : error ? (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            p: '1.6rem',
-            backgroundColor: '#f9f9f9',
-            borderRadius: '8px',
-          }}
-        >
-          <InfoOutlinedIcon sx={{ height: '17vh', fontSize: '2rem', color: '#757575' }} />
-          <Typography variant="body1" sx={{ mt: '.5vh', mb: '.2rem', textAlign: 'center' }}>
-            Something went wrong while fetching.
-          </Typography>
-        </Box>
-      ) : noData ? (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            p: '1.6rem',
-            backgroundColor: '#f9f9f9',
-            borderRadius: '8px',
-          }}
-        >
-          <InfoOutlinedIcon sx={{ height: '17vh', fontSize: '2rem', color: '#757575' }} />
-          <Typography variant="body1" sx={{ mt: '.5vh', mb: '.2rem', textAlign: 'center' }}>
-            No Certification completed yet.
-          </Typography>
-        </Box>
+        <div style={{ color: 'red' }}>{error}</div>
       ) : (
-        <ReusableBarChart data={dataset} isMobile={isMobile} />
-
+        <ReusableBarChart data={dataset} isMobile={isMobile}/>
       )}
     </Stack>
   );

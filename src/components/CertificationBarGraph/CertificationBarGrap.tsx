@@ -4,16 +4,10 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { fetchCertificationData } from '../../api/BarGraphApi';
-import ReusableBarChart from '../ReusableBarChart/ReusableBarChart';
-import { fetchDU } from '../../api/FetchingDUApi';
-import { fetchProviders } from '../../api/FetchProviderApi';
-
+import ReusableBarChart from '../ReusableBarChart/ReusableBarChart'; 
 type CertificationData = {
   [key: string]: {
     [key: string]: {
@@ -23,7 +17,18 @@ type CertificationData = {
 };
 
 const months = [
-  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
 ];
 
 const CertificationBarGraph: React.FC = () => {
@@ -34,35 +39,24 @@ const CertificationBarGraph: React.FC = () => {
   const [data, setData] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
-  const [yearOptions, setYearOptions] = useState<string[]>(['All']);
-  const [duOptions, setDUOptions] = useState<string[]>(['All']);
-  const [providerOptions, setProviderOptions] = useState<string[]>(['All']);
-  const [noData, setNoData] = useState<boolean>(false);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
   useEffect(() => {
-    const loadDropdownData = async () => {
+    const loadCertificationData = async () => {
       try {
-        const [duData, providerData] = await Promise.all([fetchDU(), fetchProviders()]);
-        setDUOptions(['All', ...duData]);
-        setProviderOptions(['All', ...providerData]);
         const data = await fetchCertificationData();
-        setCertificationData(data as CertificationData);
-        const years = Object.keys(data);
-        setYearOptions(['All', ...years]);
-        setNoData(!years.length);
+        setCertificationData(data as CertificationData); // Ensure correct typing
       } catch (err) {
-        setError('Failed to fetch dropdown data.');
-        setLoading(false);
+        setError('Failed to fetch data.');
       } finally {
         setLoading(false);
       }
     };
 
-    loadDropdownData();
+    loadCertificationData();
   }, []);
 
   useEffect(() => {
@@ -71,13 +65,12 @@ const CertificationBarGraph: React.FC = () => {
     const yearData = certificationData[year] || certificationData['All'];
     const duData = yearData[du] || yearData['All'];
     const providerData = duData[provider] || duData['All'];
-    
-    if (providerData && Array.isArray(providerData)) {
+
+    if (Array.isArray(providerData)) {
       setData(providerData);
-      setNoData(providerData.length === 0);
     } else {
+      console.error('Data for the selected options is not an array.');
       setData([]);
-      setNoData(true);
     }
   }, [certificationData, year, du, provider, loading, error]);
 
@@ -126,11 +119,11 @@ const CertificationBarGraph: React.FC = () => {
             label="Financial Year"
             sx={{ height: isMobile ? '7vh' : '5vh', fontSize: '2vh' }}
           >
-            {yearOptions.map((yearOption) => (
-              <MenuItem key={yearOption} value={yearOption}>
-                {yearOption}
-              </MenuItem>
-            ))}
+            <MenuItem value="All">All</MenuItem>
+            <MenuItem value="2024">2024</MenuItem>
+            <MenuItem value="2023">2023</MenuItem>
+            <MenuItem value="2022">2022</MenuItem>
+            <MenuItem value="2021">2021</MenuItem>
           </Select>
         </FormControl>
 
@@ -142,11 +135,11 @@ const CertificationBarGraph: React.FC = () => {
             label="DU"
             sx={{ height: isMobile ? '7vh' : '5vh', fontSize: '2vh' }}
           >
-            {duOptions.map((duOption) => (
-              <MenuItem key={duOption} value={duOption}>
-                {duOption}
-              </MenuItem>
-            ))}
+            <MenuItem value="All">All</MenuItem>
+            <MenuItem value="DU1">DU1</MenuItem>
+            <MenuItem value="DU2">DU2</MenuItem>
+            <MenuItem value="DU3">DU3</MenuItem>
+            <MenuItem value="DU4">DU4</MenuItem>
           </Select>
         </FormControl>
 
@@ -162,11 +155,10 @@ const CertificationBarGraph: React.FC = () => {
               marginRight: isMobile ? 0 : '2vh',
             }}
           >
-            {providerOptions.map((providerOption) => (
-              <MenuItem key={providerOption} value={providerOption}>
-                {providerOption}
-              </MenuItem>
-            ))}
+            <MenuItem value="All">All</MenuItem>
+            <MenuItem value="AWS">AWS</MenuItem>
+            <MenuItem value="Azure">Azure</MenuItem>
+            <MenuItem value="GCP">GCP</MenuItem>
           </Select>
         </FormControl>
       </Stack>
@@ -174,37 +166,7 @@ const CertificationBarGraph: React.FC = () => {
       {loading ? (
         <div>Loading...</div>
       ) : error ? (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            p: '1.6rem',
-            backgroundColor: '#f9f9f9',
-            borderRadius: '8px',
-          }}
-        >
-                    <InfoOutlinedIcon sx={{ height: '17vh', fontSize: '2rem', color: '#757575' }} />
-          <Typography variant="body1" sx={{ mt: '.5vh', mb: '.2rem', textAlign: 'center' }}>
-            Something went wrong while fetching.
-          </Typography>
-        </Box>
-      ) : noData ? (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            p: '1.6rem',
-            backgroundColor: '#f9f9f9',
-            borderRadius: '8px',
-          }}
-        >
-          <InfoOutlinedIcon sx={{ height: '17vh', fontSize: '2rem', color: '#757575' }} />
-          <Typography variant="body1" sx={{ mt: '.5vh', mb: '.2rem', textAlign: 'center' }}>
-            No Certification completed yet.
-          </Typography>
-        </Box>
+        <div style={{ color: 'red' }}>{error}</div>
       ) : (
         <ReusableBarChart data={dataset} isMobile={isMobile} />
       )}
@@ -213,4 +175,3 @@ const CertificationBarGraph: React.FC = () => {
 };
 
 export default CertificationBarGraph;
-

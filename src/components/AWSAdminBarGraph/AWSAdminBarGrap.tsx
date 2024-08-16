@@ -7,7 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { fetchCertificationData } from '../../api/BarGraphApi';
-import { fetchDU } from '../../api/FetchingDUApi'; // Import the fetchDU function
+import { fetchDU } from '../../api/FetchingDUApi'; // Import the fetchDUs function
 import ReusableBarChart from '../ReusableBarChart/ReusableBarChart';
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { Box, Typography } from '@mui/material';
@@ -33,7 +33,7 @@ const AWSAdminBarGraph: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
   const [noData, setNoData] = useState<boolean>(false);
-  const [duOptions, setDUOptions] = useState<string[]>([]); // Ensure duOptions is initialized as an array
+  const [duOptions, setDUOptions] = useState<string[]>([]);
   const provider = "AWS";
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -45,7 +45,7 @@ const AWSAdminBarGraph: React.FC = () => {
         const data = await fetchCertificationData();
         setCertificationData(data as CertificationData);
       } catch (err) {
-        console.log({ err });
+        console.log({err});
         setError('Failed to fetch data.');
       } finally {
         setLoading(false);
@@ -59,15 +59,11 @@ const AWSAdminBarGraph: React.FC = () => {
     const loadDUs = async () => {
       try {
         const fetchedDUs = await fetchDU();
-        if (Array.isArray(fetchedDUs)) {
-          setDUOptions(fetchedDUs);
-        } else {
-          throw new Error('Invalid data format');
-        }
+       
+        setDUOptions(fetchedDUs);
       } catch (err) {
-        console.error('Error fetching DUs:', err);
-        setError('Failed to fetch DU options.');
-        setDUOptions([]); // Ensure duOptions is reset to an empty array on error
+        console.error(err);
+        console.log("something errr")
       }
     };
 
@@ -87,7 +83,7 @@ const AWSAdminBarGraph: React.FC = () => {
     } else {
       setData([]);
       setNoData(true);
-    }
+    }  
   }, [certificationData, year, du, loading, error]);
 
   const dataset = data.map((value, index) => ({
@@ -129,7 +125,7 @@ const AWSAdminBarGraph: React.FC = () => {
           spacing={2}
           justifyContent="right"
         >
-          <FormControl sx={{ minWidth: isMobile ? 120 : 120 }}>
+          <FormControl sx={{ minWidth: isMobile ? 120 : 120}}>
             <InputLabel>Financial Year</InputLabel>
             <Select
               value={year}
@@ -145,25 +141,21 @@ const AWSAdminBarGraph: React.FC = () => {
               ))}
             </Select>
           </FormControl>
-
+        
           <FormControl sx={{ minWidth: isMobile ? 120 : 120 }}>
             <InputLabel>DU</InputLabel>
             <Select
               value={du}
               onChange={handleDUChange}
               label="DU"
-              sx={{ height: isMobile ? '7vh' : '5vh', fontSize: '2vh',marginRight: isMobile ? 0 : '2vh' }}
-            > 
+              sx={{ height: isMobile ? '7vh' : '5vh', fontSize: '2vh' }}
+            >
               <MenuItem value="All">All</MenuItem>
-              {duOptions.length > 0 ? (
-                duOptions.map((duOption) => (
-                  <MenuItem key={duOption} value={duOption}>
-                    {duOption}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>No DUs available</MenuItem>
-              )}
+              {duOptions.map((duOption) => (
+                <MenuItem key={duOption} value={duOption}>
+                  {duOption}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         </Stack>
@@ -172,7 +164,7 @@ const AWSAdminBarGraph: React.FC = () => {
       {loading ? (
         <div>Loading...</div>
       ) : error ? (
-        <Box
+        <Box 
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -188,7 +180,7 @@ const AWSAdminBarGraph: React.FC = () => {
           </Typography>
         </Box>
       ) : noData ? (
-        <Box
+        <Box 
           sx={{
             display: 'flex',
             flexDirection: 'column',
