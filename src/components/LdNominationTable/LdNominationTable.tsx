@@ -11,8 +11,7 @@ import {
   Button,
   IconButton,
   Typography,
-  Paper,
-  SelectChangeEvent
+  Paper
 } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import SearchIcon from '@mui/icons-material/Search';
@@ -62,11 +61,11 @@ export default function LdNominationTable() {
     setSearchQuery(event.target.value);
   };
 
-  const handleProviderChange = (event: SelectChangeEvent<string>) => {
+  const handleProviderChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSelectedProvider(event.target.value as string);
   };
 
-  const handleCriticalityChange = (event: SelectChangeEvent<string>) => {
+  const handleCriticalityChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSelectedCriticality(event.target.value as string);
   };
 
@@ -107,7 +106,7 @@ export default function LdNominationTable() {
 
   return (
     <Box sx={{ overflow: 'hidden' }}>
-      <Paper sx={{ padding: 2, marginBottom: 2, display: 'flex', flexDirection: 'column', gap: 2, width: '9vw', marginLeft:'1vw',marginRight:'1vw'}}>
+      <Paper sx={{ padding: 2, marginBottom: 2, display: 'flex', flexDirection: 'column', gap: 2, width: '96vw', marginLeft:'1vw',marginRight:'1vw'}}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="h6">All Nominations Data</Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -202,7 +201,6 @@ export default function LdNominationTable() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          position: 'relative',
           borderTop: `8px solid ${selectedRow ? getModalBorderColor(selectedRow.criticality) : 'transparent'}`
         }}>
           <IconButton

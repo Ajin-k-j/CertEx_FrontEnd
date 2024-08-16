@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridColDef,
+} from "@mui/x-data-grid";
 import {
   TextField,
   Box,
@@ -13,6 +16,8 @@ import {
   IconButton,
   Typography,
   Paper,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -32,6 +37,9 @@ const UserCertificationsTable: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
 
   useEffect(() => {
     const loadCertifications = async () => {
@@ -110,17 +118,37 @@ const UserCertificationsTable: React.FC = () => {
     {
       field: "certificationName",
       headerName: "Certification Name",
-      width: 310,
+      width: isMobile ? 150 : isTablet ? 220 : 290,
     },
-    { field: "provider", headerName: "Provider", width: 140 },
-    { field: "level", headerName: "Level", width: 140 },
-    { field: "category", headerName: "Category", width: 160 },
-    { field: "fromDate", headerName: "From Date", width: 140 },
-    { field: "expiryDate", headerName: "Expiry Date", width: 140 },
+    {
+      field: "provider",
+      headerName: "Provider",
+      width: isMobile ? 80 : isTablet ? 90 : 120,
+    },
+    {
+      field: "level",
+      headerName: "Level",
+      width: isMobile ? 100 : isTablet ? 110 : 150,
+    },
+    {
+      field: "category",
+      headerName: "Category",
+      width: isMobile ? 120 : isTablet ? 140 : 190,
+    },
+    {
+      field: "fromDate",
+      headerName: "From Date",
+      width: isMobile ? 100 : isTablet ? 120 : 140,
+    },
+    {
+      field: "expiryDate",
+      headerName: "Expiry Date",
+      width: isMobile ? 80 : isTablet ? 90 : 160,
+    },
     {
       field: "action",
       headerName: "Action",
-      width: 140,
+      width: isMobile ? 80 : isTablet ? 90 : 100,
       renderCell: (params) => (
         <Button
           onClick={() => handleActionClick(params.row as Row)}
@@ -141,31 +169,42 @@ const UserCertificationsTable: React.FC = () => {
       <Box sx={{ overflow: "hidden", alignItems: "center" }}>
         <Paper
           sx={{
-            padding: 2,
-            marginBottom: 2,
+            p: 2,
+            mb: 2,
             display: "flex",
             flexDirection: "column",
             gap: 2,
-            width: "94vw",
-            marginLeft: 3,
+            width: "99%",
+            boxSizing: "border-box",
           }}
         >
           <Box
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "center",
+              flexDirection: isMobile ? "column" : "row",
+              alignItems: isMobile ? "flex-start" : "center",
             }}
           >
-            <Typography variant="h6">My Certifications</Typography>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Typography variant={isMobile ? "h6" : "h5"}>
+              My Certifications
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: isMobile ? "column" : "row",
+                alignItems: "center",
+                gap: isMobile ? 1 : 2,
+                width: isMobile ? "100%" : "auto",
+              }}
+            >
               <TextField
                 size="small"
                 variant="outlined"
                 label="Search"
                 value={searchQuery}
                 onChange={handleSearchChange}
-                sx={{ width: 200 }}
+                sx={{ width: isMobile ? "100%" : 200 }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -174,7 +213,7 @@ const UserCertificationsTable: React.FC = () => {
                   ),
                 }}
               />
-              <FormControl size="small" sx={{ width: 200 }}>
+              <FormControl size="small" sx={{ width: isMobile ? "100%" : 200 }}>
                 <InputLabel>Provider</InputLabel>
                 <Select
                   value={selectedProvider}
@@ -234,15 +273,16 @@ const UserCertificationsTable: React.FC = () => {
               </Button>
             </Box>
           ) : (
-            <div style={{ height: 300, width: "100%" }}>
+            <Box sx={{ height: 300, width: "100%" }}>
               <DataGrid
                 rows={filteredRows}
                 columns={columns}
-                pageSize={5}
+                pageSize={isMobile ? 5 : 10}
                 rowsPerPageOptions={[5, 10, 15]}
-                rowHeight={40}
+                rowHeight={isMobile ? 35 : 40}
+                disableSelectionOnClick
               />
-            </div>
+            </Box>
           )}
         </Paper>
         <Modal
@@ -257,7 +297,7 @@ const UserCertificationsTable: React.FC = () => {
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
-              width: 500,
+              width: isMobile ? "90%" : 500,
               bgcolor: "background.paper",
               borderRadius: 2,
               boxShadow: 24,
@@ -265,7 +305,6 @@ const UserCertificationsTable: React.FC = () => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              position: "relative",
               borderTop: `8px solid ${
                 selectedRow
                   ? getModalBorderColor(selectedRow.level)
