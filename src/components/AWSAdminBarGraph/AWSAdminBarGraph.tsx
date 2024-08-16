@@ -11,6 +11,7 @@ import { fetchDU } from '../../api/FetchingDUApi'; // Import the fetchDU functio
 import ReusableBarChart from '../ReusableBarChart/ReusableBarChart';
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { Box, Typography } from '@mui/material';
+import { fetchFinancialYears } from '../../api/FetchFinancialYearApi'; 
 
 type CertificationData = {
   [key: string]: {
@@ -21,9 +22,9 @@ type CertificationData = {
 };
 
 const months = [
-  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'
 ];
+
 
 const AWSAdminBarGraph: React.FC = () => {
   const [certificationData, setCertificationData] = useState<CertificationData>({});
@@ -32,6 +33,7 @@ const AWSAdminBarGraph: React.FC = () => {
   const [data, setData] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
+  const [yearOptions, setYearOptions] = useState<string[]>(['All']);
   const [noData, setNoData] = useState<boolean>(false);
   const [duOptions, setDUOptions] = useState<string[]>([]); // Ensure duOptions is initialized as an array
   const provider = "AWS";
@@ -39,49 +41,52 @@ const AWSAdminBarGraph: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
+
+ 
   useEffect(() => {
-    const loadCertificationData = async () => {
+    const loadDropdownData = async () => {
       try {
+        const financialYears = await fetchFinancialYears();
+        const formattedYears = financialYears.map(
+          (fy: { from_date: string; to_date: string }) =>
+            `${fy.from_date}-${fy.to_date}`
+        );
+        setYearOptions(['All', ...formattedYears]);
+
+        const [duData] = await Promise.all([fetchDU()]);
+        setDUOptions(['All', ...duData]);
+
         const data = await fetchCertificationData();
         setCertificationData(data as CertificationData);
+        setNoData(Object.keys(data).length === 0);
       } catch (err) {
-        console.log({ err });
-        setError('Failed to fetch data.');
+        console.log(err)
+        setError('Failed to fetch dropdown data.');
       } finally {
         setLoading(false);
       }
     };
 
-    loadCertificationData();
+    loadDropdownData();
   }, []);
 
-  useEffect(() => {
-    const loadDUs = async () => {
-      try {
-        const fetchedDUs = await fetchDU();
-        if (Array.isArray(fetchedDUs)) {
-          setDUOptions(fetchedDUs);
-        } else {
-          throw new Error('Invalid data format');
-        }
-      } catch (err) {
-        console.error('Error fetching DUs:', err);
-        setError('Failed to fetch DU options.');
-        setDUOptions([]); // Ensure duOptions is reset to an empty array on error
-      }
-    };
 
-    loadDUs();
-  }, []);
+
+ 
 
   useEffect(() => {
     if (loading || error) return;
 
     const yearData = certificationData[year];
-    const duData = yearData?.[du];
-    const providerData = duData?.[provider];
+    if (!yearData || !yearData[du]) {
+      setData([]);
+      setNoData(true);
+      return;
+    }
+    const duData = yearData?.[du] || yearData['All'];
+    const providerData = duData?.[provider] || [];
 
-    if (providerData && Array.isArray(providerData)) {
+    if (Array.isArray(providerData) && providerData.length > 0) {
       setData(providerData);
       setNoData(false);
     } else {
@@ -103,10 +108,6 @@ const AWSAdminBarGraph: React.FC = () => {
     setDU(event.target.value);
   };
 
-  const getYearsOptions = () => {
-    const currentYear = new Date().getFullYear();
-    return Array.from({ length: 5 }, (_, i) => (currentYear - i).toString());
-  };
 
   return (
     <Stack
@@ -122,52 +123,46 @@ const AWSAdminBarGraph: React.FC = () => {
         height: isMobile ? 'auto' : '40vh',
         justifyContent: 'flex-end',
       }}
-    >
-      {!loading && (
-        <Stack
-          direction={isMobile ? 'column' : 'row'}
-          spacing={2}
-          justifyContent="right"
-        >
-          <FormControl sx={{ minWidth: isMobile ? 120 : 120 }}>
-            <InputLabel>Financial Year</InputLabel>
-            <Select
-              value={year}
-              onChange={handleYearChange}
-              label="Year"
-              sx={{ height: isMobile ? '7vh' : '5vh', fontSize: '2vh' }}
-            >
-              <MenuItem value="All">All</MenuItem>
-              {getYearsOptions().map((yearOption) => (
-                <MenuItem key={yearOption} value={yearOption}>
-                  {yearOption}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+    > 
+          <Stack
+        direction={isMobile ? 'column' : 'row'}
+        spacing={2}
+        justifyContent="right"
+      >
+        <FormControl sx={{ minWidth: isMobile ? 120 : 120 }}>
+          <InputLabel>Financial Year</InputLabel>
+          <Select
+            value={year}
+            onChange={handleYearChange}
+            label="Financial Year"
+            sx={{ height: isMobile ? '7vh' : '5vh', fontSize: '2vh' }}
+          >
+            {yearOptions.map((yearOption) => (
+              <MenuItem key={yearOption} value={yearOption}>
+                {yearOption}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-          <FormControl sx={{ minWidth: isMobile ? 120 : 120 }}>
-            <InputLabel>DU</InputLabel>
-            <Select
-              value={du}
-              onChange={handleDUChange}
-              label="DU"
-              sx={{ height: isMobile ? '7vh' : '5vh', fontSize: '2vh',marginRight: isMobile ? 0 : '2vh' }}
-            > 
-              <MenuItem value="All">All</MenuItem>
-              {duOptions.length > 0 ? (
-                duOptions.map((duOption) => (
-                  <MenuItem key={duOption} value={duOption}>
-                    {duOption}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>No DUs available</MenuItem>
-              )}
-            </Select>
-          </FormControl>
+        <FormControl sx={{ minWidth: isMobile ? 120 : 120 }}>
+          <InputLabel>DU</InputLabel>
+          <Select
+            value={du}
+            onChange={handleDUChange}
+            label="DU"
+            sx={{ height: isMobile ? '7vh' : '5vh', fontSize: '2vh' }}
+          >
+            {duOptions.map((duOption) => (
+              <MenuItem key={duOption} value={duOption}>
+                {duOption}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         </Stack>
-      )}
+
+
 
       {loading ? (
         <div>Loading...</div>

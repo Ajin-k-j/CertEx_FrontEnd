@@ -3,8 +3,6 @@ import apiClient from './BaseApi';
 export const fetchProviders = async (): Promise<string[]> => {
   try {
     const response = await apiClient.get('/providers');
-    // Log the response to confirm its structure
-    console.log('Response:', response);
 
     // Accessing the providers property if it exists
     if (response.data) {

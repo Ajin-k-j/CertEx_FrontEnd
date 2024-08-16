@@ -5,7 +5,6 @@ export const fetchCertificationData = async () => {
   try {
     // Use the correct path to fetch data from the JSON server
     const response = await apiClient.get('/certificationData');
-
     // Check if the response has the expected data structure
     if (response.data && Array.isArray(response.data) && response.data.length > 0) {
       console.log("success");

@@ -7,6 +7,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   Rectangle,
+  TooltipProps,
 } from 'recharts';
 
 type ReusableBarChartProps = {
@@ -14,12 +15,33 @@ type ReusableBarChartProps = {
   isMobile: boolean;
 };
 
+// Custom Tooltip component to remove gray background
+const CustomTooltip: React.FC<TooltipProps<number, string>> = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div
+        style={{
+          backgroundColor: 'white',
+          padding: '10px',
+          borderRadius: '5px',
+          boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.1)',
+        }}
+      >
+        <p style={{ margin: 0 }}>{`Month: ${label}`}</p>
+        <p style={{ margin: 0 }}>{`Value: ${payload[0].value}`}</p>
+      </div>
+    );
+  }
+
+  return null;
+};
+
 const CustomBackground = (props: {
   fill: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
 }) => {
   const { fill, x, y, width, height } = props;
   return (
@@ -29,7 +51,7 @@ const CustomBackground = (props: {
       y={y}
       width={width}
       height={height}
-      radius={10}
+      radius={[10, 10, 10, 10]}
     />
   );
 };
@@ -43,7 +65,10 @@ const ReusableBarChart: React.FC<ReusableBarChartProps> = ({ data, isMobile }) =
       >
         <XAxis dataKey="month" axisLine={false} tickLine={false} />
         <YAxis axisLine={false} tickLine={false} />
-        <Tooltip />
+        <Tooltip
+          content={<CustomTooltip />}
+          cursor={{ fill: 'transparent' }} // Removes the gray background on hover
+        />
         <Bar
           dataKey="value"
           fill="#1B59F8"

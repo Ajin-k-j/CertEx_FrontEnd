@@ -10,6 +10,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { fetchCertificationData } from '../../api/BarGraphApi';
+import { fetchFinancialYears } from '../../api/FetchFinancialYearApi'; 
 import ReusableBarChart from '../ReusableBarChart/ReusableBarChart';
 import { fetchDU } from '../../api/FetchingDUApi';
 import { fetchProviders } from '../../api/FetchProviderApi';
@@ -23,10 +24,10 @@ type CertificationData = {
 };
 
 const months = [
-  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'
 ];
 
-const CertificationBarGraph: React.FC = () => {
+const Certification: React.FC = () => {
   const [certificationData, setCertificationData] = useState<CertificationData>({});
   const [year, setYear] = useState<string>('All');
   const [du, setDU] = useState<string>('All');
@@ -38,7 +39,6 @@ const CertificationBarGraph: React.FC = () => {
   const [duOptions, setDUOptions] = useState<string[]>(['All']);
   const [providerOptions, setProviderOptions] = useState<string[]>(['All']);
   const [noData, setNoData] = useState<boolean>(false);
-
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
@@ -46,17 +46,23 @@ const CertificationBarGraph: React.FC = () => {
   useEffect(() => {
     const loadDropdownData = async () => {
       try {
-        const [duData, providerData] = await Promise.all([fetchDU(), fetchProviders()]);
+        const financialYears = await fetchFinancialYears();
+        const formattedYears = financialYears.map(
+          (fy: { from_date: string; to_date: string }) =>
+            `${fy.from_date}-${fy.to_date}`
+        );
+        setYearOptions(['All', ...formattedYears]);
+
+        const [duData, providersData] = await Promise.all([fetchDU(), fetchProviders()]);
         setDUOptions(['All', ...duData]);
-        setProviderOptions(['All', ...providerData]);
+        setProviderOptions(['All', ...providersData]);
+
         const data = await fetchCertificationData();
         setCertificationData(data as CertificationData);
-        const years = Object.keys(data);
-        setYearOptions(['All', ...years]);
-        setNoData(!years.length);
+        setNoData(Object.keys(data).length === 0);
       } catch (err) {
+        console.log(err)
         setError('Failed to fetch dropdown data.');
-        setLoading(false);
       } finally {
         setLoading(false);
       }
@@ -68,13 +74,20 @@ const CertificationBarGraph: React.FC = () => {
   useEffect(() => {
     if (loading || error) return;
 
-    const yearData = certificationData[year] || certificationData['All'];
+    const yearData = certificationData[year] ;
+     console.log(yearData)
+    // const yearData = filteredData[year] || filteredData['All'];
+    if (!yearData || !yearData[du]) {
+      setData([]);
+      setNoData(true);
+      return;
+    }
+
     const duData = yearData[du] || yearData['All'];
-    const providerData = duData[provider] || duData['All'];
-    
-    if (providerData && Array.isArray(providerData)) {
+    const providerData = duData[provider] || [];
+    if (Array.isArray(providerData) && providerData.length > 0) {
       setData(providerData);
-      setNoData(providerData.length === 0);
+      setNoData(false);
     } else {
       setData([]);
       setNoData(true);
@@ -184,7 +197,7 @@ const CertificationBarGraph: React.FC = () => {
             borderRadius: '8px',
           }}
         >
-                    <InfoOutlinedIcon sx={{ height: '17vh', fontSize: '2rem', color: '#757575' }} />
+          <InfoOutlinedIcon sx={{ height: '17vh', fontSize: '2rem', color: '#757575' }} />
           <Typography variant="body1" sx={{ mt: '.5vh', mb: '.2rem', textAlign: 'center' }}>
             Something went wrong while fetching.
           </Typography>
@@ -212,5 +225,4 @@ const CertificationBarGraph: React.FC = () => {
   );
 };
 
-export default CertificationBarGraph;
-
+export default Certification;

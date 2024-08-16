@@ -11,76 +11,76 @@ import { fetchProviders } from '../../api/FetchProviderApi';
 import ReusableBarChart from '../ReusableBarChart/ReusableBarChart';
 import { Box, Typography } from '@mui/material';
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { fetchFinancialYears } from '../../api/FetchFinancialYearApi'; 
 
 type CertificationData = {
   [key: string]: {
     [key: string]: {
-    [key: string]: number[];
+      [key: string]: number[];
+    };
   };
 };
-};
+
 const months = [
-  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'
 ];
 
 const DUBarGraph: React.FC = () => {
   const [certificationData, setCertificationData] = useState<CertificationData>({});
   const [year, setYear] = useState<string>('All');
   const [provider, setProvider] = useState<string>('All');
-  const [providerOptions, setProviderOptions] = useState<string[]>([]); // New state for providers
+  const [providerOptions, setProviderOptions] = useState<string[]>([]);
   const [data, setData] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [noData, setNoData] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  const [yearOptions, setYearOptions] = useState<string[]>(['All']);
   const du = "DU1";
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
-
   useEffect(() => {
-    const loadCertificationData = async () => {
+    const loadDropdownData = async () => {
       try {
+        const financialYears = await fetchFinancialYears();
+        const formattedYears = financialYears.map(
+          (fy: { from_date: string; to_date: string }) =>
+            `${fy.from_date}-${fy.to_date}`
+        );
+        setYearOptions(['All', ...formattedYears]);
+
+        const [providerData] = await Promise.all([fetchProviders()]);
+        if (Array.isArray(providerData)) {
+          setProviderOptions(['All', ...providerData]);
+        }
+
         const data = await fetchCertificationData();
-        setCertificationData(data as CertificationData); // Ensure correct typing
+        setCertificationData(data as CertificationData);
       } catch (err) {
-        console.log({ err });
-        setError('Failed to fetch data.');
+        console.log(err)
+        setError('Failed to fetch dropdown data.');
       } finally {
         setLoading(false);
       }
     };
-    loadCertificationData();
-},[]);
 
-  useEffect(()=>{
-    const loadProviders = async () => {
-        try {
-          const fetchProvider = await fetchProviders();
-          if (Array.isArray(fetchProvider)) {
-            setProviderOptions(fetchProvider);
-
-        } 
-        else {
-            throw new Error('Invalid data format');
-          }
-        }
-        catch (err) {
-          setError('Failed to fetch providers.');
-          setProviderOptions([]);
-        }
-      };
-      loadProviders();
-  },[])
+    loadDropdownData();
+  }, []);
 
   useEffect(() => {
     if (loading || error) return;
 
-    const yearData = certificationData[year] || certificationData['All'];
+    const yearData = certificationData[year];
+    if (!yearData || !yearData[du]) {
+      setData([]);
+      setNoData(true);
+      return;
+    }
+
     const duData = yearData[du];
     const providerData = duData?.[provider];
-
-    if (providerData && Array.isArray(providerData)) {
+    if (Array.isArray(providerData) && providerData.length > 0) {
       setData(providerData);
       setNoData(false);
     } else {
@@ -94,18 +94,25 @@ const DUBarGraph: React.FC = () => {
     value,
   }));
 
+
   const handleYearChange = (event: SelectChangeEvent<string>) => {
-    setYear(event.target.value);
+    const selectedYear = event.target.value;
+    setYear(selectedYear);
+  
+    if (!certificationData[selectedYear] || !certificationData[selectedYear][du]) {
+      setNoData(true);
+
+    } else {
+      setNoData(false);
+
+    }
   };
+  
 
   const handleProviderChange = (event: SelectChangeEvent<string>) => {
     setProvider(event.target.value);
   };
- 
-  const getYearsOptions = () => {
-    const currentYear = new Date().getFullYear();
-    return Array.from({ length: 5 }, (_, i) => (currentYear - i).toString());
-  };
+
   return (
     <Stack
       direction="column"
@@ -135,11 +142,10 @@ const DUBarGraph: React.FC = () => {
             label="Year"
             sx={{ height: isMobile ? '7vh' : '5vh', fontSize: '2vh' }}
           >
-           <MenuItem value="All">All</MenuItem>
-           {getYearsOptions().map((yearOption) => (
-               <MenuItem key={yearOption} value={yearOption}>
-               {yearOption}
-             </MenuItem>
+            {yearOptions.map((yearOption) => (
+              <MenuItem key={yearOption} value={yearOption}>
+                {yearOption}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -156,16 +162,15 @@ const DUBarGraph: React.FC = () => {
               marginRight: isMobile ? 0 : '2vh',
             }}
           >
-              <MenuItem value="All">All</MenuItem>
             {providerOptions.length > 0 ? (
-                providerOptions.map((providerOption) => (
-              <MenuItem key={providerOption} value={providerOption}>
-                {providerOption}
-              </MenuItem>
-            ))
-        ):(
-            <MenuItem disabled>No DUs available</MenuItem> 
-        )}
+              providerOptions.map((providerOption) => (
+                <MenuItem key={providerOption} value={providerOption}>
+                  {providerOption}
+                </MenuItem>
+              ))
+            ) : (
+              <MenuItem disabled>No Providers available</MenuItem> 
+            )}
           </Select>
         </FormControl>
       </Stack>
@@ -207,7 +212,6 @@ const DUBarGraph: React.FC = () => {
         </Box>
       ) : (
         <ReusableBarChart data={dataset} isMobile={isMobile} />
-
       )}
     </Stack>
   );
