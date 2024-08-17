@@ -1,25 +1,14 @@
-import React from "react";
-import { Box } from "@mui/material";
-import SimilarCertifications from "../../components/SimilarCertifications/SimilarCertifications";
-import UpcomingExams from "../../components/UpcomingExams/UpcomingExams";
+import SimilarCertifications from "../../components/SimilarCertifications/SimilarCertifications"
 
-const EmployeeDashboard: React.FC = () => {
+
+const EmployeeDashboard = () => {
   return (
-    <Box
-      sx={{
-        padding: "2rem",
-        display: "flex",
-        flexDirection: "row",
-        gap: "1rem",
-        justifyContent: "center",
-        flexWrap: "wrap",
-      }}
-    >
-      <UpcomingExams />
+    <div>
+      <h1>User Dashbaord here</h1>
+      <SimilarCertifications certificationId={1} />
 
-      <SimilarCertifications />
-    </Box>
-  );
-};
+    </div>
+  )
+}
 
-export default EmployeeDashboard;
+export default EmployeeDashboard

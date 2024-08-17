@@ -55,7 +55,6 @@ const LeftFilter: React.FC<LeftFilterProps> = ({
       sx={{
         backgroundColor: "#ffffff", // Set background color to white
         padding: 2,
-        paddingBottom:1,
         paddingLeft:3,
         paddingRight: 3, 
         borderRadius: 1, // Optional: Add rounded corners

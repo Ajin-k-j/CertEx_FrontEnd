@@ -1,27 +1,24 @@
-import React from 'react';
-import './App.css'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar/Navbar';
+import './App.css';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import AllCertifications from './pages/AllCertifications/AllCertifications';
 import EmployeeDashboard from './pages/EmployeeDashboard/EmployeeDashboard';
-import Footer from './components/Footer/Footer';
-import DepartmentAdminDashboard from './pages/DepartmentAdminDashboard/DepartmentAdminDashboard';
-import LDAdminDashboard from './pages/LDAdminDashboard/LDAdminDashboard';
-import AWSAdminDashboard from './pages/AwsAdminDashboard/AwsAdminDashboard';
-const App: React.FC = () => {
+
+function App() {
   return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<AllCertifications />} />
-        <Route path="/dashboard" element={<EmployeeDashboard />} />
-        <Route path="/department" element={<DepartmentAdminDashboard />} />
-        <Route path="/ld-admin" element={<LDAdminDashboard />} />
-        <Route path="/aws-admin" element={<AWSAdminDashboard />} />
-      </Routes>
-      <Footer/>
-    </Router>
+    <>
+      <ToastContainer />
+      <Router>
+        <Routes>
+          <Route path="/" element={<AllCertifications />} />
+          <Route path="/user-dashboard" element={<EmployeeDashboard />} />
+          {/* Redirect any unknown routes to the main page */}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </Router>
+    </>
   );
-};
+}
 
 export default App;

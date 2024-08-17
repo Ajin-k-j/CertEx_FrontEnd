@@ -6,7 +6,7 @@
     margin: 2px;
   }
   .MiddleSection{
-    margin: 8px;
+    margin: 10px;
     margin-top: 3px;
     display: flex;
     flex-direction: column;
@@ -16,8 +16,8 @@
     background-color: color;
   }
   .CardsSection {
-    height: 77vh;
-    overflow-y: auto;
+    height: 500px; /* Set a maximum height to control scroll */
+    overflow-y: auto; /* Enable vertical scrolling when needed */
     border-radius: 10px;
     background-color: white;
   }
