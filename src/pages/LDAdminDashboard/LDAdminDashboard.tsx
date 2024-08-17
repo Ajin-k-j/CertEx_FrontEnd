@@ -1,6 +1,6 @@
 import PendingNominationsTable from "../../components/PendingActions/PendingActionsTable/PendingActionsTable"
 import { fetchPendingNominations } from '../../api/PendingActionTableAPI';
-import CertificationChartss from '../../components/CertificationBarGraph/CertificationBarGraph';
+import CertificationChartss from '../../components/BarGraph/LDAdminBarGraph/LDAdminBarGraph';
 import DashboardActions from '../../components/DashboardActions/DashboardActions';
 // import TickPlacementBars from '../../Components/CertificationChart/CertificationChar';
 const LDAdminDashboard = () => {

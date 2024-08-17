@@ -1,4 +1,4 @@
-import DUBarGraph from "../../components/DUBarGraph/DUBargraph"
+import DUBarGraph from "../../components/BarGraph/DUBarGraph/DUBargraph"
 
 
 const DepartmentAdminDashboard = () => {

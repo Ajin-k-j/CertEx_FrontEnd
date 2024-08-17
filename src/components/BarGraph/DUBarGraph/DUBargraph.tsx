@@ -6,12 +6,12 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { fetchCertificationData } from '../../api/BarGraphApi';
-import { fetchProviders } from '../../api/FetchProviderApi';
-import ReusableBarChart from '../ReusableBarChart/ReusableBarChart';
+import { fetchCertificationData } from '../../../api/BarGraphApi';
+import { fetchProviders } from '../../../api/FetchProviderApi';
 import { Box, Typography } from '@mui/material';
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { fetchFinancialYears } from '../../api/FetchFinancialYearApi'; 
+import { fetchFinancialYears } from '../../../api/FetchFinancialYearApi'; 
+import ReusableBarChart from '../ReusableBarChart/ReusableBarChart';
 
 type CertificationData = {
   [key: string]: {

@@ -1,4 +1,5 @@
-import AWSAdminBarGraph from '../../components/AWSAdminBarGraph/AWSAdminBarGraph';
+import AWSAdminBarGraph from "../../components/BarGraph/AWSAdminBarGraph/AWSAdminBarGraph"
+
 const AwsAdminDashboard = () => {
   return (
     <div>
