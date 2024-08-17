@@ -73,11 +73,11 @@ const SimilarCertifications: React.FC = () => {
   return (
     <Box
       sx={{
-        maxWidth: 300,
+        maxWidth: 290,
         m: '2vh',
+        marginLeft:'1vh',
         backgroundColor: "white",
         padding: "10px",
-        paddingBottom: "4vh",
         borderRadius: "8px",
         // boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
       }}

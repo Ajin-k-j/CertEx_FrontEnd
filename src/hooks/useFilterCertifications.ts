@@ -1,6 +1,6 @@
 // src/hooks/useFilterCertifications.ts
 import { useState, useEffect, useCallback } from "react";
-import { CertificationData } from "../api/AllCertificationsApi";
+import { CertificationData } from "../types/AllCertifications.types";
 import { CertificationLevel, SortOption } from "../types/AllCertifications.types";
 
 
