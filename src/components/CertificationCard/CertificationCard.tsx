@@ -37,7 +37,7 @@ const CertificationCard: React.FC<CertificationCardProps> = ({
     <Card
       sx={{
         height: "auto",
-        minWidth: "18.5vw",
+        minWidth: "14.5vw",
         width: { xs: "100%", sm: "18.5vw" },
         borderTop: `4px solid ${borderColor}`,
         borderLeft: "1px solid rgb(146, 145, 145)",
