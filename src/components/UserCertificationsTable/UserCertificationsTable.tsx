@@ -7,7 +7,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router-dom'; // Use useNavigate for routing
-
 // Define the interface for the certification data
 interface Certification {
   certification_id: number;

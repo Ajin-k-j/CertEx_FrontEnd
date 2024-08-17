@@ -1,8 +1,10 @@
+import DUBarGraph from "../../components/DUBarGraph/DUBargraph"
+
 
 const DepartmentAdminDashboard = () => {
   return (
     <div>
-      <h1>Department Dashbaord</h1>
+      <DUBarGraph />
     </div>
   )
 }
