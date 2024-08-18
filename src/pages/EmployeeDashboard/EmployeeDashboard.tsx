@@ -4,6 +4,7 @@ import SimilarCertifications from "../../components/SimilarCertifications/Simila
 import UpcomingExams from "../../components/UpcomingExams/UpcomingExams";
 import PendingNominationsTable from "../../components/PendingActions/PendingActionsTable/PendingActionsTable";
 import { fetchPendingNominations } from '../../api/PendingActionTableAPI';
+import PendingNominationCard from "../../components/PendingActions/PendingNominationCardList/PendingNominationCardList";
 const EmployeeDashboard: React.FC = () => {
   return (
     <Box
@@ -19,7 +20,7 @@ const EmployeeDashboard: React.FC = () => {
       <UpcomingExams />
 
       <SimilarCertifications />
-      <PendingNominationsTable fetchNominations={fetchPendingNominations} />
+      <PendingNominationsTable fetchNominations={fetchPendingNominations} itemsPerPage={1} containerHeight="130px" CardComponent={PendingNominationCard} />
     </Box>
   );
 };
