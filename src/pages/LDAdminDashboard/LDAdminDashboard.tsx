@@ -18,8 +18,10 @@ const LDAdminDashboard = () => {
 
   return (
   <>
+  <div style={{display:'flex', justifyContent:'space-around'}}>
   <CertificationChartss/>
-  <PendingNominationsTable fetchNominations={fetchPendingNominations} itemsPerPage={2} CardComponent={PendingNominationCard} containerHeight="330px" />
+  <PendingNominationsTable fetchNominations={fetchPendingNominations} itemsPerPage={3} CardComponent={PendingNominationCard} containerHeight="230px" />
+  </div>
   <DashboardActions title="Admin Controls" buttons={ldButtons} />;
   </>
   );

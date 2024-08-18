@@ -27,33 +27,6 @@
       "Category": "Cloud Computing",
       "From Date": "2023-01-01",
       "Expiry Date": "2024-01-01"
-    },
-    {
-      "certification_id": 104,
-      "Certification Name": "Google Cloud Data Engineer",
-      "Provider": "GCP",
-      "Level": "Intermediate",
-      "Category": "Data Engineering",
-      "From Date": "2023-03-10",
-      "Expiry Date": "2025-03-10"
-    },
-    {
-      "certification_id": 105,
-      "Certification Name": "AWS Certified Developer",
-      "Provider": "AWS",
-      "Level": "Intermediate",
-      "Category": "Cloud Development",
-      "From Date": "2022-06-15",
-      "Expiry Date": "2024-06-15"
-    },
-    {
-      "certification_id": 106,
-      "Certification Name": "Azure Solutions Architect",
-      "Provider": "Azure",
-      "Level": "Expert",
-      "Category": "Cloud Architecture",
-      "From Date": "2023-04-20",
-      "Expiry Date": "2025-04-20"
     }
   ]
 }
