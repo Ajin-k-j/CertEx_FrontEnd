@@ -75,7 +75,6 @@ const Certification: React.FC = () => {
     if (loading || error) return;
 
     const yearData = certificationData[year] ;
-     console.log(yearData)
     // const yearData = filteredData[year] || filteredData['All'];
     if (!yearData || !yearData[du]) {
       setData([]);
