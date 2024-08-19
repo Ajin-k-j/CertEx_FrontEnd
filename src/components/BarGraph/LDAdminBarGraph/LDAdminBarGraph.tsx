@@ -132,7 +132,7 @@ const Certification: React.FC = () => {
         justifyContent="right"
       >
         <FormControl sx={{ minWidth: isMobile ? 120 : 120 }}>
-          <InputLabel>Financial Year</InputLabel>
+          <InputLabel sx={{backgroundColor: 'white'}}>Financial Year</InputLabel>
           <Select
             value={year}
             onChange={handleYearChange}
@@ -148,7 +148,7 @@ const Certification: React.FC = () => {
         </FormControl>
 
         <FormControl sx={{ minWidth: isMobile ? 120 : 120 }}>
-          <InputLabel>DU</InputLabel>
+          <InputLabel sx={{backgroundColor: 'white'}}>DU</InputLabel>
           <Select
             value={du}
             onChange={handleDUChange}
@@ -164,7 +164,7 @@ const Certification: React.FC = () => {
         </FormControl>
 
         <FormControl sx={{ minWidth: isMobile ? 120 : 120 }}>
-          <InputLabel>Provider</InputLabel>
+          <InputLabel sx={{backgroundColor: 'white'}}>Provider</InputLabel>
           <Select
             value={provider}
             onChange={handleProviderChange}
