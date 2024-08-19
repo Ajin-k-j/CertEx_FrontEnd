@@ -26,7 +26,7 @@ const EmployeeDashboard: React.FC = () => {
       <PendingNominationsTable fetchNominations={fetchPendingNominations} itemsPerPage={3} containerHeight="238px" CardComponent={PendingNominationCard} />
       <UserCertificationsTable />
     </Box>
-    <UserCertificationsTable />
+    
     </>
   );
 };

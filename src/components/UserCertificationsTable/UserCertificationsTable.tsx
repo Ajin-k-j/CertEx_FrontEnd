@@ -27,7 +27,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
 import { fetchCertifications, Row } from "../../api/UserCertificationsApi";
 
-// Define your component
 const UserCertificationsTable: React.FC = () => {
   const [rows, setRows] = useState<Row[]>([]);
   const [filteredRows, setFilteredRows] = useState<Row[]>([]);
@@ -119,36 +118,43 @@ const UserCertificationsTable: React.FC = () => {
       field: "certificationName",
       headerName: "Certification Name",
       width: isMobile ? 150 : isTablet ? 220 : 290,
+      headerClassName: 'header-cell',
     },
     {
       field: "provider",
       headerName: "Provider",
       width: isMobile ? 80 : isTablet ? 90 : 120,
+      headerClassName: 'header-cell',
     },
     {
       field: "level",
       headerName: "Level",
       width: isMobile ? 100 : isTablet ? 110 : 150,
+      headerClassName: 'header-cell',
     },
     {
       field: "category",
       headerName: "Category",
       width: isMobile ? 120 : isTablet ? 140 : 190,
+      headerClassName: 'header-cell',
     },
     {
       field: "fromDate",
       headerName: "From Date",
       width: isMobile ? 100 : isTablet ? 120 : 140,
+      headerClassName: 'header-cell',
     },
     {
       field: "expiryDate",
       headerName: "Expiry Date",
       width: isMobile ? 80 : isTablet ? 90 : 180,
+      headerClassName: 'header-cell',
     },
     {
       field: "action",
       headerName: "Action",
       width: isMobile ? 80 : isTablet ? 90 : 100,
+      headerClassName: 'header-cell',
       renderCell: (params) => (
         <Button
           onClick={() => handleActionClick(params.row as Row)}
@@ -166,7 +172,7 @@ const UserCertificationsTable: React.FC = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box sx={{ overflow: "hidden", alignItems: "center" }}>
+      <Box sx={{ overflow: "hidden", width: "100%" }}>
         <Paper
           sx={{
             p: 2,
@@ -176,7 +182,6 @@ const UserCertificationsTable: React.FC = () => {
             gap: 2,
             width: "100%",
             boxSizing: "border-box",
-            marginLeft:1
           }}
         >
           <Box
@@ -185,6 +190,7 @@ const UserCertificationsTable: React.FC = () => {
               justifyContent: "space-between",
               flexDirection: isMobile ? "column" : "row",
               alignItems: isMobile ? "flex-start" : "center",
+              width: "100%", // Ensure the header section is full-width
             }}
           >
             <Typography variant={isMobile ? "h6" : "h5"}>
@@ -197,6 +203,7 @@ const UserCertificationsTable: React.FC = () => {
                 alignItems: "center",
                 gap: isMobile ? 1 : 2,
                 width: isMobile ? "100%" : "auto",
+                justifyContent: "flex-end", // Ensure the search bar and filters align properly
               }}
             >
               <TextField
@@ -278,13 +285,14 @@ const UserCertificationsTable: React.FC = () => {
               <DataGrid
                 rows={filteredRows}
                 columns={columns}
-              //   pagination={{
-              //   pageSize: 5,
-              //  rowsPerPageOptions: [5, 10, 15],
-              // }}
-  rowHeight={40}
-  sx={{ width: "100%" }}
-/>
+                rowHeight={40}
+                sx={{ 
+                  width: "100%",
+                  '.header-cell': {
+                    fontWeight: 'bold',
+                  },
+                }}
+              />
             </Box>
           )}
         </Paper>
@@ -308,11 +316,10 @@ const UserCertificationsTable: React.FC = () => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              borderTop: `8px solid ${
-                selectedRow
-                  ? getModalBorderColor(selectedRow.level)
-                  : "transparent"
-              }`,
+              borderTop: 8,
+              borderColor: selectedRow
+                ? getModalBorderColor(selectedRow.level)
+                : "transparent",
             }}
           >
             <IconButton
