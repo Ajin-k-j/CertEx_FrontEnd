@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import StatisticsCard from '../../components/StatisticsCard/StatisticsCard';
+import StatisticsCard from '../StatisticsCard/StatisticsCard';
 import { People, Done, Cancel } from '@mui/icons-material';
 import fetchAwsStatistics from '../../api/AwsStatisticsApi';
 import { AwsStatistics } from '../../types/AwsStatistics.types';

@@ -1,11 +1,12 @@
-import AwsStatisticsPage from "../../components/AwsStatistics/AwsStatisticsCard"
+import AwsStatisticsCard from "../../components/AwsStatistics/AwsStatisticsCard"
+import AWSAdminBarGraph from "../../components/BarGraph/AWSAdminBarGraph/AWSAdminBarGraph"
 
 
 const AwsAdminDashboard = () => {
   return (
     <div>
-      <h1>AWS Admin Dashboard</h1>
-      <AwsStatisticsPage />
+       <AWSAdminBarGraph />
+       <AwsStatisticsCard />
     </div>
   )
 }

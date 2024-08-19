@@ -1,60 +1,32 @@
 {
-    "user_id": 1,
-    "certifications": [
-        {
-            "certification_id": 101,
-            "Certification Name": "Google Cloud Professional Architect",
-            "Provider": "GCP",
-            "Level": "Expert",
-            "Category": "Cloud Computing",
-            "From Date": "2022-02-15",
-            "Expiry Date": "2024-02-15"
-          },
-          {
-            "certification_id": 102,
-            "Certification Name": "AWS Certified Solutions Architect",
-            "Provider": "AWS",
-            "Level": "Expert",
-            "Category": "Cloud Computing",
-            "From Date": "2021-11-20",
-            "Expiry Date": "2023-11-20"
-          },
-          {
-            "certification_id": 103,
-            "Certification Name": "Azure Developer Associate",
-            "Provider": "Azure",
-            "Level": "Intermediate",
-            "Category": "Cloud Computing",
-            "From Date": "2023-01-01",
-            "Expiry Date": "2024-01-01"
-          },
-          {
-            "certification_id": 104,
-            "Certification Name": "Google Cloud Data Engineer",
-            "Provider": "GCP",
-            "Level": "Intermediate",
-            "Category": "Data Engineering",
-            "From Date": "2023-03-10",
-            "Expiry Date": "2025-03-10"
-          },
-          {
-            "certification_id": 105,
-            "Certification Name": "AWS Certified Developer",
-            "Provider": "AWS",
-            "Level": "Intermediate",
-            "Category": "Cloud Development",
-            "From Date": "2022-06-15",
-            "Expiry Date": "2024-06-15"
-          },
-          {
-            "certification_id": 106,
-            "Certification Name": "Azure Solutions Architect",
-            "Provider": "Azure",
-            "Level": "Expert",
-            "Category": "Cloud Architecture",
-            "From Date": "2023-04-20",
-            "Expiry Date": "2025-04-20"
-          }
-    ]
-  }
-  
+  "user_id": 1,
+  "certifications": [
+    {
+      "certification_id": 101,
+      "Certification Name": "Google Cloud Professional Architect",
+      "Provider": "GCP",
+      "Level": "Expert",
+      "Category": "Cloud Computing",
+      "From Date": "2022-02-15",
+      "Expiry Date": "2024-02-15"
+    },
+    {
+      "certification_id": 102,
+      "Certification Name": "AWS Certified Solutions Architect",
+      "Provider": "AWS",
+      "Level": "Expert",
+      "Category": "Cloud Computing",
+      "From Date": "2021-11-20",
+      "Expiry Date": "2023-11-20"
+    },
+    {
+      "certification_id": 103,
+      "Certification Name": "Azure Developer Associate",
+      "Provider": "Azure",
+      "Level": "Intermediate",
+      "Category": "Cloud Computing",
+      "From Date": "2023-01-01",
+      "Expiry Date": "2024-01-01"
+    }
+  ]
+}

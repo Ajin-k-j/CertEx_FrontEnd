@@ -18,6 +18,7 @@ import {
   Paper,
   useMediaQuery,
   useTheme,
+  SelectChangeEvent,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -26,6 +27,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
 import { fetchCertifications, Row } from "../../api/UserCertificationsApi";
 
+// Define your component
 const UserCertificationsTable: React.FC = () => {
   const [rows, setRows] = useState<Row[]>([]);
   const [filteredRows, setFilteredRows] = useState<Row[]>([]);
@@ -47,8 +49,8 @@ const UserCertificationsTable: React.FC = () => {
         const data = await fetchCertifications();
         setRows(data);
         setFilteredRows(data);
-      } catch (err) {
-        setError(err.message);
+      } catch {
+        setError("Failed to load data");
       } finally {
         setLoading(false);
       }
@@ -73,10 +75,8 @@ const UserCertificationsTable: React.FC = () => {
     setSearchQuery(event.target.value);
   };
 
-  const handleProviderChange = (
-    event: React.ChangeEvent<{ value: unknown }>
-  ) => {
-    setSelectedProvider(event.target.value as string);
+  const handleProviderChange = (event: SelectChangeEvent<string>) => {
+    setSelectedProvider(event.target.value);
   };
 
   const handleActionClick = (row: Row) => {
@@ -98,7 +98,7 @@ const UserCertificationsTable: React.FC = () => {
   };
 
   const handleExploreClick = () => {
-    navigate("/user");
+    navigate("/");
   };
 
   const getModalBorderColor = (level: string) => {
@@ -143,7 +143,7 @@ const UserCertificationsTable: React.FC = () => {
     {
       field: "expiryDate",
       headerName: "Expiry Date",
-      width: isMobile ? 80 : isTablet ? 90 : 160,
+      width: isMobile ? 80 : isTablet ? 90 : 180,
     },
     {
       field: "action",
@@ -174,8 +174,9 @@ const UserCertificationsTable: React.FC = () => {
             display: "flex",
             flexDirection: "column",
             gap: 2,
-            width: "99%",
+            width: "100%",
             boxSizing: "border-box",
+            marginLeft:1
           }}
         >
           <Box
@@ -277,11 +278,13 @@ const UserCertificationsTable: React.FC = () => {
               <DataGrid
                 rows={filteredRows}
                 columns={columns}
-                pageSize={isMobile ? 5 : 10}
-                rowsPerPageOptions={[5, 10, 15]}
-                rowHeight={isMobile ? 35 : 40}
-                disableSelectionOnClick
-              />
+              //   pagination={{
+              //   pageSize: 5,
+              //  rowsPerPageOptions: [5, 10, 15],
+              // }}
+  rowHeight={40}
+  sx={{ width: "100%" }}
+/>
             </Box>
           )}
         </Paper>
