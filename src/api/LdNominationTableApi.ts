@@ -1,11 +1,13 @@
 import axios from 'axios';
 import { Row } from '../types/LdNominations.types';
 
+
 export const fetchLdNominationData = async (): Promise<Row[]> => {
   try {
-    const response = await axios.get<Row[]>('../../../public/Data/LDNominationData.json'); // Adjust path if needed
-    return response.data.map((item, index) => Object.assign({ id: index + 1 }, item));
-  } catch{
-    throw new Error('Error fetching data');
+    const response = await axios.get<Row[]>('../../public/Data/LDNominationData.json');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching nomination data', error);
+    throw error;
   }
 };

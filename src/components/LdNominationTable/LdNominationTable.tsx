@@ -154,7 +154,7 @@ const LdNominationTable: React.FC = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           sx={{ maxWidth: 300, flexGrow: 1, height: '30px' }}
-          InputProps={{ style: { height: '40px' } }}
+          InputProps={{ style: { height: '40px'} }}
         />
         <FormControl variant="outlined" sx={{ maxWidth: 150, flexGrow: 1, height: '40px' }}>
           <InputLabel>Provider</InputLabel>
@@ -246,8 +246,8 @@ const LdNominationTable: React.FC = () => {
         <DataGrid
           rows={filteredRows}
           columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5, 10, 20]}
+          // pageSize={5}
+          // rowsPerPageOptions={[5, 10, 20]}
           autoHeight
           disableSelectionOnClick
           getRowId={getRowId}
