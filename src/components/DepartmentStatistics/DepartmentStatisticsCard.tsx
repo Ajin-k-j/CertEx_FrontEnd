@@ -23,19 +23,25 @@ const DepartmentStatisticsPage: React.FC = () => {
     loadData();
   }, []);
 
+  const mappedData = {
+    primary: data.department,
+    secondary: data.employees,
+    tertiary: data.certifications,
+  };
+
   const icons = {
-    department: <Work />,
-    employees: <Group />,
-    certifications: <Badge />,
+    primary: <Work />,
+    secondary: <Group />,
+    tertiary: <Badge />,
   };
 
   const labels = {
-    department: 'Department',
-    employees: 'Employees',
-    certifications: 'Certifications',
+    primary: 'Department',
+    secondary: 'Employees',
+    tertiary: 'Certifications',
   };
 
-  return <StatisticsCard data={data} icons={icons} labels={labels} />;
+  return <StatisticsCard data={mappedData} icons={icons} labels={labels} />;
 };
 
 export default DepartmentStatisticsPage;

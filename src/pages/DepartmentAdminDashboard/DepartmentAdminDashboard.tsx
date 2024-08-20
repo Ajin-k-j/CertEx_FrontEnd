@@ -4,6 +4,7 @@ import DepartmentStatisticsCard from "../../components/DepartmentStatistics/Depa
 import PendingNominationsTable from "../../components/PendingActions/PendingActionsTable/PendingActionsTable"
 import PendingNominationCard from "../../components/PendingActions/PendingNominationCardList/PendingNominationCardList"
 
+import DepartmentNominationsTable from '../../components/DepartmentNominationsTable/DepartmentNominationsTable'
 
 
 
@@ -15,6 +16,7 @@ const DepartmentAdminDashboard = () => {
       <PendingNominationsTable fetchNominations={fetchPendingNominations} itemsPerPage={3} CardComponent={PendingNominationCard} containerHeight="250px" />
       </div>
       <DepartmentStatisticsCard />
+      <DepartmentNominationsTable />
     </div>
   )
 }

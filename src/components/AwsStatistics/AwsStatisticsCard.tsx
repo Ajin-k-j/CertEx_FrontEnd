@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import StatisticsCard from '../StatisticsCard/StatisticsCard';
-import { People, Done, Cancel } from '@mui/icons-material';
-import fetchAwsStatistics from '../../api/AwsStatisticsApi';
+import { People, Done } from '@mui/icons-material';
+import fetchAwsTotalData from '../../api/AwsStatisticsApi';
 import { AwsStatistics } from '../../types/AwsStatistics.types';
 
 const AwsStatisticsPage: React.FC = () => {
   const [data, setData] = useState({
-    department: '',
-    employees: 0,
-    certifications: 0,
+    primary: '',
+    secondary: 0,
+    
   });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result: AwsStatistics = await fetchAwsStatistics();
+        const result: AwsStatistics = await fetchAwsTotalData();
         setData({
-          department: result.totalAccounts,
-          employees: result.activeAccounts,
-          certifications: result.inactiveAccounts,
+          primary: result.totalAccounts,
+          secondary: result.activeAccounts,
+
         });
       } catch (error) {
         console.error(error);
@@ -28,15 +28,15 @@ const AwsStatisticsPage: React.FC = () => {
   }, []);
 
   const icons = {
-    department: <People />,
-    employees: <Done />,
-    certifications: <Cancel />,
+    primary: <People />,
+    secondary: <Done />,
+    
   };
 
   const labels = {
-    department: 'Total Accounts',
-    employees: 'Active',
-    certifications: 'Inactive',
+    primary: 'Total Aws Accounts',
+    secondary: 'pending Requests',
+    
   };
 
   return <StatisticsCard data={data} icons={icons} labels={labels} />;

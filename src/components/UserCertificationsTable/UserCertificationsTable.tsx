@@ -118,43 +118,36 @@ const UserCertificationsTable: React.FC = () => {
       field: "certificationName",
       headerName: "Certification Name",
       width: isMobile ? 150 : isTablet ? 220 : 290,
-      headerClassName: 'header-cell',
     },
     {
       field: "provider",
       headerName: "Provider",
       width: isMobile ? 80 : isTablet ? 90 : 120,
-      headerClassName: 'header-cell',
     },
     {
       field: "level",
       headerName: "Level",
       width: isMobile ? 100 : isTablet ? 110 : 150,
-      headerClassName: 'header-cell',
     },
     {
       field: "category",
       headerName: "Category",
       width: isMobile ? 120 : isTablet ? 140 : 190,
-      headerClassName: 'header-cell',
     },
     {
       field: "fromDate",
       headerName: "From Date",
       width: isMobile ? 100 : isTablet ? 120 : 140,
-      headerClassName: 'header-cell',
     },
     {
       field: "expiryDate",
       headerName: "Expiry Date",
       width: isMobile ? 80 : isTablet ? 90 : 180,
-      headerClassName: 'header-cell',
     },
     {
       field: "action",
       headerName: "Action",
       width: isMobile ? 80 : isTablet ? 90 : 100,
-      headerClassName: 'header-cell',
       renderCell: (params) => (
         <Button
           onClick={() => handleActionClick(params.row as Row)}
@@ -172,7 +165,7 @@ const UserCertificationsTable: React.FC = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box sx={{ overflow: "hidden", width: "100%" }}>
+      <Box sx={{ overflow: "hidden", width: "100%",margin:1.5}}>
         <Paper
           sx={{
             p: 2,
@@ -281,17 +274,12 @@ const UserCertificationsTable: React.FC = () => {
               </Button>
             </Box>
           ) : (
-            <Box sx={{ height: 300, width: "100%" }}>
+            <Box sx={{ height: 300, width: "100%"}}>
               <DataGrid
                 rows={filteredRows}
                 columns={columns}
                 rowHeight={40}
-                sx={{ 
-                  width: "100%",
-                  '.header-cell': {
-                    fontWeight: 'bold',
-                  },
-                }}
+                sx={{ width: "100%" }}
               />
             </Box>
           )}
@@ -310,13 +298,13 @@ const UserCertificationsTable: React.FC = () => {
               transform: "translate(-50%, -50%)",
               width: isMobile ? "90%" : 500,
               bgcolor: "background.paper",
-              borderRadius: 2,
+              borderRadius: 7,
               boxShadow: 24,
               p: 3,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              borderTop: 8,
+              borderTop: 4,
               borderColor: selectedRow
                 ? getModalBorderColor(selectedRow.level)
                 : "transparent",
