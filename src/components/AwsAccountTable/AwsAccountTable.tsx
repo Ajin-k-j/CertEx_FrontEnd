@@ -95,7 +95,17 @@ const NominationsTable: React.FC = () => {
     {
       field: 'nominationId',
       headerName: 'Nomination ID',
-      width: 130,
+      width: 120,
+      renderCell: (params) => (
+        <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          {params.value}
+        </div>
+      ),
+    },
+    {
+      field: 'certificationName',
+      headerName: 'Certification Name',
+      width: 250,
       renderCell: (params) => (
         <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {params.value}
@@ -133,16 +143,6 @@ const NominationsTable: React.FC = () => {
       ),
     },
     {
-      field: 'certificationName',
-      headerName: 'Certification Name',
-      width: 200,
-      renderCell: (params) => (
-        <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          {params.value}
-        </div>
-      ),
-    },
-    {
       field: 'criticality',
       headerName: 'Criticality',
       width: 130,
@@ -155,7 +155,7 @@ const NominationsTable: React.FC = () => {
     {
       field: 'level',
       headerName: 'Level',
-      width: 130,
+      width: 120,
       renderCell: (params) => (
         <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {params.value}
@@ -165,7 +165,7 @@ const NominationsTable: React.FC = () => {
     {
       field: 'date',
       headerName: 'Nomination Date',
-      width: 150,
+      width: 130,
       renderCell: (params) => (
         <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {params.value}
@@ -305,11 +305,10 @@ const NominationsTable: React.FC = () => {
           {selectedRow && (
             <>
               <Typography id="modal-title" variant="h6" component="h2" gutterBottom>
-                View/Edit Details
+              {selectedRow.employeeName}
               </Typography>
               <Typography id="modal-description" sx={{ mt: 2 }}>
                 <strong>Nomination ID:</strong> {selectedRow.nominationId}<br />
-                <strong>Employee Name:</strong> {selectedRow.employeeName}<br />
                 <strong>Email:</strong> {selectedRow.email}<br />
                 <strong>Department:</strong> {selectedRow.department}<br />
                 <strong>Certification Name:</strong> {selectedRow.certificationName}<br />

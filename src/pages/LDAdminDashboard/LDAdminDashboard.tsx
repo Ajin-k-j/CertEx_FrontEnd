@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import CertificationChartss from '../../components/BarGraph/LDAdminBarGraph/LDAdminBarGraph';
 import DashboardActions from '../../components/DashboardActions/DashboardActions';
 import PendingNominationCard from "../../components/PendingActions/PendingNominationCardList/PendingNominationCardList";
+import LdNominationTable from "../../components/LdNominationTable/LdNominationTable";
+
 
 // import TickPlacementBars from '../../Components/CertificationChart/CertificationChar';
 const LDAdminDashboard = () => {
@@ -24,6 +26,7 @@ const LDAdminDashboard = () => {
   <PendingNominationsTable fetchNominations={fetchPendingNominations} itemsPerPage={3} CardComponent={PendingNominationCard} containerHeight="230px" />
   </div>
   <DashboardActions title="Admin Controls" buttons={ldButtons} />;
+  <LdNominationTable />
   </>
   );
 };

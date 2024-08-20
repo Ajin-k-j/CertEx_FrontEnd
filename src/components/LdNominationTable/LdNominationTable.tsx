@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Box, Modal, Typography, Paper, Button, Select, MenuItem, FormControl, InputLabel, TextField, CircularProgress } from '@mui/material';
+import { Box, Modal, Typography, Paper, Select, MenuItem, FormControl, InputLabel, TextField, CircularProgress } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import ExcelExport from '../ExportButton/ExportButton';
@@ -249,7 +249,7 @@ const LdNominationTable: React.FC = () => {
           // pageSize={5}
           // rowsPerPageOptions={[5, 10, 20]}
           autoHeight
-          disableSelectionOnClick
+          disableRowSelectionOnClick
           getRowId={getRowId}
           onRowClick={(param) => handleOpenModal(param.row)}
         />
