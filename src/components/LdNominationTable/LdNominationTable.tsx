@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Box, Modal, Typography, Paper, Select, MenuItem, FormControl, InputLabel, TextField, CircularProgress } from '@mui/material';
+import { DataGrid, GridColDef, GridEventListener, GridRowParams, GridRowSelectionModel } from '@mui/x-data-grid';
+import { Box, Modal, Typography, Paper, Select, MenuItem, FormControl, InputLabel, TextField, CircularProgress, Button, Accordion, AccordionSummary, AccordionDetails, IconButton, FilledTextFieldProps, OutlinedTextFieldProps, StandardTextFieldProps, TextFieldVariants } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import axios from 'axios';
 import ExcelExport from '../ExportButton/ExportButton';
+import { DatePicker } from '@mui/x-date-pickers';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { parse } from 'date-fns';
+import { enGB } from 'date-fns/locale';
+import { JSX } from 'react/jsx-runtime';
 
+
+// Define the structure of your data rows
 interface RowData {
+  selected: unknown;
   nomination_id: string;
   employeeName: string;
   email: string;
@@ -13,12 +23,12 @@ interface RowData {
   provider: string;
   certificationName: string;
   criticality: string;
-  nominationDate: string;
+  nominationDate: Date | null;
   plannedMonthOfExam: string;
   motivation: string;
   departmentApproval: string;
   lndApproval: string;
-  examDate: string;
+  examDate: Date | null;
   examStatus: string;
   uploadCertificateStatus: string;
   skillMatrixStatus: string;
@@ -28,6 +38,12 @@ interface RowData {
   costOfCertification: number;
 }
 
+// Helper function to parse date strings
+const parseDate = (dateString: string) => {
+  return parse(dateString, 'dd-MM-yyyy', new Date());
+};
+
+// Define columns for DataGrid with specific configurations
 const columns: GridColDef[] = [
   { field: 'nomination_id', headerName: 'Nomination ID', width: 150 },
   { field: 'employeeName', headerName: 'Employee Name', width: 150 },
@@ -36,19 +52,19 @@ const columns: GridColDef[] = [
   { field: 'provider', headerName: 'Provider', width: 150 },
   { field: 'certificationName', headerName: 'Certification Name', width: 200 },
   { field: 'criticality', headerName: 'Criticality', width: 100 },
-  { field: 'nominationDate', headerName: 'Nomination Date', width: 150 },
+  { field: 'nominationDate', headerName: 'Nomination Date', width: 150, type: 'date' },
   { field: 'plannedMonthOfExam', headerName: 'Planned Month of Exam', width: 200 },
   { field: 'motivation', headerName: 'Motivation', width: 200 },
   { field: 'departmentApproval', headerName: 'Department Approval', width: 200 },
   { field: 'lndApproval', headerName: 'L&D Approval', width: 200 },
-  { field: 'examDate', headerName: 'Exam Date', width: 150 },
+  { field: 'examDate', headerName: 'Exam Date', width: 150, type: 'date' },
   { field: 'examStatus', headerName: 'Exam Status', width: 150 },
   { field: 'uploadCertificateStatus', headerName: 'Upload Certificate Status', width: 200 },
   { field: 'skillMatrixStatus', headerName: 'Skill Matrix Status', width: 200 },
   { field: 'reimbursementStatus', headerName: 'Reimbursement Status', width: 200 },
   { field: 'nominationStatus', headerName: 'Nomination Status', width: 150 },
   { field: 'financialYear', headerName: 'Financial Year', width: 150 },
-  { field: 'costOfCertification', headerName: 'Cost of Certification(INR)', width: 150, },
+  // Removed the last column
 ];
 
 const LdNominationTable: React.FC = () => {
@@ -58,12 +74,22 @@ const LdNominationTable: React.FC = () => {
   const [selectedProvider, setSelectedProvider] = useState('');
   const [selectedCriticality, setSelectedCriticality] = useState('');
   const [selectedFinancialYear, setSelectedFinancialYear] = useState('');
+  const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(null);
+  const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
   const [openModal, setOpenModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState<RowData | null>(null);
   const [financialYears, setFinancialYears] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [accordionExpanded, setAccordionExpanded] = useState(false);
+  const [providers, setProviders] = useState<string[]>([]);
+  const [criticalities, setCriticalities] = useState<string[]>([]);
+  const [selectedDepartment, setSelectedDepartment] = useState('');
+  const [departments, setDepartments] = useState<string[]>([]);
+  const [selectionModel, setSelectionModel] = useState<GridRowSelectionModel>([]);
+  // const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
+  // Fetch data from API or local file
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -71,10 +97,28 @@ const LdNominationTable: React.FC = () => {
         const data = response.data;
 
         if (Array.isArray(data)) {
-          setRows(data);
-          setFilteredRows(data);
-          const uniqueFinancialYears = Array.from(new Set(data.map((row: RowData) => row.financialYear)));
+          const parsedData = data.map((row: RowData) => ({
+            ...row,
+            nominationDate: row.nominationDate !== null ? parseDate(row.nominationDate) : null,
+            examDate: row.examDate !== null ? parseDate(row.examDate) : null,
+          }));
+          setRows(parsedData);
+          setFilteredRows(parsedData);
+
+          // Extract unique values for filters
+          const uniqueFinancialYears = Array.from(new Set(parsedData.map((row: RowData) => row.financialYear)));
           setFinancialYears(uniqueFinancialYears);
+
+          const uniqueProviders = Array.from(new Set(parsedData.map((row: RowData) => row.provider)));
+          setProviders(uniqueProviders);
+
+          const uniqueCriticalities = Array.from(new Set(parsedData.map((row: RowData) => row.criticality)));
+          setCriticalities(uniqueCriticalities);
+
+          // Extract unique departments
+          const uniqueDepartments = Array.from(new Set(parsedData.map((row: RowData) => row.department)));
+          setDepartments(uniqueDepartments);
+
         } else {
           throw new Error('Data is not in expected array format');
         }
@@ -89,13 +133,17 @@ const LdNominationTable: React.FC = () => {
     fetchData();
   }, []);
 
+  // Filter rows based on search term and selected filters
   useEffect(() => {
     let filtered = rows;
 
     if (searchTerm) {
       filtered = filtered.filter((row) =>
-        row.employeeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        row.email.toLowerCase().includes(searchTerm.toLowerCase())
+        Object.values(row).some((value) =>
+          value
+            ? value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+            : false
+        )
       );
     }
 
@@ -111,9 +159,22 @@ const LdNominationTable: React.FC = () => {
       filtered = filtered.filter((row) => row.financialYear === selectedFinancialYear);
     }
 
-    setFilteredRows(filtered);
-  }, [searchTerm, selectedProvider, selectedCriticality, selectedFinancialYear, rows]);
+    if (selectedStartDate) {
+      filtered = filtered.filter((row) => row.examDate && row.examDate >= selectedStartDate);
+    }
 
+    if (selectedEndDate) {
+      filtered = filtered.filter((row) => row.examDate && row.examDate <= selectedEndDate);
+    }
+
+    if (selectedDepartment) {
+      filtered = filtered.filter((row) => row.department === selectedDepartment);
+    }
+
+    setFilteredRows(filtered);
+  }, [searchTerm, selectedProvider, selectedCriticality, selectedFinancialYear, selectedStartDate, selectedEndDate, selectedDepartment, rows]);
+
+  // Handle opening and closing the modal
   const handleOpenModal = (row: RowData) => {
     setSelectedRow(row);
     setOpenModal(true);
@@ -124,8 +185,31 @@ const LdNominationTable: React.FC = () => {
     setSelectedRow(null);
   };
 
-  const getRowId = (row: any) => row.nomination_id;
+  // Clear date filters
+  const handleClearDateFilters = () => {
+    setSelectedStartDate(null);
+    setSelectedEndDate(null);
+  };
+  
+  const handleSelectionChange = (newSelectionModel: GridRowSelectionModel) => {
+    setSelectionModel(newSelectionModel);
+  };
 
+  const handleRowClick: GridEventListener<'rowClick'> = (params: GridRowParams, event) => {
+    // Type assertion to ensure `event.target` is an `HTMLElement`
+    const target = event.target as HTMLElement;
+  
+    // Check if the click was on a checkbox or other specific element
+    if (target.closest('.MuiDataGrid-cellCheckbox')) {
+      event.stopPropagation(); // Prevents the modal from opening
+    } else {
+      handleOpenModal(params.row as RowData);
+    }
+  };
+
+  const getRowId = (row: RowData) => row.nomination_id; 
+
+  // Display loading spinner or error message
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
@@ -136,213 +220,263 @@ const LdNominationTable: React.FC = () => {
 
   if (error) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh" p={2} sx={{ backgroundColor: "white" }}>
         <Typography variant="h6" color="error">
-          Error fetching data: {error}
+          {error}
         </Typography>
       </Box>
     );
   }
 
+  function setStartDate(date: Date | null): void {
+    throw new Error('Function not implemented.');
+  }
+
   return (
-    <Box p={2} sx={{backgroundColor:"white"}}>
-      <Box mb={0} display="flex" justifyContent="space-between" flexWrap="wrap" gap={2}>
-        <Typography variant="h5" sx={{ mr: 10 }}>All Nominations</Typography>
-        <TextField
-          label="Search"
-          variant="outlined"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          sx={{ maxWidth: 300, flexGrow: 1, height: '30px' }}
-          InputProps={{ style: { height: '40px'} }}
-        />
-        <FormControl variant="outlined" sx={{ maxWidth: 150, flexGrow: 1, height: '40px' }}>
-          <InputLabel>Provider</InputLabel>
-          <Select
-            value={selectedProvider}
-            onChange={(e) => setSelectedProvider(e.target.value)}
-            label="Provider"
-            sx={{ height: '40px' }}
-            inputProps={{ style: { height: '40px' } }}
-            MenuProps={{
-              PaperProps: {
-                style: {
-                  maxHeight: 200,
-                },
-              },
-            }}
-          >
-            <MenuItem value="">
-              <em>All</em>
-            </MenuItem>
-            {Array.from(new Set(rows.map((row) => row.provider))).map((provider) => (
-              <MenuItem key={provider} value={provider}>
-                {provider}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl variant="outlined" sx={{ maxWidth: 150, flexGrow: 1, height: '50px' }}>
-          <InputLabel>Criticality</InputLabel>
-          <Select
-            value={selectedCriticality}
-            onChange={(e) => setSelectedCriticality(e.target.value)}
-            label="Criticality"
-            sx={{ height: '40px' }}
-            inputProps={{ style: { height: '40px' } }}
-            MenuProps={{
-              PaperProps: {
-                style: {
-                  maxHeight: 200,
-                },
-              },
-            }}
-          >
-            <MenuItem value="">
-              <em>All</em>
-            </MenuItem>
-            {Array.from(new Set(rows.map((row) => row.criticality))).map((criticality) => (
-              <MenuItem key={criticality} value={criticality}>
-                {criticality}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl variant="outlined" sx={{ maxWidth: 150, flexGrow: 1, height: '50px' }}>
-          <InputLabel>Financial Year</InputLabel>
-          <Select
-            value={selectedFinancialYear}
-            onChange={(e) => setSelectedFinancialYear(e.target.value)}
-            label="Financial Year"
-            sx={{ height: '40px' }}
-            inputProps={{ style: { height: '40px' } }}
-            
-             
-            MenuProps={{
-              PaperProps: {
-                style: {
-                  maxHeight: 200,
-                },
-              },
-            }}
-          >
-            <MenuItem value="">
-              <em>All</em>
-            </MenuItem>
-            {financialYears.map((year) => (
-              <MenuItem key={year} value={year}>
-                {year}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Box>
+    <Box p={2} m={1.5} sx={{ backgroundColor: 'white', borderRadius: '8px' }}>
+      <Accordion 
+        expanded={accordionExpanded} 
+        sx={{ width: '100%', border: 'none', boxShadow: 'none' }}
+      >
+<AccordionSummary
+  aria-controls="filter-content"
+  id="filter-header"
+  sx={{
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    border: 'none',
+    boxShadow: 'none',
+    backgroundColor: 'white',
+    padding: 1,
+    cursor: 'default',
+    flexWrap: 'wrap',
+  }}
+>
+  <Typography
+    variant="h5"
+    sx={{
+      flex: 1,
+      minWidth: '150px',
+      textAlign: { xs: 'center', sm: 'left' },
+    }}
+  >
+    All Nominations Data
+  </Typography>
+  <Box
+    display="flex"
+    alignItems="center"
+    sx={{
+      ml: { xs: 0, sm: 1 },
+      flexDirection: { xs: 'column', sm: 'row' },
+      width: 'auto',
+      textAlign: { xs: 'center', sm: 'left' },
+    }}
+  >
+    <TextField
+      label="Search"
+      variant="outlined"
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      sx={{
+        width: { xs: '100%', sm: '200px' },
+        height: '35px',
+        '& .MuiInputBase-input': {
+          height: '10px',
+        },
+      }}
+    />
+    <IconButton
+      onClick={() => setAccordionExpanded(!accordionExpanded)}
+      sx={{
+        ml: { xs: 0, sm: 1 },
+        mt: { xs: 1, sm: 0 },
+      }}
+    >
+      <FilterListIcon />
+    </IconButton>
+    <ExcelExport
+      rows={filteredRows}
+      sx={{
+        mt: { xs: 1, sm: 0 },
+      }}
+    />
+  </Box>
+</AccordionSummary>
 
-      <Box mt={2} display="flex" justifyContent="space-between" flexWrap="wrap" gap={2}>
-        <ExcelExport data={filteredRows} fileName="LdNominationData" />
-      </Box>
 
-      <Paper elevation={3} sx={{ width: '100%', mt: 3 }}>
-        <DataGrid
-          rows={filteredRows}
-          columns={columns}
-          // pageSize={5}
-          // rowsPerPageOptions={[5, 10, 20]}
-          autoHeight
-          disableRowSelectionOnClick
-          getRowId={getRowId}
-          onRowClick={(param) => handleOpenModal(param.row)}
-        />
-      </Paper>
+        <AccordionDetails>
+          <Box 
+            display="flex" 
+            flexDirection="row" 
+            justifyContent="space-between" 
+            flexWrap="wrap"
+            gap={2}
+            sx={{ border: 'none', boxShadow: 'none' }}
+          >
+            <FormControl sx={{ minWidth: 100 }}>
+              <InputLabel>Provider</InputLabel>
+              <Select
+                value={selectedProvider}
+                onChange={(e) => setSelectedProvider(e.target.value as string)}
+                label="Provider"
+              >
+                <MenuItem value="">All</MenuItem>
+                {providers.map((provider) => (
+                  <MenuItem key={provider} value={provider}>
+                    {provider}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-      <Modal open={openModal} onClose={handleCloseModal}>
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: 600,
-            bgcolor: 'background.paper',
-            borderRadius: 1,
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-            <Typography variant="h6" component="h2">
-              Nomination Details
-            </Typography>
-            <CloseIcon onClick={handleCloseModal} sx={{ cursor: 'pointer' }} />
+            <FormControl sx={{ minWidth: 130 }}>
+              <InputLabel>Department</InputLabel>
+              <Select
+                value={selectedDepartment}
+                onChange={(e) => setSelectedDepartment(e.target.value as string)}
+                label="Department"
+              >
+                <MenuItem value="">All</MenuItem>
+                {departments.map((department) => (
+                  <MenuItem key={department} value={department}>
+                    {department}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControl sx={{ minWidth: 120 }}>
+              <InputLabel>Criticality</InputLabel>
+              <Select
+                value={selectedCriticality}
+                onChange={(e) => setSelectedCriticality(e.target.value as string)}
+                label="Criticality"
+              >
+                <MenuItem value="">All</MenuItem>
+                {criticalities.map((criticality) => (
+                  <MenuItem key={criticality} value={criticality}>
+                    {criticality}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl sx={{ minWidth: 150 }}>
+              <InputLabel>Financial Year</InputLabel>
+              <Select
+                value={selectedFinancialYear}
+                onChange={(e) => setSelectedFinancialYear(e.target.value as string)}
+                label="Financial Year"
+              >
+                <MenuItem value="">All</MenuItem>
+                {financialYears.map((year) => (
+                  <MenuItem key={year} value={year}>
+                    {year}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <LocalizationProvider dateAdapter={AdapterDateFns} >
+              <DatePicker
+                label="Start Date"
+                value={selectedStartDate}
+                onChange={(date: Date | null) => setStartDate(date)}
+                renderInput={(params: JSX.IntrinsicAttributes & { variant?: TextFieldVariants | undefined; } & Omit<OutlinedTextFieldProps | FilledTextFieldProps | StandardTextFieldProps, "variant">) => <TextField {...params} />}
+              />
+              <DatePicker
+                label="End Date"
+                value={selectedEndDate}
+                onChange={(date) => setSelectedEndDate(date)}
+                renderInput={(params: JSX.IntrinsicAttributes & { variant?: TextFieldVariants | undefined; } & Omit<OutlinedTextFieldProps | FilledTextFieldProps | StandardTextFieldProps, "variant">) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+            <Button onClick={handleClearDateFilters}>Clear</Button>
           </Box>
-          {selectedRow && (
-            <Box>
-              <Typography variant="body1">
-                <strong>Nomination ID:</strong> {selectedRow.nomination_id || '-'}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Employee Name:</strong> {selectedRow.employeeName || '-'}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Email:</strong> {selectedRow.email || '-'}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Department:</strong> {selectedRow.department || '-'}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Provider:</strong> {selectedRow.provider || '-'}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Certification Name:</strong> {selectedRow.certificationName || '-'}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Criticality:</strong> {selectedRow.criticality || '-'}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Nomination Date:</strong> {selectedRow.nominationDate || '-'}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Planned Month of Exam:</strong> {selectedRow.plannedMonthOfExam || '-'}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Motivation:</strong> {selectedRow.motivation || '-'}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Department Approval:</strong> {selectedRow.departmentApproval || '-'}
-              </Typography>
-              <Typography variant="body1">
-                <strong>L&D Approval:</strong> {selectedRow.lndApproval || '-'}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Exam Date:</strong> {selectedRow.examDate || '-'}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Exam Status:</strong> {selectedRow.examStatus || '-'}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Upload Certificate Status:</strong> {selectedRow.uploadCertificateStatus || '-'}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Skill Matrix Status:</strong> {selectedRow.skillMatrixStatus || '-'}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Reimbursement Status:</strong> {selectedRow.reimbursementStatus || '-'}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Nomination Status:</strong> {selectedRow.nominationStatus || '-'}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Financial Year:</strong> {selectedRow.financialYear || '-'}
-              </Typography>
-              <Typography variant="body1">
-                <strong>Cost of Certification (INR):</strong> {selectedRow.costOfCertification || '-'}
-              </Typography>
-            </Box>
-          )}
-        </Box>
+        </AccordionDetails>
+      </Accordion>
+
+        {/* Render button only when rows are selected */}
+        {selectionModel.length > 0 && (
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ mt: 2,mb:1 }}
+          onClick={() => alert('email is sent')}
+        >
+          Send E-Mail
+        </Button>
+      )}
+      {/* Data table */}
+      <Box sx={{ height: 350, width: '100%' }}>
+      <DataGrid
+        rows={filteredRows}
+        columns={columns}
+        // pageSize={5}
+        // rowsPerPageOptions={[5]}
+        checkboxSelection
+        onRowSelectionModelChange={handleSelectionChange}
+        getRowId={getRowId}
+        onRowClick={handleRowClick}
+      />
+    </Box>
+
+      {/* Modal for row details */}
+      <Modal
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      >
+        <Paper sx={{ width: '80%', maxWidth: 400, margin: 'auto', padding: 2, position: 'relative', maxHeight: '85vh', overflow: 'auto',marginTop:6 }}>
+          <Typography id="modal-title" variant="h6" component="h2">
+            {selectedRow?.certificationName}
+          </Typography>
+          <Typography id="modal-description" sx={{ mt: 1,fontSize:14 }}>
+            <strong>Employee Name:</strong> {selectedRow?.employeeName} <br />
+            <strong>Email:</strong> {selectedRow?.email} <br />
+            <strong>Department:</strong> {selectedRow?.department} <br />
+            <strong>Provider:</strong> {selectedRow?.provider} <br />
+            <strong>Criticality:</strong> {selectedRow?.criticality} <br />
+            <strong>Nomination Date:</strong> {selectedRow?.nominationDate?.toDateString()} <br />
+            <strong>Planned Month of Exam:</strong> {selectedRow?.plannedMonthOfExam} <br />
+            <strong>Motivation:</strong> {selectedRow?.motivation} <br />
+            <strong>Department Approval:</strong> {selectedRow?.departmentApproval} <br />
+            <strong>L&D Approval:</strong> {selectedRow?.lndApproval} <br />
+            <strong>Exam Date:</strong> {selectedRow?.examDate?.toDateString()} <br />
+            <strong>Exam Status:</strong> {selectedRow?.examStatus} <br />
+            <strong>Upload Certificate Status:</strong> {selectedRow?.uploadCertificateStatus} <br />
+            <strong>Skill Matrix Status:</strong> {selectedRow?.skillMatrixStatus} <br />
+            <strong>Reimbursement Status:</strong> {selectedRow?.reimbursementStatus} <br />
+            <strong>Nomination Status:</strong> {selectedRow?.nominationStatus} <br />
+            <strong>Financial Year:</strong> {selectedRow?.financialYear} <br />
+            <strong>Cost of Certification (INR):</strong> {selectedRow?.costOfCertification} <br />
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => window.location.href = `mailto:${selectedRow?.email}`}
+            sx={{ mt: 2 }}
+          >
+            Send Email
+          </Button>
+          <IconButton
+            aria-label="close"
+            onClick={handleCloseModal}
+            sx={{
+              position: 'absolute',
+              top: 8,
+              right: 8,
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </Paper>
       </Modal>
     </Box>
   );
 };
 
 export default LdNominationTable;
+
+
