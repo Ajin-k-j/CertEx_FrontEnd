@@ -178,7 +178,7 @@ const NominationsTable: React.FC = () => {
     <Box sx={{ overflow: 'hidden', width: '98%', margin: 1.5 }}>
       <Paper sx={{ p: 2, mb: 2, display: 'flex', flexDirection: 'column', gap: 2, width: '100%', boxSizing: 'border-box' }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center', width: '100%' }}>
-          <Typography variant="h5">AWS Account Data</Typography>
+          <Typography variant="h5">AWS Nominations Data</Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexDirection: isMobile ? 'column' : 'row' }}>
             <TextField
               size="small"

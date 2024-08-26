@@ -4,7 +4,7 @@ import { DepartmentStatistics } from '../types/DepartmentStatistics.types';
 export const fetchDepartmentStatistics = async (): Promise<DepartmentStatistics> => {
   try {
     const response = await axios.get<DepartmentStatistics>(
-      '../../../public/Data/DepartmentStatistics.json'
+      'https://localhost:7209/api/DepartmentStats/1'
     );
     return response.data;
   } catch (error) {

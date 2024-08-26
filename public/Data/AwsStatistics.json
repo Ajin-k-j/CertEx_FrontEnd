@@ -1,5 +1,4 @@
 {
-    "totalAccounts": 50,
-    "activeAccounts": 30,
-    "inactiveAccounts": 20
+  "totalAwsNominations": 8,
+  "pendingNominations": 1
 }

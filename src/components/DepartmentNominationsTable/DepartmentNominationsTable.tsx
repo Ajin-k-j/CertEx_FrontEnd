@@ -220,8 +220,21 @@ const NominationsTable: React.FC = () => {
                 rowHeight={40} 
                 onRowClick={(params) => handleRowClick(params.row as DepartmentNominationsRow)} 
                 disableColumnMenu
-                // disableExtendRowFullWidth
-/>
+                sx={{
+                  width: "100%",
+                  '& .MuiDataGrid-cell': {
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap' ,
+                    '&[title]': {
+                    pointerEvents: 'none',
+                  }
+                  },
+                  '& .MuiDataGrid-cell:focus': {
+                    outline: 'none'
+                  }
+                }}
+            />
 
           )}
         </Box>

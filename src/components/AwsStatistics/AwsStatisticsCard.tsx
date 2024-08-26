@@ -8,7 +8,6 @@ const AwsStatisticsPage: React.FC = () => {
   const [data, setData] = useState({
     primary: '',
     secondary: 0,
-    
   });
 
   useEffect(() => {
@@ -16,9 +15,8 @@ const AwsStatisticsPage: React.FC = () => {
       try {
         const result: AwsStatistics = await fetchAwsTotalData();
         setData({
-          primary: result.totalAccounts,
-          secondary: result.activeAccounts,
-
+          primary: result.totalAwsNominations.toString(), // Convert to string
+          secondary: result.pendingNominations,
         });
       } catch (error) {
         console.error(error);
@@ -30,13 +28,11 @@ const AwsStatisticsPage: React.FC = () => {
   const icons = {
     primary: <People />,
     secondary: <Done />,
-    
   };
 
   const labels = {
-    primary: 'Total Aws Accounts',
-    secondary: 'pending Requests',
-    
+    primary: 'Total AWS Nominations', 
+    secondary: 'Pending Nominations',
   };
 
   return <StatisticsCard data={data} icons={icons} labels={labels} />;

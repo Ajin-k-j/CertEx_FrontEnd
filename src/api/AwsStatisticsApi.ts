@@ -3,7 +3,7 @@ import { AwsStatistics } from '../types/AwsStatistics.types';
 
 const fetchAwsTotalData = async (): Promise<AwsStatistics> => {
   try {
-    const response = await axios.get<AwsStatistics>('../../public/Data/AwsStatistics.json');
+    const response = await axios.get<AwsStatistics>('https://localhost:7209/api/AwsStats');
     return response.data;
   } catch (error) {
     console.error(error);

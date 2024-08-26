@@ -2,20 +2,20 @@ import axios from 'axios';
 
 // Define the interface for the certification data
 interface Certification {
-  certification_id: number;
-  "Certification Name": string;
-  Provider: string;
-  Level: string;
-  Category: string;
-  "From Date": string;
-  "Expiry Date": string;
+  certificationId: number;
+  certificationName: string;
+  providerName: string;
+  level: string;
+  category: string;
+  fromDate: string;
+  expiryDate: string;
 }
 
 // Define the interface for the rows of the data grid
 export interface Row {
   id: number;
   certificationName: string;
-  provider: string;
+  providerName: string;
   level: string;
   category: string;
   fromDate: string;
@@ -30,13 +30,13 @@ export const fetchCertifications = async (): Promise<Row[]> => {
     );
     const data = response.data.certifications;
     return data.map((item) => ({
-      id: item.certification_id,
-      certificationName: item['Certification Name'],
-      provider: item.Provider,
-      level: item.Level,
-      category: item.Category,
-      fromDate: item['From Date'],
-      expiryDate: item['Expiry Date'],
+      id: item.certificationId,
+      certificationName: item.certificationName,
+      providerName: item.providerName,
+      level: item.level,
+      category: item.category,
+      fromDate: item.fromDate,
+      expiryDate: item.expiryDate,
     }));
   } catch (error) {
     console.error('Error fetching data:', error);

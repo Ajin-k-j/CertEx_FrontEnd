@@ -9,7 +9,6 @@ import { DatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { parse } from 'date-fns';
-import { enGB } from 'date-fns/locale';
 import { JSX } from 'react/jsx-runtime';
 
 
@@ -45,6 +44,7 @@ const parseDate = (dateString: string) => {
 
 // Define columns for DataGrid with specific configurations
 const columns: GridColDef[] = [
+  
   { field: 'nomination_id', headerName: 'Nomination ID', width: 150 },
   { field: 'employeeName', headerName: 'Employee Name', width: 150 },
   { field: 'email', headerName: 'Email', width: 200 },
@@ -418,6 +418,21 @@ const LdNominationTable: React.FC = () => {
         onRowSelectionModelChange={handleSelectionChange}
         getRowId={getRowId}
         onRowClick={handleRowClick}
+        disableRowSelectionOnClick
+        sx={{
+          width: "100%",
+          '& .MuiDataGrid-cell': {
+            overflow: 'hidden',
+            textOverflow: 'ellipsis', 
+            whiteSpace: 'nowrap' ,
+            '&[title]': {
+            pointerEvents: 'none',
+          }
+          },
+          '& .MuiDataGrid-cell:focus': {
+            outline: 'none'
+          }
+        }}
       />
     </Box>
 

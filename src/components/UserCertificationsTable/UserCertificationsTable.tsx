@@ -62,7 +62,7 @@ const UserCertificationsTable: React.FC = () => {
     const lowercasedQuery = searchQuery.toLowerCase();
     const filtered = rows.filter(
       (row) =>
-        (selectedProvider === "" || row.provider === selectedProvider) &&
+        (selectedProvider === "" || row.providerName === selectedProvider) &&
         Object.values(row).some((value) =>
           String(value).toLowerCase().includes(lowercasedQuery)
         )
@@ -120,7 +120,7 @@ const UserCertificationsTable: React.FC = () => {
       width: isMobile ? 150 : isTablet ? 220 : 290,
     },
     {
-      field: "provider",
+      field: "providerName",
       headerName: "Provider",
       width: isMobile ? 80 : isTablet ? 90 : 120,
     },
@@ -165,7 +165,7 @@ const UserCertificationsTable: React.FC = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box sx={{ overflow: "hidden", width: "100%",margin:1.5}}>
+      <Box sx={{ overflow: "hidden", width: "100%", margin: 1.5 }}>
         <Paper
           sx={{
             p: 2,
@@ -183,7 +183,7 @@ const UserCertificationsTable: React.FC = () => {
               justifyContent: "space-between",
               flexDirection: isMobile ? "column" : "row",
               alignItems: isMobile ? "flex-start" : "center",
-              width: "100%", // Ensure the header section is full-width
+              width: "100%",
             }}
           >
             <Typography variant={isMobile ? "h6" : "h5"}>
@@ -196,7 +196,7 @@ const UserCertificationsTable: React.FC = () => {
                 alignItems: "center",
                 gap: isMobile ? 1 : 2,
                 width: isMobile ? "100%" : "auto",
-                justifyContent: "flex-end", // Ensure the search bar and filters align properly
+                justifyContent: "flex-end",
               }}
             >
               <TextField
@@ -222,10 +222,10 @@ const UserCertificationsTable: React.FC = () => {
                   label="Provider"
                 >
                   <MenuItem value="">All</MenuItem>
-                  {Array.from(new Set(rows.map((row) => row.provider))).map(
-                    (provider) => (
-                      <MenuItem key={provider} value={provider}>
-                        {provider}
+                  {Array.from(new Set(rows.map((row) => row.providerName))).map(
+                    (providerName) => (
+                      <MenuItem key={providerName} value={providerName}>
+                        {providerName}
                       </MenuItem>
                     )
                   )}
@@ -274,12 +274,25 @@ const UserCertificationsTable: React.FC = () => {
               </Button>
             </Box>
           ) : (
-            <Box sx={{ height: 300, width: "100%"}}>
+            <Box sx={{ height: 300, width: "100%" }}>
               <DataGrid
                 rows={filteredRows}
                 columns={columns}
                 rowHeight={40}
-                sx={{ width: "100%" }}
+                sx={{
+                  width: "100%",
+                  "& .MuiDataGrid-cell": {
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    "&[title]": {
+                      pointerEvents: "none",
+                    },
+                  },
+                  "& .MuiDataGrid-cell:focus": {
+                    outline: "none",
+                  },
+                }}
               />
             </Box>
           )}
@@ -328,7 +341,7 @@ const UserCertificationsTable: React.FC = () => {
               <strong>Certification Name:</strong>{" "}
               {selectedRow?.certificationName}
               <br />
-              <strong>Provider:</strong> {selectedRow?.provider}
+              <strong>Provider:</strong> {selectedRow?.providerName}
               <br />
               <strong>Level:</strong> {selectedRow?.level}
               <br />
