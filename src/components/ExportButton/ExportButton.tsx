@@ -6,6 +6,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 interface ExcelExportProps {
   data: unknown[];
   fileName: string;
+  sx?: object;
 }
 
 const ExcelExport: React.FC<ExcelExportProps> = ({ data, fileName }) => {

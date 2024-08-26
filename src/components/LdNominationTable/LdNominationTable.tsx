@@ -12,6 +12,7 @@ import { parse } from 'date-fns';
 import { JSX } from 'react/jsx-runtime';
 
 
+
 // Define the structure of your data rows
 interface RowData {
   selected: unknown;
@@ -87,7 +88,17 @@ const LdNominationTable: React.FC = () => {
   const [selectedDepartment, setSelectedDepartment] = useState('');
   const [departments, setDepartments] = useState<string[]>([]);
   const [selectionModel, setSelectionModel] = useState<GridRowSelectionModel>([]);
-  // const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+  // function to add date in the filename of excel file
+  const getCurrentDateString = () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based, so add 1
+    const day = String(date.getDate()).padStart(2, '0');
+  
+    return `${year}-${month}-${day}`;
+  };
+  
 
   // Fetch data from API or local file
   useEffect(() => {
@@ -99,8 +110,8 @@ const LdNominationTable: React.FC = () => {
         if (Array.isArray(data)) {
           const parsedData = data.map((row: RowData) => ({
             ...row,
-            nominationDate: row.nominationDate !== null ? parseDate(row.nominationDate) : null,
-            examDate: row.examDate !== null ? parseDate(row.examDate) : null,
+            nominationDate: typeof row.nominationDate === 'string' ? parseDate(row.nominationDate) : row.nominationDate,
+            examDate: typeof row.examDate === 'string' ? parseDate(row.examDate) : row.examDate,
           }));
           setRows(parsedData);
           setFilteredRows(parsedData);
@@ -228,6 +239,8 @@ const LdNominationTable: React.FC = () => {
     );
   }
 
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function setStartDate(date: Date | null): void {
     throw new Error('Function not implemented.');
   }
@@ -297,7 +310,8 @@ const LdNominationTable: React.FC = () => {
       <FilterListIcon />
     </IconButton>
     <ExcelExport
-      rows={filteredRows}
+      data={filteredRows}
+      fileName={`Nomination_Data_${getCurrentDateString()}`}
       sx={{
         mt: { xs: 1, sm: 0 },
       }}
