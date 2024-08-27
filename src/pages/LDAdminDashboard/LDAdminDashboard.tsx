@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import PendingNominationsTable from "../../components/PendingActions/PendingActionsTable/PendingActionsTable";
 import { fetchPendingNominations } from '../../api/PendingActionTableAPI';
-import CertificationChartss from '../../components/LDAdminBarGraph/LDAdminBarGraph';
+import CertificationChartss from '../../components/BarGraph/LDAdminBarGraph/LDAdminBarGraph';
 import DashboardActions from '../../components/DashboardActions/DashboardActions';
 import PendingNominationCard from "../../components/PendingActions/PendingNominationCardList/PendingNominationCardList";
 import CertificationManagementPage from '../../components/AllCertificationsAdmin/AllCertificationsManagement';
@@ -39,17 +39,17 @@ const LDAdminDashboard = () => {
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+      <div style={{ display: 'flex'}}>
         <CertificationChartss />
         <PendingNominationsTable
           fetchNominations={fetchPendingNominations}
           itemsPerPage={3}
           CardComponent={PendingNominationCard}
-          containerHeight="230px"
-          containerWidth="455vw"
+          containerHeight="70vh"
+          containerWidth="100vw"
         />
       </div>
-      <DashboardActions title="Admin Controls" buttons={ldButtons} />
+      <DashboardActions buttons={ldButtons} />
       
       {openCertificationModal && (
         <CertificationManagementPage

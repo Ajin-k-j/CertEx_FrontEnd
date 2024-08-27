@@ -1,12 +1,15 @@
-import AwsStatisticsCard from "../../components/AwsStatistics/AwsStatisticsCard"
-import AWSAdminBarGraph from "../../components/AWSAdminBarGraph/AWSAdminBarGraph"
 
+import AWSAdminBarGraph from "../../components/BarGraph/AWSAdminBarGraph/AWSAdminBarGraph"
+import { fetchPendingNominations } from "../../api/PendingActionTableAPI"
+
+import PendingNominationsTable from "../../components/PendingActions/PendingActionsTable/PendingActionsTable"
+import PendingNominationCard from "../../components/PendingActions/PendingNominationCardList/PendingNominationCardList"
 
 const AwsAdminDashboard = () => {
   return (
     <div>
        <AWSAdminBarGraph />
-       <AwsStatisticsCard />
+       <PendingNominationsTable fetchNominations={fetchPendingNominations} itemsPerPage={3} CardComponent={PendingNominationCard} containerHeight="250px" containerWidth="600px" />
     </div>
   )
 }

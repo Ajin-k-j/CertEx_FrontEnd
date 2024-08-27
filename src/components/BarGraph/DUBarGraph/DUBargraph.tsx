@@ -1,220 +1,181 @@
 import React, { useState, useEffect } from 'react';
-import Stack from '@mui/material/Stack';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
-import { fetchCertificationData } from '../../../api/BarGraphApi';
-import { fetchProviders } from '../../../api/FetchProviderApi';
-import { Box, Typography } from '@mui/material';
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { fetchFinancialYears } from '../../../api/FetchFinancialYearApi'; 
+import { Select, MenuItem, FormControl, InputLabel, Grid, Paper, Box, Typography } from '@mui/material';
 import ReusableBarChart from '../ReusableBarChart/ReusableBarChart';
+import { fetchDuBarGraphData, fetchFinancialYears, fetchCertificationProviders } from '../../../api/BarGraphApi/BarGraphApi';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
-type CertificationData = {
-  [key: string]: {
-    [key: string]: {
-      [key: string]: number[];
-    };
-  };
-};
+const DuBarGraph: React.FC = () => {
+  const [financialYearId, setFinancialYearId] = useState<number>(0);
+  const [providerId, setProviderId] = useState<number>(0);
 
-const months = [
-  'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'
-];
+  const [financialYears, setFinancialYears] = useState<{ id: number; label: string }[]>([]);
+  const [providers, setProviders] = useState<{ id: number; label: string }[]>([]);
 
-const DUBarGraph: React.FC = () => {
-  const [certificationData, setCertificationData] = useState<CertificationData>({});
-  const [year, setYear] = useState<string>('All');
-  const [provider, setProvider] = useState<string>('All');
-  const [providerOptions, setProviderOptions] = useState<string[]>([]);
-  const [data, setData] = useState<number[]>([]);
+  const [chartData, setChartData] = useState<{ month: string; value: number }[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<boolean>(false);
   const [noData, setNoData] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
-  const [yearOptions, setYearOptions] = useState<string[]>(['All']);
-  const du = "DU1";
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+
+  const months = [
+    'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december', 'january', 'february', 'march',
+  ];
+
+  const monthAbbreviations: { [key: string]: string } = {
+    january: 'Jan',
+    february: 'Feb',
+    march: 'Mar',
+    april: 'Apr',
+    may: 'May',
+    june: 'Jun',
+    july: 'Jul',
+    august: 'Aug',
+    september: 'Sep',
+    october: 'Oct',
+    november: 'Nov',
+    december: 'Dec',
+  };
 
   useEffect(() => {
-    const loadDropdownData = async () => {
+    const fetchDropdownData = async () => {
       try {
-        const financialYears = await fetchFinancialYears();
-        const formattedYears = financialYears.map(
-          (fy: { from_date: string; to_date: string }) =>
-            `${fy.from_date}-${fy.to_date}`
-        );
-        setYearOptions(['All', ...formattedYears]);
+        const fetchedFinancialYears = await fetchFinancialYears();
+        setFinancialYears([{ id: 0, label: 'All' }, ...fetchedFinancialYears]);
 
-        const [providerData] = await Promise.all([fetchProviders()]);
-        if (Array.isArray(providerData)) {
-          setProviderOptions(['All', ...providerData]);
+        const fetchedProviders = await fetchCertificationProviders();
+        setProviders([{ id: 0, label: 'All' }, ...fetchedProviders]);
+      } catch (error) {
+        console.log(error)
+        setError(true);
+      }
+    };
+
+    fetchDropdownData();
+  }, []);
+
+  useEffect(() => {
+    const fetchChartData = async () => {
+      setLoading(true);
+      setError(false);
+      setNoData(false);
+
+      try {
+        const data = await fetchDuBarGraphData(financialYearId, providerId);
+        
+        if (Object.keys(data).length === 0) {
+          setNoData(true);
+        } else {
+          const formattedData = months.map((month) => ({
+            month: monthAbbreviations[month.toLowerCase()],
+            value: data[month.toLowerCase()] || 0,
+          }));
+          setChartData(formattedData);
         }
-
-        const data = await fetchCertificationData();
-        setCertificationData(data as CertificationData);
-      } catch (err) {
-        console.log(err)
-        setError('Failed to fetch dropdown data.');
+      } catch (error) {
+        console.log(error)
+        setError(true);
       } finally {
         setLoading(false);
       }
     };
 
-    loadDropdownData();
-  }, []);
-
-  useEffect(() => {
-    if (loading || error) return;
-
-    const yearData = certificationData[year];
-    if (!yearData || !yearData[du]) {
-      setData([]);
-      setNoData(true);
-      return;
-    }
-
-    const duData = yearData[du];
-    const providerData = duData?.[provider];
-    if (Array.isArray(providerData) && providerData.length > 0) {
-      setData(providerData);
-      setNoData(false);
-    } else {
-      setData([]);
-      setNoData(true);
-    }
-  }, [certificationData, year, provider, loading, error]);
-
-  const dataset = data.map((value, index) => ({
-    month: months[index] || `M${index + 1}`,
-    value,
-  }));
-
-
-  const handleYearChange = (event: SelectChangeEvent<string>) => {
-    const selectedYear = event.target.value;
-    setYear(selectedYear);
-  
-    if (!certificationData[selectedYear] || !certificationData[selectedYear][du]) {
-      setNoData(true);
-
-    } else {
-      setNoData(false);
-
-    }
-  };
-  
-
-  const handleProviderChange = (event: SelectChangeEvent<string>) => {
-    setProvider(event.target.value);
-  };
+    fetchChartData();
+  }, [financialYearId, providerId]);
 
   return (
-    <Stack
-      direction="column"
-      spacing={2}
-      sx={{
-        width: isMobile ? '90%' : isTablet ? '70%' : '49%',
-        backgroundColor: 'white',
-        borderRadius: '20px',
-        padding: isMobile ? '2vh' : '4vh 2vh 2vh 2vh',
-        marginLeft: isMobile ? '2vh' : '2vh',
-        marginBottom: isMobile ? '2vh' : '3vh',
-        height: isMobile ? 'auto' : '40vh',
-        justifyContent: 'flex-end',
-      }}
-    > 
-      {!loading && (
-      <Stack
-        direction={isMobile ? 'column' : 'row'}
-        spacing={2}
-        justifyContent="right"
+    <Grid container justifyContent="left" sx={{ padding: 2 }}>
+      <Paper
+        sx={{
+          width: { xs: '100%', md: '100%', lg: '47%' },
+          height:{xs: '37vh', md: '35vh', lg: '50vh'},
+          padding: 2,
+          backgroundColor: 'white',
+        }}
+        elevation={3}
       >
-        <FormControl sx={{ minWidth: isMobile ? 120 : 120 }}>
-          <InputLabel>Financial Year</InputLabel>
-          <Select
-            value={year}
-            onChange={handleYearChange}
-            label="Year"
-            sx={{ height: isMobile ? '7vh' : '5vh', fontSize: '2vh' }}
-          >
-            {yearOptions.map((yearOption) => (
-              <MenuItem key={yearOption} value={yearOption}>
-                {yearOption}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <FormControl sx={{ minWidth: isMobile ? 120 : 120 }}>
-          <InputLabel>Provider</InputLabel>
-          <Select
-            value={provider}
-            onChange={handleProviderChange}
-            label="Provider"
-            sx={{
-              height: isMobile ? '7vh' : '5vh',
-              fontSize: '2vh',
-              marginRight: isMobile ? 0 : '2vh',
-            }}
-          >
-            {providerOptions.length > 0 ? (
-              providerOptions.map((providerOption) => (
-                <MenuItem key={providerOption} value={providerOption}>
-                  {providerOption}
-                </MenuItem>
-              ))
+        <Grid container spacing={2} justifyContent="center" paddingRight={{ md: '2vw' }}>
+          <Grid item xs={12} md={6} lg={3}>
+            <FormControl fullWidth size="small" sx={{ marginLeft: { xs: 0, md: 1, lg: 4 } }}>
+              <InputLabel sx={{ fontSize: { xs: '12px', md: '14px', lg: '16px' }, backgroundColor: 'white', padding: '3px' }}>
+                Financial Year
+              </InputLabel>
+              <Select
+                value={financialYearId}
+                onChange={(e) => setFinancialYearId(Number(e.target.value))}
+                sx={{ fontSize: { xs: '12px', md: '14px', lg: '16px' } }}
+              >
+                {financialYears.map((year) => (
+                  <MenuItem key={year.id} value={year.id}>
+                    {year.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <FormControl fullWidth size="small" sx={{ marginLeft: { xs: 0, md: 1, lg: 4 } }}>
+              <InputLabel sx={{ fontSize: { xs: '12px', md: '14px', lg: '16px' }, backgroundColor: 'white', padding: '3px' }}>
+                Provider
+              </InputLabel>
+              <Select
+                value={providerId}
+                onChange={(e) => setProviderId(Number(e.target.value))}
+                sx={{ fontSize: { xs: '12px', md: '14px', lg: '16px' } }}
+              >
+                {providers.map((provider) => (
+                  <MenuItem key={provider.id} value={provider.id}>
+                    {provider.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            {loading ? (
+              <Typography variant="body1">Loading...</Typography>
+            ) : error ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  p: '1.6rem',
+                  backgroundColor: '#f9f9f9',
+                  borderRadius: '8px',
+                  height: '30vh'
+                }}
+              >
+                <InfoOutlinedIcon sx={{ height: '17vh', fontSize: '2rem', color: '#757575' }} />
+                <Typography variant="body1" sx={{ mt: '.5vh', mb: '.2rem', textAlign: 'center' }}>
+                  Something went wrong while fetching.
+                </Typography>
+              </Box>
+            ) : noData ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  p: '1.6rem',
+                  backgroundColor: '#f9f9f9',
+                  borderRadius: '8px',
+                  height: '30vh'
+                }}
+              >
+                <InfoOutlinedIcon sx={{ height: '17vh', fontSize: '2rem', color: '#757575' }} />
+                <Typography variant="body1" sx={{ mt: '.5vh', mb: '.2rem', textAlign: 'center' }}>
+                  No Certification completed yet.
+                </Typography>
+              </Box>
             ) : (
-              <MenuItem disabled>No Providers available</MenuItem> 
+              <div style={{ height: '300px' }}>
+                <ReusableBarChart data={chartData} isMobile={window.innerWidth <= 768} />
+              </div>
             )}
-          </Select>
-        </FormControl>
-      </Stack>
-      )}
-
-      {loading ? (
-        <div>Loading...</div>
-      ) : error ? (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            p: '1.6rem',
-            backgroundColor: '#f9f9f9',
-            borderRadius: '8px',
-          }}
-        >
-          <InfoOutlinedIcon sx={{ height: '17vh', fontSize: '2rem', color: '#757575' }} />
-          <Typography variant="body1" sx={{ mt: '.5vh', mb: '.2rem', textAlign: 'center' }}>
-            Something went wrong while fetching.
-          </Typography>
-        </Box>
-      ) : noData ? (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            p: '1.6rem',
-            backgroundColor: '#f9f9f9',
-            borderRadius: '8px',
-          }}
-        >
-          <InfoOutlinedIcon sx={{ height: '17vh', fontSize: '2rem', color: '#757575' }} />
-          <Typography variant="body1" sx={{ mt: '.5vh', mb: '.2rem', textAlign: 'center' }}>
-            No Certification completed yet.
-          </Typography>
-        </Box>
-      ) : (
-        <ReusableBarChart data={dataset} isMobile={isMobile} />
-      )}
-    </Stack>
+          </Grid>
+        </Grid>
+      </Paper>
+    </Grid>
   );
 };
 
-export default DUBarGraph;
+export default DuBarGraph;
