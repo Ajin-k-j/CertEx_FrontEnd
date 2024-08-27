@@ -15,11 +15,11 @@ const DashboardActions: React.FC<DashboardActionsProps> = ({  buttons }) => {
     <Box
       sx={{
         backgroundColor: '#ffffff',
-        borderRadius: { xs: '3vh', sm: '4vh', md: '5vh' },
+        borderRadius: { xs: '1vh', sm: '1vh', md: '1vh' },
         padding: { xs: '2vh', sm: '3vh', md: '3vh' },
         textAlign: 'center',
-        maxWidth: { xs: '100%', sm: '80%', md: '46vw' },
-        margin: { xs: '0 auto', sm: '.8vw', md: '0.8vw' },
+        maxWidth: { xs: '100%', sm: '80%', md: '48vw' },
+        margin: { xs: '0 auto', sm: '.8vw', md: '0.7vw' },
       }}
     >
       <Typography
@@ -50,7 +50,7 @@ const DashboardActions: React.FC<DashboardActionsProps> = ({  buttons }) => {
             onClick={button.onClick}
             sx={{
               backgroundColor: '#6C63FF',
-              borderRadius: '5vh',
+              borderRadius: '1vh',
               textTransform: 'none',
               fontWeight: 'bold',
               lineHeight:'2.5vh',
