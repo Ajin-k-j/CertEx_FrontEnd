@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid, GridColDef, GridEventListener, GridRowParams, GridRowSelectionModel } from '@mui/x-data-grid';
-import { Box, Modal, Typography, Paper, Select, MenuItem, FormControl, InputLabel, TextField, CircularProgress, Button, Accordion, AccordionSummary, AccordionDetails, IconButton, FilledTextFieldProps, OutlinedTextFieldProps, StandardTextFieldProps, TextFieldVariants } from '@mui/material';
+import { Box, Modal, Typography, Paper, Select, MenuItem, FormControl, InputLabel, TextField, CircularProgress, Button, Accordion, AccordionSummary, AccordionDetails, IconButton} from '@mui/material';
+// import {FilledTextFieldProps, OutlinedTextFieldProps, StandardTextFieldProps, TextFieldVariants } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import axios from 'axios';
 import ExcelExport from '../ExportButton/ExportButton';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+// import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { parse } from 'date-fns';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { JSX } from 'react/jsx-runtime';
 
 
@@ -391,7 +393,7 @@ const LdNominationTable: React.FC = () => {
                 ))}
               </Select>
             </FormControl>
-            <LocalizationProvider dateAdapter={AdapterDateFns} >
+            {/* <LocalizationProvider dateAdapter={AdapterDateFns} >
               <DatePicker
                 label="Start Date"
                 value={selectedStartDate}
@@ -404,7 +406,7 @@ const LdNominationTable: React.FC = () => {
                 onChange={(date) => setSelectedEndDate(date)}
                 renderInput={(params: JSX.IntrinsicAttributes & { variant?: TextFieldVariants | undefined; } & Omit<OutlinedTextFieldProps | FilledTextFieldProps | StandardTextFieldProps, "variant">) => <TextField {...params} />}
               />
-            </LocalizationProvider>
+            </LocalizationProvider> */}
             <Button onClick={handleClearDateFilters}>Clear</Button>
           </Box>
         </AccordionDetails>

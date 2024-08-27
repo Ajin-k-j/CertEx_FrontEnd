@@ -6,6 +6,7 @@ import CertificationChartss from '../../components/LDAdminBarGraph/LDAdminBarGra
 import DashboardActions from '../../components/DashboardActions/DashboardActions';
 import PendingNominationCard from "../../components/PendingActions/PendingNominationCardList/PendingNominationCardList";
 import CertificationManagementPage from '../../components/AllCertificationsAdmin/AllCertificationsManagement';
+import LdNominationTable from '../../components/LdNominationTable/LdNominationTable';
 
 
 
@@ -60,6 +61,7 @@ const LDAdminDashboard = () => {
           onClose={handleCloseModal}
         />
       )}
+      <LdNominationTable />
     </>
   );
 };
