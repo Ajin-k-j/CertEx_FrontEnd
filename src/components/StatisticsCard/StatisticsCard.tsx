@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography, CircularProgress } from '@mui/material';
 
 interface StatisticsCardProps {
   data: {
@@ -17,10 +17,11 @@ interface StatisticsCardProps {
     secondary?: string;
     tertiary?: string;
   };
+  loading?: boolean;
 }
 
-const StatisticsCard: React.FC<StatisticsCardProps> = ({ data, icons, labels }) => {
-  const isEmpty = Object.values(data).every(value => value === '' || value === 0);
+const StatisticsCard: React.FC<StatisticsCardProps> = ({ data, icons, labels, loading = false }) => {
+  const isEmpty = Object.values(data).every((value) => value === '' || value === 0);
 
   return (
     <Box
@@ -41,10 +42,14 @@ const StatisticsCard: React.FC<StatisticsCardProps> = ({ data, icons, labels }) 
         },
         height: 'auto',
         textAlign: 'center',
-        marginLeft:1.5,
+        marginLeft: 1.5,
       }}
     >
-      {isEmpty ? (
+      {loading ? (
+        <Box display="flex" justifyContent="center" alignItems="center" height="100px">
+          <CircularProgress />
+        </Box>
+      ) : isEmpty ? (
         <Typography variant="h6" sx={{ color: '#808080' }}>
           No data available.
         </Typography>
@@ -55,7 +60,7 @@ const StatisticsCard: React.FC<StatisticsCardProps> = ({ data, icons, labels }) 
               <Box
                 sx={{
                   display: 'flex',
-                  flexDirection: 'row', 
+                  flexDirection: 'row',
                   alignItems: 'center',
                   justifyContent: 'flex-start',
                 }}

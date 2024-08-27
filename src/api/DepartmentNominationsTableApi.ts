@@ -1,13 +1,18 @@
 // api/fetchNominations.ts
 import axios from 'axios';
-import { DepartmentNominationsRow } from '../types/DepartmentNominationsTable.types';
+import { NominationRow } from '../types/DepartmentNominationsTable.types';
 
-export const fetchNominations = async (): Promise<DepartmentNominationsRow[]> => {
+// Define the API URL
+const API_URL = 'https://localhost:7209/api/DepartmentNominations/1';
+
+export const fetchNominations = async (): Promise<NominationRow[]> => {
   try {
-    const response = await axios.get('../../../public/Data/DepartmentNominationsData.json');
+    // Make the GET request to the API endpoint
+    const response = await axios.get<NominationRow[]>(API_URL);
     return response.data;
   } catch (error) {
     console.error('Error fetching data', error);
+    // Rethrow the error to be handled by the caller
     throw error;
   }
 };

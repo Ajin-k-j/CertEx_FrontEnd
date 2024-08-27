@@ -1,15 +1,13 @@
 // types/NominationRow.ts
-export interface DepartmentNominationsRow {
+export interface NominationRow {
     
-    id: number;
-    employeeName: string;
-    email: string;
-    provider: string;
-    certificationName: string;
-    criticality: string;
-    plannedMonthOfExam: string;
-    status: string;
-    motivation?: string;
-    cost?: string;
-  }
-  
+  nominationId: number;
+  employeeName: string;
+  email: string;
+  provider: string;
+  certificationName: string;
+  level?: string;
+  plannedMonthOfExam: string;
+  status: string;
+  motivationDescription?: string;
+}

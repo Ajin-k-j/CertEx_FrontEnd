@@ -42,12 +42,25 @@ const UserCertificationsTable: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
   useEffect(() => {
     const loadCertifications = async () => {
       try {
         const data = await fetchCertifications();
-        setRows(data);
-        setFilteredRows(data);
+        const formattedData = data.map(row => ({
+          ...row,
+          fromDate: formatDate(row.fromDate),
+          expiryDate: formatDate(row.expiryDate),
+        }));
+        setRows(formattedData);
+        setFilteredRows(formattedData);
       } catch {
         setError("Failed to load data");
       } finally {

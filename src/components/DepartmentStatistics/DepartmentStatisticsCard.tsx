@@ -3,6 +3,7 @@ import { fetchDepartmentStatistics } from '../../api/DepartmentStatisticsApi';
 import { DepartmentStatistics } from '../../types/DepartmentStatistics.types';
 import StatisticsCard from '../../components/StatisticsCard/StatisticsCard';
 import { Work, Group, Badge } from '@mui/icons-material';
+import { CircularProgress, Box } from '@mui/material';
 
 const DepartmentStatisticsPage: React.FC = () => {
   const [data, setData] = useState<DepartmentStatistics>({
@@ -10,6 +11,7 @@ const DepartmentStatisticsPage: React.FC = () => {
     employees: 0,
     certifications: 0,
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
@@ -18,6 +20,8 @@ const DepartmentStatisticsPage: React.FC = () => {
         setData(fetchedData);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false); // Set loading to false after data is fetched
       }
     };
     loadData();
@@ -41,7 +45,17 @@ const DepartmentStatisticsPage: React.FC = () => {
     tertiary: 'Certifications',
   };
 
-  return <StatisticsCard data={mappedData} icons={icons} labels={labels} />;
+  return (
+    <div>
+      {loading ? (
+        <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+          <CircularProgress />
+        </Box>
+      ) : (
+        <StatisticsCard data={mappedData} icons={icons} labels={labels} />
+      )}
+    </div>
+  );
 };
 
 export default DepartmentStatisticsPage;

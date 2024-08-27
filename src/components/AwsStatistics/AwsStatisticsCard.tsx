@@ -3,12 +3,14 @@ import StatisticsCard from '../StatisticsCard/StatisticsCard';
 import { People, Done } from '@mui/icons-material';
 import fetchAwsTotalData from '../../api/AwsStatisticsApi';
 import { AwsStatistics } from '../../types/AwsStatistics.types';
+import { CircularProgress, Box } from '@mui/material';
 
 const AwsStatisticsPage: React.FC = () => {
   const [data, setData] = useState({
     primary: '',
     secondary: 0,
   });
+  const [loading, setLoading] = useState(true); // Loading state
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,6 +22,8 @@ const AwsStatisticsPage: React.FC = () => {
         });
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false); // Set loading to false after data is fetched
       }
     };
     fetchData();
@@ -35,7 +39,17 @@ const AwsStatisticsPage: React.FC = () => {
     secondary: 'Pending Nominations',
   };
 
-  return <StatisticsCard data={data} icons={icons} labels={labels} />;
+  return (
+    <div>
+      {loading ? (
+        <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+          <CircularProgress />
+        </Box>
+      ) : (
+        <StatisticsCard data={data} icons={icons} labels={labels} />
+      )}
+    </div>
+  );
 };
 
 export default AwsStatisticsPage;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchNominations } from '../../api/DepartmentNominationsTableApi';
-import {DepartmentNominationsRow } from '../../types/DepartmentNominationsTable.types';
+import { NominationRow } from '../../types/DepartmentNominationsTable.types';
 import {
   DataGrid,
   GridColDef
@@ -27,12 +27,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 const NominationsTable: React.FC = () => {
-  const [rows, setRows] = useState<DepartmentNominationsRow[]>([]);
-  const [filteredRows, setFilteredRows] = useState<DepartmentNominationsRow[]>([]);
+  const [rows, setRows] = useState<NominationRow[]>([]);
+  const [filteredRows, setFilteredRows] = useState<NominationRow[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedProvider, setSelectedProvider] = useState<string>('');
-  const [selectedCriticality, setSelectedCriticality] = useState<string>('');
-  const [selectedRow, setSelectedRow] = useState<DepartmentNominationsRow | null>(null);
+  const [selectedLevel, setSelectedLevel] = useState<string>(''); // Updated state
+  const [selectedRow, setSelectedRow] = useState<NominationRow | null>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
@@ -50,8 +50,7 @@ const NominationsTable: React.FC = () => {
           setRows(data);
           setFilteredRows(data);
         }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (error) {
+      } catch {
         setError(true);
       } finally {
         setLoading(false);
@@ -66,13 +65,13 @@ const NominationsTable: React.FC = () => {
     const filtered = rows.filter(
       (row) =>
         (selectedProvider === '' || row.provider === selectedProvider) &&
-        (selectedCriticality === '' || row.criticality === selectedCriticality) &&
+        (selectedLevel === '' || row.level === selectedLevel) && // Filtering by level
         Object.values(row).some((value) =>
           String(value).toLowerCase().includes(lowercasedQuery)
         )
     );
     setFilteredRows(filtered);
-  }, [searchQuery, selectedProvider, selectedCriticality, rows]);
+  }, [searchQuery, selectedProvider, selectedLevel, rows]); // Include selectedLevel in dependencies
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -82,11 +81,7 @@ const NominationsTable: React.FC = () => {
     setSelectedProvider(event.target.value);
   };
 
-  const handleCriticalityChange = (event: SelectChangeEvent<string>) => {
-    setSelectedCriticality(event.target.value);
-  };
-
-  const handleRowClick = (row: DepartmentNominationsRow) => {
+  const handleRowClick = (row: NominationRow) => {
     setSelectedRow(row);
     setOpenModal(true);
   };
@@ -96,7 +91,7 @@ const NominationsTable: React.FC = () => {
   };
 
   const getStatusColor = (status: string) => {
-    return status === 'Approved' ? 'green' : 'red';
+    return status === 'Accepting' ? 'green' : 'red';
   };
 
   const columns: GridColDef[] = [
@@ -104,7 +99,7 @@ const NominationsTable: React.FC = () => {
     { field: 'email', headerName: 'Email', width: 180 },
     { field: 'provider', headerName: 'Provider', width: 130 },
     { field: 'certificationName', headerName: 'Certification Name', width: 200 },
-    { field: 'criticality', headerName: 'Criticality', width: 150 },
+    { field: 'level', headerName: 'Level', width: 150 }, // New column for level
     { field: 'plannedMonthOfExam', headerName: 'Planned Month of Exam', width: 200 },
     {
       field: 'status',
@@ -157,12 +152,12 @@ const NominationsTable: React.FC = () => {
               </Select>
             </FormControl>
             <FormControl size="small" sx={{ width: isMobile ? '100%' : 200 }}>
-              <InputLabel>Criticality</InputLabel>
-              <Select value={selectedCriticality} onChange={handleCriticalityChange} label="Criticality">
+              <InputLabel>Level</InputLabel>
+              <Select value={selectedLevel} onChange={(e) => setSelectedLevel(e.target.value)} label="Level">
                 <MenuItem value="">All</MenuItem>
-                {Array.from(new Set(rows.map((row) => row.criticality))).map((criticality) => (
-                  <MenuItem key={criticality} value={criticality}>
-                    {criticality}
+                {Array.from(new Set(rows.map((row) => row.level))).map((level) => (
+                  <MenuItem key={level} value={level}>
+                    {level}
                   </MenuItem>
                 ))}
               </Select>
@@ -218,24 +213,24 @@ const NominationsTable: React.FC = () => {
                 rows={filteredRows} 
                 columns={columns} 
                 rowHeight={40} 
-                onRowClick={(params) => handleRowClick(params.row as DepartmentNominationsRow)} 
+                onRowClick={(params) => handleRowClick(params.row as NominationRow)} 
                 disableColumnMenu
+                getRowId={(row) => row.nominationId} 
                 sx={{
                   width: "100%",
                   '& .MuiDataGrid-cell': {
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap' ,
+                    whiteSpace: 'nowrap',
                     '&[title]': {
-                    pointerEvents: 'none',
-                  }
+                      pointerEvents: 'none',
+                    }
                   },
                   '& .MuiDataGrid-cell:focus': {
-                    outline: 'none'
+                    outline: 'none',
                   }
                 }}
             />
-
           )}
         </Box>
       </Paper>
@@ -274,11 +269,10 @@ const NominationsTable: React.FC = () => {
                 <strong>Email:</strong> {selectedRow.email}<br />
                 <strong>Certification Name:</strong> {selectedRow.certificationName}<br />
                 <strong>Provider:</strong> {selectedRow.provider}<br />
-                <strong>Criticality:</strong> {selectedRow.criticality}<br />
+                <strong>Level:</strong> {selectedRow.level || 'N/A'}<br />
                 <strong>Planned Month of Exam:</strong> {selectedRow.plannedMonthOfExam}<br />
                 <strong>Status:</strong> {selectedRow.status}<br />
-                <strong>Motivation:</strong> {selectedRow.motivation}<br />
-                <strong>Cost for Certification (INR):</strong> {selectedRow.cost}
+                <strong>Motivation:</strong> {selectedRow.motivationDescription || 'N/A'}
               </Typography>
               <Button variant="contained" color="primary" onClick={handleCloseModal} fullWidth>
                 Close
