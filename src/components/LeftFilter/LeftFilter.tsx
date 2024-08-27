@@ -1,7 +1,18 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, CircularProgress } from "@mui/material";
 import CheckboxFilter from "../CheckboxFilter/CheckboxFilter";
+import { fetchProviders } from "../../api/FetchProviderApi";
+import { fetchCategories } from "../../api/FetchCategoriesApi";
+
+interface Provider {
+  id: string;
+  providerName: string;
+}
+
+interface Category {
+  id: string;
+  categoryTagName: string;
+}
 
 interface LeftFilterProps {
   selectedProviders: string[];
@@ -18,58 +29,58 @@ const LeftFilter: React.FC<LeftFilterProps> = ({
   setSelectedCategories,
   clearAllFilters,
 }) => {
-  const [providers, setProviders] = useState<string[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
+  const [providers, setProviders] = useState<Provider[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loadingProviders, setLoadingProviders] = useState(true);
+  const [loadingCategories, setLoadingCategories] = useState(true);
 
   useEffect(() => {
-    const fetchProviders = async () => {
+    const getData = async () => {
       try {
-        const response = await axios.get<string[]>("http://localhost:5000/providers");
-        setProviders(response.data);
+        setLoadingProviders(true);
+        const providerData = await fetchProviders();
+        setProviders(providerData);
+        setLoadingProviders(false);
+
+        setLoadingCategories(true);
+        const categoryData = await fetchCategories();
+        setCategories(categoryData);
+        setLoadingCategories(false);
       } catch (error) {
-        console.error("Error fetching providers:", error);
+        console.error("Error fetching providers/categories:", error);
+        setLoadingProviders(false);
+        setLoadingCategories(false);
       }
     };
 
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get<string[]>("http://localhost:5000/categories");
-        setCategories(response.data);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
-    fetchProviders();
-    fetchCategories();
+    getData();
   }, []);
 
   const handleClearAll = () => {
     setSelectedProviders([]);
     setSelectedCategories([]);
-    clearAllFilters(); // Clear top filters
+    clearAllFilters();
   };
 
   return (
     <Box
       sx={{
-        backgroundColor: "#ffffff", // Set background color to white
+        backgroundColor: "#ffffff",
         padding: 2,
-        paddingBottom:1,
-        paddingLeft:3,
-        paddingRight: 3, 
-        borderRadius: 1, // Optional: Add rounded corners
-        height: "auto", // Ensure it takes full height of the parent container
+        paddingBottom: 1,
+        paddingLeft: 3,
+        paddingRight: 3,
+        borderRadius: 1,
+        height: "auto",
       }}
     >
-      
-        <Box
+      <Box
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
         alignItems="center"
-        >
-        <Typography variant="h6" component="div" style={{ display: "inline" }}>
+      >
+        <Typography variant="h6" component="div">
           Filters
         </Typography>
         <Typography
@@ -84,25 +95,47 @@ const LeftFilter: React.FC<LeftFilterProps> = ({
         >
           Clear All
         </Typography>
-        </Box>
-      
+      </Box>
+
       <div>
         <h4>Providers</h4>
-        <CheckboxFilter
-          items={providers}
-          selectedItems={selectedProviders}
-          setSelectedItems={setSelectedProviders}
-          placeholder="Search Providers"
-        />
+        {loadingProviders ? (
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            height={100}
+          >
+            <CircularProgress size={50} color="primary" />
+          </Box>
+        ) : (
+          <CheckboxFilter
+            items={providers.map((provider) => provider.providerName)}
+            selectedItems={selectedProviders}
+            setSelectedItems={setSelectedProviders}
+            placeholder="Search Providers"
+          />
+        )}
       </div>
       <div>
         <h4>Categories</h4>
-        <CheckboxFilter
-          items={categories}
-          selectedItems={selectedCategories}
-          setSelectedItems={setSelectedCategories}
-          placeholder="Search Categories"
-        />
+        {loadingCategories ? (
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            height={100}
+          >
+            <CircularProgress size={50} color="primary" />
+          </Box>
+        ) : (
+          <CheckboxFilter
+            items={categories.map((category) => category.categoryTagName)}
+            selectedItems={selectedCategories}
+            setSelectedItems={setSelectedCategories}
+            placeholder="Search Categories"
+          />
+        )}
       </div>
     </Box>
   );

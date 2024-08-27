@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchCertifications } from "../../api/AllCertificationsApi";
 import { Box, Typography } from "@mui/material";
 import { InfoOutlined } from "@mui/icons-material";
+import { ThreeDots } from 'react-loader-spinner'; // Import professional spinner
 import styles from "./AllCertifications.module.css";
 import CertificationCard from "../../components/CertificationCard/CertificationCard";
 import FilterChips from "../../components/FilterChipsBox/FilterChips";
@@ -12,6 +13,9 @@ import CertificationCardViewModal from "../../components/CertificationCardViewMo
 import NominationFormModal from "../../components/NominationFormModal/NominationFormModal";
 import { SortOption, CertificationLevel, CertificationData } from "../../types/AllCertifications.types";
 
+const CACHE_KEY = 'certifications_data';
+const CACHE_EXPIRY = 1000 * 60 * 5; // 5 minutes
+
 const AllCertifications: React.FC = () => {
   const [data, setData] = useState<CertificationData[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,6 +23,7 @@ const AllCertifications: React.FC = () => {
   const [sortOption, setSortOption] = useState<SortOption>("latest");
   const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
 
   // State to manage modals visibility and content
   const [viewModalOpen, setViewModalOpen] = useState(false);
@@ -26,16 +31,34 @@ const AllCertifications: React.FC = () => {
   const [selectedCertification, setSelectedCertification] = useState<CertificationData | null>(null);
 
   useEffect(() => {
-    const getData = async () => {
+    const fetchData = async () => {
       try {
-        const certifications = await fetchCertifications();
-        setData(certifications);
+        const cachedData = localStorage.getItem(CACHE_KEY);
+        const cacheTime = localStorage.getItem(CACHE_KEY + '_time');
+        const currentTime = new Date().getTime();
+
+        if (cachedData && cacheTime && (currentTime - parseInt(cacheTime) < CACHE_EXPIRY)) {
+          setData(JSON.parse(cachedData));
+        } else {
+          const certifications = await fetchCertifications();
+          setData(certifications);
+          localStorage.setItem(CACHE_KEY, JSON.stringify(certifications));
+          localStorage.setItem(CACHE_KEY + '_time', currentTime.toString());
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    getData();
+    fetchData();
+
+    const interval = setInterval(() => {
+      fetchData();
+    }, CACHE_EXPIRY);
+
+    return () => clearInterval(interval);
   }, []);
 
   const filteredData = useFilterCertifications({
@@ -77,25 +100,21 @@ const AllCertifications: React.FC = () => {
     setSelectedCategories([]);
   };
 
-  // Function to handle card click
   const handleCardClick = (certification: CertificationData) => {
     setSelectedCertification(certification);
     setViewModalOpen(true);
   };
 
-  // Function to close the view modal
   const handleCloseViewModal = () => {
     setViewModalOpen(false);
     setSelectedCertification(null);
   };
 
-  // Function to handle nomination button click
   const handleNominateClick = () => {
-    setViewModalOpen(false); // Close the view modal
-    setNominationModalOpen(true); // Open the nomination modal
+    setViewModalOpen(false);
+    setNominationModalOpen(true);
   };
 
-  // Function to close the nomination modal
   const handleCloseNominationModal = () => {
     setNominationModalOpen(false);
   };
@@ -121,9 +140,7 @@ const AllCertifications: React.FC = () => {
           setSortOption={setSortOption}
         />
 
-        {/* Cards Display Section */}
         <div className={styles.CardsSection}>
-          {/* FilterChips Component */}
           <div className={styles.FilterChipsDisplay}>
             <FilterChips
               searchQuery={searchQuery}
@@ -134,7 +151,24 @@ const AllCertifications: React.FC = () => {
               removeFilter={removeFilter}
             />
           </div>
-          {filteredData.length === 0 ? (
+          {loading ? (
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+              height="100vh"
+              textAlign="center"
+              bgcolor="white"
+              p={3}
+              position="fixed"
+              width="100%"
+              top={0}
+              left={0}
+            >
+              <ThreeDots color="#1976d2" height={80} width={80} />
+            </Box>
+          ) : filteredData.length === 0 ? (
             <Box
               display="flex"
               flexDirection="column"
@@ -172,32 +206,32 @@ const AllCertifications: React.FC = () => {
         </div>
       </div>
 
-      {/* CertificationCardViewModal Component */}
       {selectedCertification && (
         <CertificationCardViewModal
           open={viewModalOpen}
           onClose={handleCloseViewModal}
-          certificationName={selectedCertification.certification_name}
-          provider={selectedCertification.provider}
+          certificationName={selectedCertification.certificationName}
+          providerName={selectedCertification.providerName}
           level={selectedCertification.level as CertificationLevel}
           description={selectedCertification.description}
           tags={selectedCertification.tags}
-          officialLink={selectedCertification.official_link}
-          nominationOpenDate={selectedCertification.nomination_open_date} 
-          nominationCloseDate={selectedCertification.nomination_close_date} 
+          officialLink={selectedCertification.officialLink}
+          nominationStatus={selectedCertification.nominationStatus}
+          nominationOpenDate={selectedCertification.nominationOpenDate} 
+          nominationCloseDate={selectedCertification.nominationCloseDate} 
           onNominate={handleNominateClick}
         />
       )}
 
-      {/* NominationFormModal Component */}
       {selectedCertification && (
         <NominationFormModal
           open={nominationModalOpen}
           onClose={handleCloseNominationModal}
           id={selectedCertification.id}
-          certificationName={selectedCertification.certification_name}
-          nomination_open_date={selectedCertification.nomination_open_date} 
-          nomination_close_date={selectedCertification.nomination_close_date} 
+          certificationName={selectedCertification.certificationName}
+          nominationOpenDate={selectedCertification.nominationOpenDate} 
+          nominationCloseDate={selectedCertification.nominationCloseDate} 
+          nominationStatus={selectedCertification.nominationStatus}
         />
       )}
     </div>

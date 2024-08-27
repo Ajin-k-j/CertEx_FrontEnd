@@ -2,22 +2,22 @@ import React from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { CertificationLevel } from "../../types/AllCertifications.types";
+
 
 interface CertificationCardProps {
   id: number;
-  provider: string;
-  certification_name: string;
-  level: CertificationLevel;
+  providerName: string;
+  certificationName: string;
+  level: string;
   description: string;
   tags: string[];
-  official_link: string;
+  officialLink: string;
   onClick: () => void;  // Function to handle click event
 }
 
 const CertificationCard: React.FC<CertificationCardProps> = ({
-  provider,
-  certification_name,
+  providerName,
+  certificationName,
   level,
   description,
   tags,
@@ -57,10 +57,10 @@ const CertificationCard: React.FC<CertificationCardProps> = ({
     >
       <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
         <Typography sx={{ fontSize: 11 }} color="text.secondary" gutterBottom>
-          {provider}
+          {providerName}
         </Typography>
         <Typography sx={{ fontSize: 15 }} variant="h5" component="div">
-          {certification_name}
+          {certificationName}
         </Typography>
         <Typography
           sx={{ mb: 0.5, mt: 0.5, fontSize: 12, color: borderColor }}

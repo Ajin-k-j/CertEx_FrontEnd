@@ -20,14 +20,16 @@ interface PendingNominationsTableProps {
   fetchNominations: () => Promise<Nomination[]>;
   itemsPerPage?: number;
   containerHeight?: string | number;
-  CardComponent: React.FC<{ nomination: Nomination }>; // New prop to accept card component
+  containerWidth?: string | number; // New prop for container width
+  CardComponent: React.FC<{ nomination: Nomination }>;
 }
 
 const PendingNominationsTable: React.FC<PendingNominationsTableProps> = ({
   fetchNominations,
   itemsPerPage = 3,
   containerHeight = 'auto',
-  CardComponent, // Accept card component as a prop
+  containerWidth = 'auto', // Set default value for width
+  CardComponent,
 }) => {
   const [nominations, setNominations] = useState<Nomination[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
@@ -62,8 +64,8 @@ const PendingNominationsTable: React.FC<PendingNominationsTableProps> = ({
   return (
     <Box
       sx={{
-        maxWidth: '44vw',
-        minWidth: 'auto',
+        maxWidth: '100%',
+        width: containerWidth, // Use the containerWidth prop
         minHeight: '100px',
         height: containerHeight,
         mt: 1.5,
@@ -71,7 +73,7 @@ const PendingNominationsTable: React.FC<PendingNominationsTableProps> = ({
         borderRadius: 2,
         boxShadow: 1,
         p: 0.8,
-        m:1,
+        m: 1,
         overflow: 'hidden',
         position: 'relative',
       }}
@@ -101,7 +103,7 @@ const PendingNominationsTable: React.FC<PendingNominationsTableProps> = ({
         sx={{
           backgroundColor: 'white',
           borderRadius: 2,
-          p: .6,
+          p: 0.6,
           pt: 1,
           height: 'calc(100% - 75px)',
           border: '1px solid grey',
@@ -140,7 +142,7 @@ const PendingNominationsTable: React.FC<PendingNominationsTableProps> = ({
               height: '100%',
             }}
           >
-            <InfoOutlinedIcon sx={{ fontSize: 25, mb: .3, color: 'grey' }} />
+            <InfoOutlinedIcon sx={{ fontSize: 25, mb: 0.3, color: 'grey' }} />
             <Typography variant="body1" color="textSecondary">
               No pending actions available.
             </Typography>

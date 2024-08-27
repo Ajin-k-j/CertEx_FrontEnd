@@ -28,7 +28,7 @@ const useFilterCertifications = ({
 
     if (searchQuery) {
       result = result.filter(item =>
-        item.certification_name.toLowerCase().includes(searchQuery.toLowerCase())
+        item.certificationName.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
@@ -37,7 +37,7 @@ const useFilterCertifications = ({
     }
 
     if (selectedProviders.length > 0) {
-      result = result.filter(item => selectedProviders.includes(item.provider));
+      result = result.filter(item => selectedProviders.includes(item.providerName));
     }
 
     if (selectedCategories.length > 0) {
@@ -58,12 +58,12 @@ const useFilterCertifications = ({
         break;
       case "A-Z":
         result = result.sort((a, b) =>
-          a.certification_name.localeCompare(b.certification_name)
+          a.certificationName.localeCompare(b.certificationName)
         );
         break;
       case "Z-A":
         result = result.sort((a, b) =>
-          b.certification_name.localeCompare(a.certification_name)
+          b.certificationName.localeCompare(a.certificationName)
         );
         break;
     }
