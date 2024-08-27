@@ -9,6 +9,7 @@ import DepartmentAdminDashboard from './pages/DepartmentAdminDashboard/Departmen
 import LDAdminDashboard from './pages/LDAdminDashboard/LDAdminDashboard';
 import AWSAdminDashboard from './pages/AwsAdminDashboard/AwsAdminDashboard';
 import MessagePage from './pages/APIMessagePage/MessagePage';
+import CertificationManagementModal from './components/AllCertificationsAdmin/AllCertificationsManagement';
 const App: React.FC = () => {
   return (
     <Router>
@@ -19,6 +20,7 @@ const App: React.FC = () => {
         <Route path="/department" element={<DepartmentAdminDashboard />} />
         <Route path="/ld-admin" element={<LDAdminDashboard />} />
         <Route path="/aws-admin" element={<AWSAdminDashboard />} />
+        <Route path="/cm" element={<CertificationManagementModal />} />
         <Route path="/message" element={<MessagePage message="Default message" success={true} />} />
       </Routes>
       <Footer/>

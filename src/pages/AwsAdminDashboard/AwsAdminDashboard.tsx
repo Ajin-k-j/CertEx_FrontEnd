@@ -1,5 +1,5 @@
 import AwsStatisticsCard from "../../components/AwsStatistics/AwsStatisticsCard"
-import AWSAdminBarGraph from "../../components/BarGraph/AWSAdminBarGraph/AWSAdminBarGraph"
+import AWSAdminBarGraph from "../../components/AWSAdminBarGraph/AWSAdminBarGraph"
 
 
 const AwsAdminDashboard = () => {

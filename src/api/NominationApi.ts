@@ -1,11 +1,5 @@
 import apiClient from "./BaseApi";
-
-export interface NominationData {
-  certification_id: number;
-  planned_exam_month: string;
-  motivation_description: string;
-  employee_id: number;
-}
+import { NominationData } from "../types/NominationForm.types";
 
 export const fetchFinancialYear = async () => {
   try {
@@ -13,15 +7,15 @@ export const fetchFinancialYear = async () => {
     return response.data[0] || null;
   } catch (error) {
     console.error("Error fetching financial year:", error);
-    throw error;
+    throw new Error("Failed to fetch financial year. Please try again later.");
   }
 };
 
 export const submitNomination = async (newNomination: NominationData) => {
   try {
-    await apiClient.post("/nominations", newNomination);
+    await apiClient.post("/Nomination", newNomination);
   } catch (error) {
     console.error("Error submitting nomination:", error);
-    throw error;
+    throw new Error("Failed to submit nomination. Please try again later.");
   }
 };

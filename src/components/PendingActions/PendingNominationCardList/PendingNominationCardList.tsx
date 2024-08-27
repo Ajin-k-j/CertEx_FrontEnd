@@ -31,20 +31,24 @@ const PendingNominationCard: React.FC<PendingNominationCardProps> = ({ nominatio
 
   return (
     <>
-      <Card variant="outlined" sx={{ borderRadius: '8px', backgroundColor: 'white', width:'40vw'}}>
+      <Card variant="outlined" sx={{ borderRadius: '8px', backgroundColor: 'white', }}>
         <CardContent sx={{ padding: '8px !important' }}>
-          <Grid container spacing={1.4} alignItems="center"  wrap="nowrap">
-            <Grid item xs={5.5}>
+          <Grid container spacing={1.8} alignItems="center"  wrap="nowrap">
+            <Grid item xs={4}>
               <Typography variant="subtitle2" sx={{ marginRight: '8px' }} noWrap>
                 {nomination.title}
               </Typography>
             </Grid>
             <Grid item xs={1}>
-              <Typography variant="body2" color="textSecondary" fontWeight="bold" noWrap>
+              <Typography variant="body2" sx={{ marginRight: '5px' }} color="textSecondary" fontWeight="bold" noWrap>
                 {nomination.department}
               </Typography>
             </Grid>
-            
+            <Grid item xs={2}>
+              <Typography variant="body2" noWrap>
+                {nomination.provider}
+              </Typography>
+            </Grid>
             <Grid item xs={2}>
               <Typography variant="body2" color="error" noWrap>
                 {nomination.criticality}
