@@ -7,7 +7,7 @@
     "certificationName": "Cyber Security",
     "level": "Intermediate",
     "plannedMonthOfExam": "July",
-    "status": "Approved",
+    "status": "Accepting",
     "motivationDescription": "To enhance data analysis skills"
   },
   {
@@ -29,7 +29,7 @@
     "certificationName": "Solutions Architect",
     "level": "Expert",
     "plannedMonthOfExam": "September",
-    "status": "Approved",
+    "status": "Accepting",
     "motivationDescription": "To enhance data analysis skills"
   },
   {
@@ -51,7 +51,7 @@
     "certificationName": "DevOps Engineer",
     "level": "Intermediate",
     "plannedMonthOfExam": "November",
-    "status": "Approved",
+    "status": "Accepting",
     "motivationDescription": "To enhance data analysis skills"
   },
   {
@@ -62,7 +62,7 @@
     "certificationName": "Networking Specialist",
     "level": "Intermediate",
     "plannedMonthOfExam": "December",
-    "status": "Approved",
+    "status": "Accepting",
     "motivationDescription": "To enhance data analysis skills"
   },
   {
@@ -84,7 +84,7 @@
     "certificationName": "Cloud Developer",
     "level": "Intermediate",
     "plannedMonthOfExam": "February",
-    "status": "Approved",
+    "status": "Accepting",
     "motivationDescription": "To enhance data analysis skills"
   },
   {
@@ -106,7 +106,7 @@
     "certificationName": "Security Specialist",
     "level": "Beginner",
     "plannedMonthOfExam": "April",
-    "status": "Approved",
+    "status": "Accepting",
     "motivationDescription": "To enhance data analysis skills"
   }
 ]

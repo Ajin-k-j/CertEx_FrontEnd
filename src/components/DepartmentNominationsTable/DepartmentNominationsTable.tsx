@@ -16,7 +16,6 @@ import {
   Typography,
   Paper,
   Modal,
-  Button,
   IconButton,
   CircularProgress,
   useMediaQuery,
@@ -99,7 +98,7 @@ const NominationsTable: React.FC = () => {
     { field: 'email', headerName: 'Email', width: 180 },
     { field: 'provider', headerName: 'Provider', width: 130 },
     { field: 'certificationName', headerName: 'Certification Name', width: 200 },
-    { field: 'level', headerName: 'Level', width: 150 }, // New column for level
+    { field: 'level', headerName: 'Level', width: 150 }, 
     { field: 'plannedMonthOfExam', headerName: 'Planned Month of Exam', width: 200 },
     {
       field: 'status',
@@ -185,6 +184,7 @@ const NominationsTable: React.FC = () => {
                 p: '1.6rem',
                 backgroundColor: '#f9f9f9',
                 borderRadius: '8px',
+                height:'40vh'
               }}
             >
               <InfoOutlinedIcon sx={{ height: '17vh', fontSize: '2rem', color: '#757575' }} />
@@ -274,9 +274,6 @@ const NominationsTable: React.FC = () => {
                 <strong>Status:</strong> {selectedRow.status}<br />
                 <strong>Motivation:</strong> {selectedRow.motivationDescription || 'N/A'}
               </Typography>
-              <Button variant="contained" color="primary" onClick={handleCloseModal} fullWidth>
-                Close
-              </Button>
             </>
           )}
         </Box>

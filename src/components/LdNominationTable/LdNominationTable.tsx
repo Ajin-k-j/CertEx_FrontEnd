@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import axios from 'axios';
 import ExcelExport from '../ExportButton/ExportButton';
-import { DatePicker } from '@mui/x-date-pickers';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { parse } from 'date-fns';
@@ -241,7 +241,7 @@ const LdNominationTable: React.FC = () => {
 
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function setStartDate(date: Date | null): void {
+  function setStartDate(_date: Date | null): void {
     throw new Error('Function not implemented.');
   }
 
@@ -450,7 +450,7 @@ const LdNominationTable: React.FC = () => {
       />
     </Box>
 
-      {/* Modal for row details */}
+      
       <Modal
         open={openModal}
         onClose={handleCloseModal}

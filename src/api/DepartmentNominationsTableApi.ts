@@ -1,6 +1,7 @@
 // api/fetchNominations.ts
 import axios from 'axios';
 import { NominationRow } from '../types/DepartmentNominationsTable.types';
+// sample api : '../../public/Data/DepartmentNominationsData.json'
 
 // Define the API URL
 const API_URL = 'https://localhost:7209/api/DepartmentNominations/1';
