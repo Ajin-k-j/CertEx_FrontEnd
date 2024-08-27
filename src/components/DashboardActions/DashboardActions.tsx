@@ -7,20 +7,19 @@ interface ButtonConfig {
 }
 
 interface DashboardActionsProps {
-  title: string;
   buttons: ButtonConfig[];
 }
 
-const DashboardActions: React.FC<DashboardActionsProps> = ({ title, buttons }) => {
+const DashboardActions: React.FC<DashboardActionsProps> = ({  buttons }) => {
   return (
     <Box
       sx={{
         backgroundColor: '#ffffff',
-        borderRadius: { xs: '3vh', sm: '4vh', md: '5vh' },
-        padding: { xs: '2vh', sm: '3vh', md: '4vh' },
+        borderRadius: { xs: '1vh', sm: '1vh', md: '1vh' },
+        padding: { xs: '2vh', sm: '3vh', md: '3vh' },
         textAlign: 'center',
-        maxWidth: { xs: '100%', sm: '80%', md: '600px' },
-        margin: { xs: '0 auto', sm: '.8vw', md: '0.8vw' },
+        maxWidth: { xs: '100%', sm: '80%', md: '48vw' },
+        margin: { xs: '0 auto', sm: '.8vw', md: '0.7vw' },
       }}
     >
       <Typography
@@ -32,14 +31,15 @@ const DashboardActions: React.FC<DashboardActionsProps> = ({ title, buttons }) =
           fontSize: { xs: '2vh', sm: '2.5vh', md: '3vh' },
         }}
       >
-        {title}
+   
       </Typography>
       <Box
         sx={{
+          width: '46vw',
           display: 'flex',
           flexWrap: 'wrap',
           justifyContent: 'center',
-          gap: { xs: '8px', sm: '10px', md: '20px' },
+          gap: { xs: '8px', sm: '8px', md: '10px' },
         }}
       >
         {buttons.map((button, index) => (
@@ -50,13 +50,13 @@ const DashboardActions: React.FC<DashboardActionsProps> = ({ title, buttons }) =
             onClick={button.onClick}
             sx={{
               backgroundColor: '#6C63FF',
-              borderRadius: '5vh',
+              borderRadius: '1vh',
               textTransform: 'none',
               fontWeight: 'bold',
               lineHeight:'2.5vh',
               width: { xs: '80%', sm: '30%', md: '31%' }, // Adjusted width to fit 3 in a row
               height: { xs: '6vh', sm: '7vh', md: '6vh' },
-              fontSize: { xs: '1.7vh', sm: '1.8vh', md: '2vh' }, // Slightly reduced font size for better fit
+              fontSize: { xs: '1.7vh', sm: '1.8vh', md: '1.8vh' }, // Slightly reduced font size for better fit
               '&:hover': {
                 backgroundColor: '#574bff',
               },

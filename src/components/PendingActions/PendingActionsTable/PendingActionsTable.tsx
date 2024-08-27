@@ -3,6 +3,8 @@ import { Box, Grid, Typography, IconButton, CircularProgress } from '@mui/materi
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import PendingNominationModal from '../PendingActionsModal/PendingActionsModal';
+import PendingNominationCard from '../PendingNominationCardList/PendingNominationCardList';
 
 interface Nomination {
   id: number;
@@ -26,14 +28,16 @@ interface PendingNominationsTableProps {
 
 const PendingNominationsTable: React.FC<PendingNominationsTableProps> = ({
   fetchNominations,
-  itemsPerPage = 3,
   containerHeight = 'auto',
   containerWidth = 'auto', // Set default value for width
-  CardComponent,
 }) => {
   const [nominations, setNominations] = useState<Nomination[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
+  const [selectedNomination, setSelectedNomination] = useState<Nomination | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  const itemsPerPage = 3;
 
   useEffect(() => {
     const loadNominations = async () => {
@@ -46,14 +50,22 @@ const PendingNominationsTable: React.FC<PendingNominationsTableProps> = ({
     loadNominations();
   }, [fetchNominations]);
 
+  const handleViewApproveClick = (nomination: Nomination) => {
+    setSelectedNomination(nomination);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedNomination(null);
+  };
+
   const handlePreviousPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
   };
 
   const handleNextPage = () => {
-    setCurrentPage((prevPage) =>
-      Math.min(prevPage + 1, Math.ceil(nominations.length / itemsPerPage) - 1)
-    );
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, Math.ceil(nominations.length / itemsPerPage) - 1));
   };
 
   const displayedNominations = nominations.slice(
@@ -78,7 +90,7 @@ const PendingNominationsTable: React.FC<PendingNominationsTableProps> = ({
         position: 'relative',
       }}
     >
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1, ml: 1 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
         <Typography variant="h6">
           Pending Actions ({nominations.length})
         </Typography>
@@ -101,12 +113,11 @@ const PendingNominationsTable: React.FC<PendingNominationsTableProps> = ({
       </Box>
       <Box
         sx={{
-          backgroundColor: 'white',
+          backgroundColor: nominations.length > 0 ? '#f0f0f0' : '#f5f5f5',
           borderRadius: 2,
           p: 0.6,
           pt: 1,
-          height: 'calc(100% - 75px)',
-          border: '1px solid grey',
+          height: '160px',
         }}
       >
         {isLoading ? (
@@ -125,10 +136,10 @@ const PendingNominationsTable: React.FC<PendingNominationsTableProps> = ({
             </Typography>
           </Box>
         ) : nominations.length > 0 ? (
-          <Grid container direction="column" spacing={1}>
+          <Grid container direction="column"  spacing={1}>
             {displayedNominations.map((nomination) => (
               <Grid item key={nomination.id}>
-                <CardComponent nomination={nomination} />
+                <PendingNominationCard nomination={nomination} onViewApproveClick={handleViewApproveClick} />
               </Grid>
             ))}
           </Grid>
@@ -149,6 +160,13 @@ const PendingNominationsTable: React.FC<PendingNominationsTableProps> = ({
           </Box>
         )}
       </Box>
+      {selectedNomination && (
+        <PendingNominationModal
+          nomination={selectedNomination}
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+        />
+      )}
     </Box>
   );
 };

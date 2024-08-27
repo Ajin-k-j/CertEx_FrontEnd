@@ -23,7 +23,7 @@ const CustomTooltip: React.FC<TooltipProps<number, string>> = ({ active, payload
         style={{
           backgroundColor: 'white',
           padding: '10px',
-          borderRadius: '5px',
+          borderRadius: '10px',
           boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.1)',
         }}
       >
@@ -58,13 +58,19 @@ const CustomBackground = (props: {
 
 const ReusableBarChart: React.FC<ReusableBarChartProps> = ({ data, isMobile }) => {
   return (
-    <ResponsiveContainer width="100%" height={isMobile ? 200 : '100%'}>
+    <ResponsiveContainer width="100%" height={isMobile ? 200 : '80%'}>
       <BarChart
         data={data}
-        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+        margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+        barGap={60}
       >
         <XAxis dataKey="month" axisLine={false} tickLine={false} />
-        <YAxis axisLine={false} tickLine={false} />
+        <YAxis
+          axisLine={false}
+          tickLine={false}
+          tickFormatter={(tick) => String(tick)}  // Convert the tick value to a string
+          allowDecimals={false}  // Ensure only integer values
+        />
         <Tooltip
           content={<CustomTooltip />}
           cursor={{ fill: 'transparent' }} // Removes the gray background on hover
