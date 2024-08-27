@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -10,15 +11,16 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { submitNomination } from "../../api/NominationApi";
 import { showToast } from "../../utils/toastUtils";
-import {NominationData} from "../../types/NominationForm.types"
+import { NominationData } from "../../types/NominationForm.types";
 
 interface NominationFormModalProps {
   open: boolean;
   onClose: () => void;
   id: number;
   certificationName: string;
-  nomination_open_date: string; 
-  nomination_close_date: string; 
+  nominationOpenDate: string; 
+  nominationCloseDate: string; 
+  nominationStatus: string;
 }
 
 const NominationFormModal: React.FC<NominationFormModalProps> = ({
@@ -26,10 +28,12 @@ const NominationFormModal: React.FC<NominationFormModalProps> = ({
   onClose,
   id,
   certificationName,
-  nomination_open_date,
-  nomination_close_date,
+  nominationStatus,
+  nominationOpenDate,
+  nominationCloseDate,
 }) => {
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const initialValues = {
     plannedExamMonth: "",
@@ -43,33 +47,44 @@ const NominationFormModal: React.FC<NominationFormModalProps> = ({
 
   const handleSubmit = async (values: typeof initialValues) => {
     try {
-      const getEmployeeId = () => 123;
+      setIsSubmitting(true); // Set submitting state to true
+      const getEmployeeId = () => 2; // Replace with actual logic to get employee ID
 
       const newNomination: NominationData = {
-        certification_id: id,
-        planned_exam_month: values.plannedExamMonth,
-        motivation_description: values.motivation,
-        employee_id: getEmployeeId(),
+        certificationId: id,
+        plannedExamMonth: values.plannedExamMonth,
+        motivationDescription: values.motivation,
+        employeeId: getEmployeeId(),
+        createdBy: getEmployeeId().toString(),
+        updatedBy: getEmployeeId().toString(),
       };
 
       await submitNomination(newNomination);
       showToast("Nomination submitted successfully!", "success");
-      navigate("/user-dashboard");
+      navigate("/dashboard");
       onClose();
-    } catch {
-      showToast("Failed to submit nomination.", "error");
+    } catch (error: unknown) {
+      // Handle error and show toast message
+      const errorMessage = error instanceof Error ? error.message : "Failed to submit nomination.";
+      showToast(errorMessage, "error");
+    } finally {
+      setIsSubmitting(false); // Reset submitting state
     }
   };
 
   const minDate = new Date(
-    Math.max(new Date(nomination_open_date).getTime(), new Date().setDate(1))
+    Math.max(new Date(nominationOpenDate).getTime(), new Date().setDate(1))
   )
     .toISOString()
     .slice(0, 7);
 
-  const maxDate = new Date(nomination_close_date)
+  const maxDate = new Date(nominationCloseDate)
     .toISOString()
     .slice(0, 7);
+
+  const isNominationOpen = nominationStatus === "Accepting";
+  const isNominationClosed = nominationStatus === "Not Accepting";
+  const isAlwaysAccepting = nominationStatus === "Always Accepting";
 
   return (
     <Dialog
@@ -111,11 +126,18 @@ const NominationFormModal: React.FC<NominationFormModalProps> = ({
                 fullWidth
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
-                InputProps={{ inputProps: { min: minDate, max: maxDate } }}
+                InputProps={{ 
+                  inputProps: {
+                    min: isNominationOpen || isAlwaysAccepting ? minDate : "",
+                    max: isNominationOpen ? maxDate : "",
+                    disabled: isNominationClosed,
+                  } 
+                }}
                 value={values.plannedExamMonth}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 margin="dense"
+                disabled={isNominationClosed}
               />
               <ErrorMessage name="plannedExamMonth">
                 {msg => <Typography color="error">{msg}</Typography>}
@@ -140,10 +162,21 @@ const NominationFormModal: React.FC<NominationFormModalProps> = ({
                 {msg => <Typography color="error">{msg}</Typography>}
               </ErrorMessage>
 
+              {isNominationClosed && (
+                <Typography variant="body2" sx={{ mt: 2, color: "red" }}>
+                  Nomination is Closed.
+                </Typography>
+              )}
+
               <DialogActions>
                 <Button onClick={onClose}>Cancel</Button>
-                <Button type="submit" color="primary" variant="contained">
-                  Submit
+                <Button 
+                  type="submit" 
+                  color="primary" 
+                  variant="contained" 
+                  disabled={isNominationClosed || isSubmitting}
+                >
+                  {isSubmitting ? "Submitting..." : "Submit"}
                 </Button>
               </DialogActions>
             </Form>

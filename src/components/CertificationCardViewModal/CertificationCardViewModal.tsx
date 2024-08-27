@@ -8,17 +8,17 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import { CertificationLevel } from "../../types/AllCertifications.types";
 
-// Define the prop types
 interface CertificationCardViewModalProps {
   open: boolean;
   onClose: () => void;
   certificationName: string;
-  provider: string;
+  providerName: string;
   level: CertificationLevel;
   description: string;
   tags: string[];
   officialLink: string;
   onNominate: () => void;
+  nominationStatus: string;
   nominationOpenDate: string; 
   nominationCloseDate: string;
 }
@@ -27,13 +27,15 @@ const CertificationCardViewModal: React.FC<CertificationCardViewModalProps> = ({
   open,
   onClose,
   certificationName,
-  provider,
+  providerName,
   level,
   description,
   tags,
   officialLink,
   onNominate,
-  nominationCloseDate, // Use the new prop
+  nominationCloseDate,
+  nominationStatus,
+  nominationOpenDate,
 }) => {
   const getBorderColor = () => {
     switch (level) {
@@ -46,6 +48,25 @@ const CertificationCardViewModal: React.FC<CertificationCardViewModalProps> = ({
       default:
         return "gray";
     }
+  };
+
+  const getNominationStatusMessage = () => {
+    if (nominationStatus === "Accepting") {
+      if (nominationOpenDate && new Date(nominationOpenDate) > new Date()) {
+        return `Nominations will open from ${new Date(nominationOpenDate).toLocaleDateString()}.`;
+      }
+      if (nominationCloseDate) {
+        return `Nomination is open until ${new Date(nominationCloseDate).toLocaleDateString()}.`;
+      }
+      return "Nomination is Open.";
+    }
+    if (nominationStatus === "Not Accepting") {
+      return "Nomination is Closed.";
+    }
+    if (nominationStatus === "Always Accepting") {
+      return "Nomination is Open.";
+    }
+    return "";
   };
 
   return (
@@ -74,7 +95,7 @@ const CertificationCardViewModal: React.FC<CertificationCardViewModalProps> = ({
       <DialogContent>
         <Box>
           <Typography variant="subtitle1" color="grey" gutterBottom>
-            <strong>Provider:</strong> {provider}
+            <strong>Provider:</strong> {providerName}
           </Typography>
           <Typography variant="subtitle1" color="grey" gutterBottom>
             <strong>Level:</strong>{" "}
@@ -103,7 +124,7 @@ const CertificationCardViewModal: React.FC<CertificationCardViewModalProps> = ({
           </Typography>
           <Box
             sx={{
-              backgroundColor: "rgba(255, 193, 7, 0.15)", // Light warning color
+              backgroundColor: "rgba(255, 193, 7, 0.15)",
               padding: "8px",
               borderRadius: "5px",
               textAlign: "center",
@@ -111,7 +132,7 @@ const CertificationCardViewModal: React.FC<CertificationCardViewModalProps> = ({
             }}
           >
             <Typography variant="body2" sx={{ fontWeight: "bold", color: "#d32f2f" }}>
-              Nomination is open until {nominationCloseDate}.
+              {getNominationStatusMessage()}
             </Typography>
           </Box>
         </Box>

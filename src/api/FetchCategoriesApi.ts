@@ -1,11 +1,11 @@
 import apiClient from './BaseApi';
 import axios from 'axios';
-interface Provider {
+interface Tag {
   id: string;
-  providerName: string;
+  categoryTagName: string;
 }
 
-export const fetchProvidersjson = async (): Promise<Provider[]> => {
+export const fetchCategoriesjson = async (): Promise<Tag[]> => {
   try {
     const response = await axios.get('http://localhost:5000/providers');
 
@@ -20,23 +20,22 @@ export const fetchProvidersjson = async (): Promise<Provider[]> => {
     throw new Error('Failed to fetch Providers');
   }
 };
-
-export const createProviderjson = async (name: string) => {
+export const createCategoryjson = async (name: string) => {
   try {
-    const response = await axios.post('http://localhost:5000/providers', {name});
+    const response = await axios.post('http://localhost:5000/providers',{name});
     return response.data;
   } catch (error) {
-    console.error("Error creating provider:", error);
+    console.error("Error creating category:", error);
     throw error;
   }
 };
 
 
 
-//for api integration
-export const fetchProviders = async (): Promise<Provider[]> => {
+//api integration
+export const fetchCategories = async (): Promise<Tag[]> => {
   try {
-    const response = await apiClient.get<Provider[]>('/CertificationProvider/allcertificationproviders');
+    const response = await apiClient.get<Tag[]>('/CategoryTag/allcategorytags');
 
     // Accessing the providers property if it exists
     if (response.data) {
@@ -49,13 +48,12 @@ export const fetchProviders = async (): Promise<Provider[]> => {
     throw new Error('Failed to fetch Providers');
   }
 };
-
-export const createProvider = async (name: string) => {
+export const createCategory = async (name: string) => {
   try {
-    const response = await apiClient.post("/providers", { name });
+    const response = await apiClient.post("/categories", { name });
     return response.data;
   } catch (error) {
-    console.error("Error creating provider:", error);
+    console.error("Error creating category:", error);
     throw error;
   }
 };
