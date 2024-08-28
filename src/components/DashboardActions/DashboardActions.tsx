@@ -15,11 +15,12 @@ const DashboardActions: React.FC<DashboardActionsProps> = ({  buttons }) => {
     <Box
       sx={{
         backgroundColor: '#ffffff',
-        borderRadius: { xs: '1vh', sm: '1vh', md: '1vh' },
-        padding: { xs: '2vh', sm: '3vh', md: '3vh' },
+        borderRadius:'15px',
+        padding: { xs: '2vh', sm: '3vh', md: '2vh' },
         textAlign: 'center',
-        maxWidth: { xs: '100%', sm: '80%', md: '48vw' },
-        margin: { xs: '0 auto', sm: '.8vw', md: '0.7vw' },
+        maxWidth: { xs: '100%', sm: '80%', md: '45vw' },
+        marginLeft:{xs:'1.1vw', sm: '1.1vw', md: '1.1vw'},
+      
       }}
     >
       <Typography
@@ -54,9 +55,9 @@ const DashboardActions: React.FC<DashboardActionsProps> = ({  buttons }) => {
               textTransform: 'none',
               fontWeight: 'bold',
               lineHeight:'2.5vh',
-              width: { xs: '80%', sm: '30%', md: '31%' }, // Adjusted width to fit 3 in a row
+              width: { xs: '80%', sm: '30%', md: '31%' }, 
               height: { xs: '6vh', sm: '7vh', md: '6vh' },
-              fontSize: { xs: '1.7vh', sm: '1.8vh', md: '1.8vh' }, // Slightly reduced font size for better fit
+              fontSize: { xs: '1.7vh', sm: '1.8vh', md: '1.8vh' }, 
               '&:hover': {
                 backgroundColor: '#574bff',
               },

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Select, MenuItem, FormControl, InputLabel, Grid, Paper, Box, Typography } from '@mui/material';
+import { Select, MenuItem, FormControl, InputLabel, Grid, Box, Typography } from '@mui/material';
 import ReusableBarChart from '../ReusableBarChart/ReusableBarChart';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import {
@@ -8,7 +8,7 @@ import {
   fetchDepartments,
   fetchCertificationProviders,
 } from '../../../api/BarGraphApi/BarGraphApi';
-
+import LoadingAnimation from '../../LoadAnimation/LoadAnimation';
 const LndBarGraph: React.FC = () => {
   const [financialYearId, setFinancialYearId] = useState<number>(0);
   const [departmentId, setDepartmentId] = useState<number>(0);
@@ -94,14 +94,14 @@ const LndBarGraph: React.FC = () => {
 
   return (
     <Grid container justifyContent="left" sx={{ padding: 2 }}>
-      <Paper
+      <Box
         sx={{
-          width: { xs: '100%', md: '100%', lg: '60%' },
+          width: { xs: '100%', md: '100%', lg: '44vw' },
           height:{xs: '50vh', md: '40vh', lg: '50vh'},
           padding: 2,
+          borderRadius:'15px',
           backgroundColor: 'white',
         }}
-        elevation={3}
       >
         <Grid container spacing={2} justifyContent="center" paddingRight={{ md: '2vw' }}>
           <Grid item xs={12} md={6} lg={3}>
@@ -161,7 +161,7 @@ const LndBarGraph: React.FC = () => {
           <Grid item xs={12}>
             <div style={{ height: '300px' }}>
             {loading ? (
-              <Typography variant="body1">Loading...</Typography>
+                <LoadingAnimation />
             ) : error ? (
               <Box
                 sx={{
@@ -202,7 +202,7 @@ const LndBarGraph: React.FC = () => {
             </div>
           </Grid>
         </Grid>
-      </Paper>
+      </Box>
     </Grid>
   );
 };

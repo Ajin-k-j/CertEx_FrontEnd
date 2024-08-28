@@ -7,7 +7,7 @@ import DashboardActions from '../../components/DashboardActions/DashboardActions
 import PendingNominationCard from "../../components/PendingActions/PendingNominationCardList/PendingNominationCardList";
 import CertificationManagementPage from '../../components/AllCertificationsAdmin/AllCertificationsManagement';
 import LdNominationTable from '../../components/LdNominationTable/LdNominationTable';
-
+import { Grid } from "@mui/material";
 
 
 
@@ -42,28 +42,59 @@ const LDAdminDashboard = () => {
   };
 
   return (
-    <>
-      <div style={{ display: 'flex'}}>
-        <CertificationChartss />
+
+
+    <Grid container spacing={1} sx={{ padding: ".1rem" }}>
+      {/* Left Column */}
+      <Grid item xs={12} md={8} lg={6}>
+        <Grid container spacing={1} direction="column">
+          <Grid item>
+            <CertificationChartss />
+          </Grid>
+          <Grid item>
+            <DashboardActions buttons={ldButtons} />
+          </Grid>
+        </Grid>
+      </Grid>
+    
+      {/* Right Column */}
+      <Grid item xs={12} md={4} lg={5.7}>
         <PendingNominationsTable
           fetchNominations={fetchPendingNominations}
           itemsPerPage={3}
           CardComponent={PendingNominationCard}
-          containerHeight="70vh"
-          containerWidth="100vw"
+          containerHeight="73.6vh"
+          containerWidth="100%" // Use full width of the grid item
         />
-      </div>
-      <DashboardActions buttons={ldButtons} />
-      
+      </Grid>
+    
+      {/* Full-width Row for LdNominationTable */}
+      <Grid item xs={12}>
+        <LdNominationTable />
+      </Grid>
+    
+      {/* Conditional Rendering of CertificationManagementPage Modal */}
       {openCertificationModal && (
-        <CertificationManagementPage
-          open={openCertificationModal}
-          onClose={handleCloseModal}
-        />
+        <Grid item xs={12}>
+          <CertificationManagementPage
+            open={openCertificationModal}
+            onClose={handleCloseModal}
+          />
+        </Grid>
       )}
-      <LdNominationTable />
-    </>
+    </Grid>
+    
+    
   );
 };
 
 export default LDAdminDashboard;
+
+
+
+
+
+
+
+
+

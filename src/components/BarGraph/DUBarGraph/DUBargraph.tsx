@@ -3,6 +3,7 @@ import { Select, MenuItem, FormControl, InputLabel, Grid, Paper, Box, Typography
 import ReusableBarChart from '../ReusableBarChart/ReusableBarChart';
 import { fetchDuBarGraphData, fetchFinancialYears, fetchCertificationProviders } from '../../../api/BarGraphApi/BarGraphApi';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import LoadingAnimation from '../../LoadAnimation/LoadAnimation';
 
 const DuBarGraph: React.FC = () => {
   const [financialYearId, setFinancialYearId] = useState<number>(0);
@@ -85,10 +86,11 @@ const DuBarGraph: React.FC = () => {
     <Grid container justifyContent="left" sx={{ padding: 2 }}>
       <Paper
         sx={{
-          width: { xs: '100%', md: '100%', lg: '47%' },
-          height:{xs: '37vh', md: '35vh', lg: '50vh'},
-          padding: 2,
+          width: { xs: '100%', md: '100%', lg: '44vw' },
+          height:{xs: '70vh', md: '50vh', lg: '50vh'},
+          padding: 1,
           backgroundColor: 'white',
+          borderRadius:'15px'
         }}
         elevation={3}
       >
@@ -101,7 +103,7 @@ const DuBarGraph: React.FC = () => {
               <Select
                 value={financialYearId}
                 onChange={(e) => setFinancialYearId(Number(e.target.value))}
-                sx={{ fontSize: { xs: '12px', md: '14px', lg: '16px' } }}
+                sx={{ fontSize: { xs: '12px', md: '13px', lg: '14px' } }}
               >
                 {financialYears.map((year) => (
                   <MenuItem key={year.id} value={year.id}>
@@ -113,7 +115,7 @@ const DuBarGraph: React.FC = () => {
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
             <FormControl fullWidth size="small" sx={{ marginLeft: { xs: 0, md: 1, lg: 4 } }}>
-              <InputLabel sx={{ fontSize: { xs: '12px', md: '14px', lg: '16px' }, backgroundColor: 'white', padding: '3px' }}>
+              <InputLabel sx={{ fontSize: { xs: '12px', md: '13px', lg: '14px' }, backgroundColor: 'white', padding: '3px' }}>
                 Provider
               </InputLabel>
               <Select
@@ -131,8 +133,8 @@ const DuBarGraph: React.FC = () => {
           </Grid>
           <Grid item xs={12}>
             {loading ? (
-              <Typography variant="body1">Loading...</Typography>
-            ) : error ? (
+             <LoadingAnimation />
+) : error ? (
               <Box
                 sx={{
                   display: 'flex',

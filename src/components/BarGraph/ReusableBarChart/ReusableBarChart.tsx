@@ -24,7 +24,7 @@ const CustomTooltip: React.FC<TooltipProps<number, string>> = ({ active, payload
           backgroundColor: 'white',
           padding: '10px',
           borderRadius: '10px',
-          boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.1)',
+          boxShadow: 'none',
         }}
       >
         <p style={{ margin: 0 }}>{`Month: ${label}`}</p>

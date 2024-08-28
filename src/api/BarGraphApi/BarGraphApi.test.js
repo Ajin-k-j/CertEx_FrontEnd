@@ -15,7 +15,7 @@ describe('fetchCertificationData', () => {
       year: '2024-2025',
       data: {
         'All': {
-          AWS: [10, 20, 30, 40]
+          AWS: [1, 2, 3, 4]
         }
       }
     }];

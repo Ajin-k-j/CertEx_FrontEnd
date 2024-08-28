@@ -21,7 +21,7 @@ interface PendingNominationCardProps {
 const PendingNominationCard: React.FC<PendingNominationCardProps> = ({ nomination, onViewApproveClick }) => {
   return (
     <>
-      <Card variant="outlined" sx={{ borderRadius: '8px', backgroundColor: 'white', }}>
+      <Card variant="outlined" sx={{ borderRadius: '8px', backgroundColor: 'white' }}>
         <CardContent sx={{ padding: '8px !important' }}>
           <Grid container spacing={1.8} alignItems="center"  wrap="nowrap">
             <Grid item xs={4}>
@@ -44,11 +44,11 @@ const PendingNominationCard: React.FC<PendingNominationCardProps> = ({ nominatio
                 {nomination.criticality}
               </Typography>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={3}>
               <Button
                 variant="outlined"
                 size="small"
-                sx={{ fontSize: '0.75rem', padding: '4px 8px', borderRadius: '8px' }}
+                sx={{ fontSize: '0.75rem', borderRadius: '8px' }}
                 onClick={() => onViewApproveClick(nomination)}
               >
                 View & Approve

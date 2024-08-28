@@ -91,11 +91,10 @@ const UserPendingNomination: React.FC = () => {
         <Box
             sx={{
                 maxWidth: '550vw',
-                height: '60vh',
+                height: '52vh',
                 mt: 1.5,
                 backgroundColor: 'white',
-                borderRadius: 2,
-                boxShadow: 1,
+                borderRadius: '15px',
                 p: 0.8,
                 overflow: 'hidden',
                 position: 'relative',

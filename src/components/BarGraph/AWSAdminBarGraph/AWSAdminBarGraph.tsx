@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Select, MenuItem, FormControl, InputLabel, Grid, Paper, Box, Typography } from '@mui/material';
+import { Select, MenuItem, FormControl, InputLabel, Grid, Box, Typography } from '@mui/material';
 import ReusableBarChart from '../ReusableBarChart/ReusableBarChart';
 import { fetchAwsBarGraphData, fetchFinancialYears, fetchDepartments } from '../../../api/BarGraphApi/BarGraphApi';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import LoadingAnimation from '../../LoadAnimation/LoadAnimation';
 
 const AwsBarGraph: React.FC = () => {
   const [financialYearId, setFinancialYearId] = useState<number>(0);
@@ -82,25 +83,25 @@ const AwsBarGraph: React.FC = () => {
 
   return (
     <Grid container justifyContent="left" sx={{ padding: 2 }}>
-      <Paper
+      <Box
         sx={{
-          width: { xs: '100%', md: '100%', lg: '47%' },
+          width: { xs: '100%', md: '100%', lg: '43vw' },
           height:{xs: '37vh', md: '35vh', lg: '50vh'},
           padding: 2,
           backgroundColor: 'white',
+          borderRadius :'15px'
         }}
-        elevation={3}
       >
         <Grid container spacing={2} justifyContent="center" paddingRight={{ md: '2vw' }}>
           <Grid item xs={12} md={6} lg={3}>
             <FormControl fullWidth size="small" sx={{ marginLeft: { xs: 0, md: 1, lg: 4 } }}>
-              <InputLabel sx={{ fontSize: { xs: '12px', md: '14px', lg: '16px' }, backgroundColor: 'white', padding: '3px' }}>
+              <InputLabel sx={{ fontSize: { xs: '12px', md: '14px', lg: '14px' }, backgroundColor: 'white', padding: '3px' }}>
                 Financial Year
               </InputLabel>
               <Select
                 value={financialYearId}
                 onChange={(e) => setFinancialYearId(Number(e.target.value))}
-                sx={{ fontSize: { xs: '12px', md: '14px', lg: '16px' } }}
+                sx={{ fontSize: { xs: '12px', md: '14px', lg: '14px' } }}
               >
                 {financialYears.map((year) => (
                   <MenuItem key={year.id} value={year.id}>
@@ -130,7 +131,7 @@ const AwsBarGraph: React.FC = () => {
           </Grid>
           <Grid item xs={12}>
             {loading ? (
-              <Typography variant="body1">Loading...</Typography>
+             <LoadingAnimation />
             ) : error ? (
               <Box
                 sx={{
@@ -172,7 +173,7 @@ const AwsBarGraph: React.FC = () => {
             )}
           </Grid>
         </Grid>
-      </Paper>
+      </Box>
     </Grid>
   );
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import { Box } from "@mui/material";
+import { Grid } from "@mui/material";
 import SimilarCertifications from "../../components/SimilarCertifications/SimilarCertifications";
 import UpcomingExams from "../../components/UpcomingExams/UpcomingExams";
 // import PendingNominationsTable from "../../components/PendingActions/UserPendingAction/UserPendingAction";
@@ -19,35 +20,39 @@ const EmployeeDashboard: React.FC = () => {
   return (
     <>
     
-    <Box 
-       sx={{
-        padding: ".1rem",
-        display: "flex",
-        flexDirection: "row",
-        gap: "1rem",
-        justifyContent: "start",
-        flexWrap: "wrap",
-      }}
-      > 
-     <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-      <Box
-        sx={{
-          padding: ".1rem",
-          display: "flex",
-          flexDirection: "row",
-          gap: "1rem",
-          justifyContent: "start",
-          flexWrap: "wrap",
-        }}
-      > 
-       <UpcomingExams />
-       <SimilarCertifications />
-       </Box>        
-          <DashboardActions buttons={userButtons} />
-        </Box>
-        <UserPendingNomination />
-        </Box>
-        <UserCertificationsTable />
+   
+
+<Grid container spacing={1} sx={{ padding: ".1rem" }}>
+  {/* Left Column: UpcomingExams, SimilarCertifications, DashboardActions */}
+  <Grid item xs={12} md={6} lg={6}>
+    <Grid container spacing={1} direction="column">
+      <Grid item>
+        <Grid container spacing={0}>
+          <Grid item xs={12} sm={6}>
+            <UpcomingExams />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <SimilarCertifications />
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid item>
+        <DashboardActions buttons={userButtons} />
+      </Grid>
+    </Grid>
+  </Grid>
+
+  {/* Right Column: UserPendingNomination */}
+  <Grid item xs={12} md={6} lg={5.9}>
+    <UserPendingNomination />
+  </Grid>
+
+  {/* Full-width Row: UserCertificationsTable */}
+  <Grid item xs={11.8}>
+    <UserCertificationsTable />
+  </Grid>
+</Grid>
+
     </>
   );
 };

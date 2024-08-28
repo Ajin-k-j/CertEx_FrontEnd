@@ -37,7 +37,7 @@ const PendingNominationsTable: React.FC<PendingNominationsTableProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const itemsPerPage = 3;
+  const itemsPerPage = 6;
 
   useEffect(() => {
     const loadNominations = async () => {
@@ -78,14 +78,13 @@ const PendingNominationsTable: React.FC<PendingNominationsTableProps> = ({
       sx={{
         maxWidth: '100%',
         width: containerWidth, // Use the containerWidth prop
-        minHeight: '100px',
+        minHeight: '385px',
         height: containerHeight,
-        mt: 1.5,
         backgroundColor: 'white',
-        borderRadius: 2,
-        boxShadow: 1,
+        borderRadius: 4,
         p: 0.8,
         m: 1,
+        mt:2,
         overflow: 'hidden',
         position: 'relative',
       }}
@@ -117,7 +116,7 @@ const PendingNominationsTable: React.FC<PendingNominationsTableProps> = ({
           borderRadius: 2,
           p: 0.6,
           pt: 1,
-          height: '160px',
+          height: '55vh',
         }}
       >
         {isLoading ? (

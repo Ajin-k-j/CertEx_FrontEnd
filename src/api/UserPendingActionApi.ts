@@ -1,11 +1,13 @@
-import apiClient from './BaseApi';
+import axios from 'axios';
 // Default initial values
 const initialCertificationId = 1; 
 const initialNominationId = '66ef'; 
 
+  const baseURL =  "http://localhost:5000";
+
 export const fetchCertificationById = async (certification_id: number = initialCertificationId) => {
   try {
-    const response = await apiClient.get(`/certification?certification_id=${certification_id}`);
+    const response = await axios.get(`${baseURL}/certification?certification_id=${certification_id}`);
     const certificationData = response.data;
 
     if (certificationData.length > 0) {
@@ -28,10 +30,10 @@ export const fetchCertificationById = async (certification_id: number = initialC
 export const fetchNominationById = async (id: string = initialNominationId, updateData?: any) => {
   try {
     if (updateData) {
-      const response = await apiClient.patch(`/nominations/${id}`, updateData);
+      const response = await axios.patch(`${baseURL}/nominations/${id}`, updateData);
       return response.data;
     } else {
-      const response = await apiClient.get(`/nominations/${id}`);
+      const response = await axios.get(`${baseURL}/nominations/${id}`);
       return response.data;
     }
   } catch (error) {
@@ -52,7 +54,7 @@ export const uploadCertificateFile = async (file: File) => {
   formData.append('file', file);
 
   try {
-    const response = await apiClient.post('/upload', formData, {
+    const response = await axios.post(`${baseURL}/upload`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -80,7 +82,7 @@ export const updateInvoice = async (
       invoice_status: 'updated', // Set the invoice_status to 'updated'
     };
 
-    const response = await apiClient.patch(`/nominations/${nominationId}`, updateData);
+    const response = await axios.patch(`${baseURL}/nominations/${nominationId}`, updateData);
 
     return response.data;
   } catch (error) {

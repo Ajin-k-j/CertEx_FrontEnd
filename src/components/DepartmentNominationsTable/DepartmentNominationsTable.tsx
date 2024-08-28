@@ -119,7 +119,7 @@ const NominationsTable: React.FC = () => {
   ];
 
   return (
-    <Box sx={{ overflow: 'hidden', width: '98%', margin: 1.5 }}>
+    <Box sx={{ overflow: 'hidden', width: '98%', margin: 1.5 , borderRadius:'20px'}}>
       <Paper sx={{ p: 2, mb: 2, display: 'flex', flexDirection: 'column', gap: 2, width: '100%', boxSizing: 'border-box' }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center', width: '100%' }}>
           <Typography variant="h5">All Nominations Data</Typography>
@@ -249,7 +249,6 @@ const NominationsTable: React.FC = () => {
             transform: 'translate(-50%, -50%)',
             width: isMobile ? '90%' : 400,
             bgcolor: 'background.paper',
-            boxShadow: 24,
             p: 4,
             borderRadius: 2,
           }}
