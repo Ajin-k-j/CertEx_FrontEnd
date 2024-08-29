@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -9,7 +9,7 @@ import {
   Divider,
   Typography,
   TextField,
-} from '@mui/material';
+} from "@mui/material";
 
 interface Nomination {
   id: number;
@@ -34,7 +34,7 @@ const PendingNominationModal: React.FC<PendingNominationModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const [rejectionMessage, setRejectionMessage] = useState('');
+  const [rejectionMessage, setRejectionMessage] = useState("");
   const [isRejectionModalOpen, setIsRejectionModalOpen] = useState(false);
 
   const handleApprove = () => {
@@ -61,7 +61,12 @@ const PendingNominationModal: React.FC<PendingNominationModalProps> = ({
     <>
       <Dialog open={isOpen} onClose={onClose} maxWidth="sm" fullWidth>
         <DialogTitle>
-          <Typography variant="h5" component="div" align="center" fontWeight="bold">
+          <Typography
+            variant="h5"
+            component="div"
+            align="center"
+            fontWeight="bold"
+          >
             Nomination Details
           </Typography>
         </DialogTitle>
@@ -92,18 +97,21 @@ const PendingNominationModal: React.FC<PendingNominationModalProps> = ({
             <Typography variant="body1" fontWeight="bold" gutterBottom>
               Remarks:
             </Typography>
-            <Typography variant="body1" sx={{ whiteSpace: 'pre-line', fontSize: '1.1rem' }}>
+            <Typography
+              variant="body1"
+              sx={{ whiteSpace: "pre-line", fontSize: "1.1rem" }}
+            >
               {nomination.remarks}
             </Typography>
           </Box>
         </DialogContent>
         <Divider />
-        <DialogActions sx={{ justifyContent: 'center', padding: '16px' }}>
+        <DialogActions sx={{ justifyContent: "center", padding: "16px" }}>
           <Button
             onClick={handleReject}
             variant="contained"
             color="error"
-            sx={{ minWidth: '100px' }}
+            sx={{ minWidth: "100px" }}
           >
             Reject
           </Button>
@@ -111,7 +119,7 @@ const PendingNominationModal: React.FC<PendingNominationModalProps> = ({
             onClick={handleApprove}
             variant="contained"
             color="success"
-            sx={{ minWidth: '100px', marginLeft: '16px' }}
+            sx={{ minWidth: "100px", marginLeft: "16px" }}
           >
             Approve
           </Button>
@@ -139,14 +147,14 @@ const PendingNominationModal: React.FC<PendingNominationModalProps> = ({
             onChange={(e) => setRejectionMessage(e.target.value)}
             variant="outlined"
             placeholder="Enter rejection reason..."
-            sx={{ marginTop: '16px' }}
+            sx={{ marginTop: "16px" }}
           />
         </DialogContent>
-        <DialogActions sx={{ justifyContent: 'center', padding: '16px' }}>
+        <DialogActions sx={{ justifyContent: "center", padding: "16px" }}>
           <Button
             onClick={handleCloseRejectionModal}
             color="secondary"
-            sx={{ minWidth: '100px' }}
+            sx={{ minWidth: "100px" }}
           >
             Cancel
           </Button>
@@ -154,7 +162,7 @@ const PendingNominationModal: React.FC<PendingNominationModalProps> = ({
             onClick={handleRejectionSubmit}
             variant="contained"
             color="error"
-            sx={{ minWidth: '100px', marginLeft: '16px' }}
+            sx={{ minWidth: "100px", marginLeft: "16px" }}
           >
             Submit
           </Button>

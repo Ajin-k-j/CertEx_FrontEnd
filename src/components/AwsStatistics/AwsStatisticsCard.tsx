@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import StatisticsCard from '../StatisticsCard/StatisticsCard';
-import { People, Done, Cancel } from '@mui/icons-material';
-import fetchAwsStatistics from '../../api/AwsStatisticsApi';
-import { AwsStatistics } from '../../types/AwsStatistics.types';
+import React, { useEffect, useState } from "react";
+import StatisticsCard from "../StatisticsCard/StatisticsCard";
+import { People, Done, Cancel } from "@mui/icons-material";
+import fetchAwsStatistics from "../../api/AwsStatisticsApi";
+import { AwsStatistics } from "../../types/AwsStatistics.types";
 
 const AwsStatisticsPage: React.FC = () => {
   const [data, setData] = useState({
-    department: '',
+    department: "",
     employees: 0,
     certifications: 0,
   });
@@ -34,9 +34,9 @@ const AwsStatisticsPage: React.FC = () => {
   };
 
   const labels = {
-    department: 'Total Accounts',
-    employees: 'Active',
-    certifications: 'Inactive',
+    department: "Total Accounts",
+    employees: "Active",
+    certifications: "Inactive",
   };
 
   return <StatisticsCard data={data} icons={icons} labels={labels} />;

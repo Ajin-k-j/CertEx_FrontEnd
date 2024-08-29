@@ -29,7 +29,11 @@ apiClient.interceptors.response.use(
     // Handle token refresh or other errors
     const originalRequest = error.config;
 
-    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      !originalRequest._retry
+    ) {
       // Handle token refresh if needed
       originalRequest._retry = true;
       // Implement token refresh logic here

@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import Stack from '@mui/material/Stack';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
-import { fetchCertificationData } from '../../../api/BarGraphApi';
-import { fetchDU } from '../../../api/FetchingDUApi'; // Import the fetchDU function
+import React, { useState, useEffect } from "react";
+import Stack from "@mui/material/Stack";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import { fetchCertificationData } from "../../../api/BarGraphApi";
+import { fetchDU } from "../../../api/FetchingDUApi"; // Import the fetchDU function
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { Box, Typography } from '@mui/material';
-import { fetchFinancialYears } from '../../../api/FetchFinancialYearApi'; 
-import ReusableBarChart from '../ReusableBarChart/ReusableBarChart';
+import { Box, Typography } from "@mui/material";
+import { fetchFinancialYears } from "../../../api/FetchFinancialYearApi";
+import ReusableBarChart from "../ReusableBarChart/ReusableBarChart";
 
 type CertificationData = {
   [key: string]: {
@@ -22,27 +22,37 @@ type CertificationData = {
 };
 
 const months = [
-  'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+  "Jan",
+  "Feb",
+  "Mar",
 ];
 
-
 const AWSAdminBarGraph: React.FC = () => {
-  const [certificationData, setCertificationData] = useState<CertificationData>({});
-  const [year, setYear] = useState<string>('All');
-  const [du, setDU] = useState<string>('All');
+  const [certificationData, setCertificationData] = useState<CertificationData>(
+    {}
+  );
+  const [year, setYear] = useState<string>("All");
+  const [du, setDU] = useState<string>("All");
   const [data, setData] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>('');
-  const [yearOptions, setYearOptions] = useState<string[]>(['All']);
+  const [error, setError] = useState<string>("");
+  const [yearOptions, setYearOptions] = useState<string[]>(["All"]);
   const [noData, setNoData] = useState<boolean>(false);
   const [duOptions, setDUOptions] = useState<string[]>([]); // Ensure duOptions is initialized as an array
   const provider = "AWS";
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
 
-
- 
   useEffect(() => {
     const loadDropdownData = async () => {
       try {
@@ -51,17 +61,17 @@ const AWSAdminBarGraph: React.FC = () => {
           (fy: { from_date: string; to_date: string }) =>
             `${fy.from_date}-${fy.to_date}`
         );
-        setYearOptions(['All', ...formattedYears]);
+        setYearOptions(["All", ...formattedYears]);
 
         const [duData] = await Promise.all([fetchDU()]);
-        setDUOptions(['All', ...duData]);
+        setDUOptions(["All", ...duData]);
 
         const data = await fetchCertificationData();
         setCertificationData(data as CertificationData);
         setNoData(Object.keys(data).length === 0);
       } catch (err) {
-        console.log(err)
-        setError('Failed to fetch dropdown data.');
+        console.log(err);
+        setError("Failed to fetch dropdown data.");
       } finally {
         setLoading(false);
       }
@@ -69,10 +79,6 @@ const AWSAdminBarGraph: React.FC = () => {
 
     loadDropdownData();
   }, []);
-
-
-
- 
 
   useEffect(() => {
     if (loading || error) return;
@@ -83,7 +89,7 @@ const AWSAdminBarGraph: React.FC = () => {
       setNoData(true);
       return;
     }
-    const duData = yearData?.[du] || yearData['All'];
+    const duData = yearData?.[du] || yearData["All"];
     const providerData = duData?.[provider] || [];
 
     if (Array.isArray(providerData) && providerData.length > 0) {
@@ -108,24 +114,23 @@ const AWSAdminBarGraph: React.FC = () => {
     setDU(event.target.value);
   };
 
-
   return (
     <Stack
       direction="column"
       spacing={2}
       sx={{
-        width: isMobile ? '90%' : isTablet ? '70%' : '49%',
-        backgroundColor: 'white',
-        borderRadius: '20px',
-        padding: isMobile ? '2vh' : '4vh 2vh 2vh 2vh',
-        marginLeft: isMobile ? '2vh' : '2vh',
-        marginBottom: isMobile ? '2vh' : '3vh',
-        height: isMobile ? 'auto' : '40vh',
-        justifyContent: 'flex-end',
+        width: isMobile ? "90%" : isTablet ? "70%" : "49%",
+        backgroundColor: "white",
+        borderRadius: "20px",
+        padding: isMobile ? "2vh" : "4vh 2vh 2vh 2vh",
+        marginLeft: isMobile ? "2vh" : "2vh",
+        marginBottom: isMobile ? "2vh" : "3vh",
+        height: isMobile ? "auto" : "40vh",
+        justifyContent: "flex-end",
       }}
-    > 
-          <Stack
-        direction={isMobile ? 'column' : 'row'}
+    >
+      <Stack
+        direction={isMobile ? "column" : "row"}
         spacing={2}
         justifyContent="right"
       >
@@ -135,7 +140,7 @@ const AWSAdminBarGraph: React.FC = () => {
             value={year}
             onChange={handleYearChange}
             label="Financial Year"
-            sx={{ height: isMobile ? '7vh' : '5vh', fontSize: '2vh' }}
+            sx={{ height: isMobile ? "7vh" : "5vh", fontSize: "2vh" }}
           >
             {yearOptions.map((yearOption) => (
               <MenuItem key={yearOption} value={yearOption}>
@@ -151,7 +156,7 @@ const AWSAdminBarGraph: React.FC = () => {
             value={du}
             onChange={handleDUChange}
             label="DU"
-            sx={{ height: isMobile ? '7vh' : '5vh', fontSize: '2vh' }}
+            sx={{ height: isMobile ? "7vh" : "5vh", fontSize: "2vh" }}
           >
             {duOptions.map((duOption) => (
               <MenuItem key={duOption} value={duOption}>
@@ -160,41 +165,49 @@ const AWSAdminBarGraph: React.FC = () => {
             ))}
           </Select>
         </FormControl>
-        </Stack>
-
-
+      </Stack>
 
       {loading ? (
         <div>Loading...</div>
       ) : error ? (
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            p: '1.6rem',
-            backgroundColor: '#f9f9f9',
-            borderRadius: '8px',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            p: "1.6rem",
+            backgroundColor: "#f9f9f9",
+            borderRadius: "8px",
           }}
         >
-          <InfoOutlinedIcon sx={{ height: '17vh', fontSize: '2rem', color: '#757575' }} />
-          <Typography variant="body1" sx={{ mt: '.5vh', mb: '.2rem', textAlign: 'center' }}>
+          <InfoOutlinedIcon
+            sx={{ height: "17vh", fontSize: "2rem", color: "#757575" }}
+          />
+          <Typography
+            variant="body1"
+            sx={{ mt: ".5vh", mb: ".2rem", textAlign: "center" }}
+          >
             Something went wrong while fetching.
           </Typography>
         </Box>
       ) : noData ? (
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            p: '1.6rem',
-            backgroundColor: '#f9f9f9',
-            borderRadius: '8px',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            p: "1.6rem",
+            backgroundColor: "#f9f9f9",
+            borderRadius: "8px",
           }}
         >
-          <InfoOutlinedIcon sx={{ height: '17vh', fontSize: '2rem', color: '#757575' }} />
-          <Typography variant="body1" sx={{ mt: '.5vh', mb: '.2rem', textAlign: 'center' }}>
+          <InfoOutlinedIcon
+            sx={{ height: "17vh", fontSize: "2rem", color: "#757575" }}
+          />
+          <Typography
+            variant="body1"
+            sx={{ mt: ".5vh", mb: ".2rem", textAlign: "center" }}
+          >
             No Certification completed yet.
           </Typography>
         </Box>

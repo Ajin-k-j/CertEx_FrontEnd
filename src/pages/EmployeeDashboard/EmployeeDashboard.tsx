@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import SimilarCertifications from "../../components/SimilarCertifications/SimilarCertifications";
 import UpcomingExams from "../../components/UpcomingExams/UpcomingExams";
 import PendingNominationsTable from "../../components/PendingActions/PendingActionsTable/PendingActionsTable";
-import { fetchPendingNominations } from '../../api/PendingActionTableAPI';
+import { fetchPendingNominations } from "../../api/PendingActionTableAPI";
 import PendingNominationCard from "../../components/PendingActions/PendingNominationCardList/PendingNominationCardList";
 import UserCertificationsTable from "../../components/UserCertificationsTable/UserCertificationsTable";
 
@@ -22,7 +22,12 @@ const EmployeeDashboard: React.FC = () => {
       <UpcomingExams />
 
       <SimilarCertifications />
-      <PendingNominationsTable fetchNominations={fetchPendingNominations} itemsPerPage={3} containerHeight="238px" CardComponent={PendingNominationCard} />
+      <PendingNominationsTable
+        fetchNominations={fetchPendingNominations}
+        itemsPerPage={3}
+        containerHeight="238px"
+        CardComponent={PendingNominationCard}
+      />
       <UserCertificationsTable />
     </Box>
   );

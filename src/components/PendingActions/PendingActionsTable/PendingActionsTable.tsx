@@ -1,8 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Grid, Typography, IconButton, CircularProgress } from '@mui/material';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Grid,
+  Typography,
+  IconButton,
+  CircularProgress,
+} from "@mui/material";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 interface Nomination {
   id: number;
@@ -27,8 +33,8 @@ interface PendingNominationsTableProps {
 const PendingNominationsTable: React.FC<PendingNominationsTableProps> = ({
   fetchNominations,
   itemsPerPage = 3,
-  containerHeight = 'auto',
-  containerWidth = 'auto', // Set default value for width
+  containerHeight = "auto",
+  containerWidth = "auto", // Set default value for width
   CardComponent,
 }) => {
   const [nominations, setNominations] = useState<Nomination[]>([]);
@@ -64,21 +70,29 @@ const PendingNominationsTable: React.FC<PendingNominationsTableProps> = ({
   return (
     <Box
       sx={{
-        maxWidth: '100%',
+        maxWidth: "100%",
         width: containerWidth, // Use the containerWidth prop
-        minHeight: '100px',
+        minHeight: "100px",
         height: containerHeight,
         mt: 1.5,
-        backgroundColor: 'white',
+        backgroundColor: "white",
         borderRadius: 2,
         boxShadow: 1,
         p: 0.8,
         m: 1,
-        overflow: 'hidden',
-        position: 'relative',
+        overflow: "hidden",
+        position: "relative",
       }}
     >
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1, ml: 1 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 1,
+          ml: 1,
+        }}
+      >
         <Typography variant="h6">
           Pending Actions ({nominations.length})
         </Typography>
@@ -86,14 +100,16 @@ const PendingNominationsTable: React.FC<PendingNominationsTableProps> = ({
           <IconButton
             onClick={handlePreviousPage}
             disabled={currentPage === 0}
-            sx={{ borderRadius: '50%', mr: 1 }}
+            sx={{ borderRadius: "50%", mr: 1 }}
           >
             <ArrowBackIosIcon />
           </IconButton>
           <IconButton
             onClick={handleNextPage}
-            disabled={currentPage === Math.ceil(nominations.length / itemsPerPage) - 1}
-            sx={{ borderRadius: '50%' }}
+            disabled={
+              currentPage === Math.ceil(nominations.length / itemsPerPage) - 1
+            }
+            sx={{ borderRadius: "50%" }}
           >
             <ArrowForwardIosIcon />
           </IconButton>
@@ -101,25 +117,25 @@ const PendingNominationsTable: React.FC<PendingNominationsTableProps> = ({
       </Box>
       <Box
         sx={{
-          backgroundColor: 'white',
+          backgroundColor: "white",
           borderRadius: 2,
           p: 0.6,
           pt: 1,
-          height: 'calc(100% - 75px)',
-          border: '1px solid grey',
+          height: "calc(100% - 75px)",
+          border: "1px solid grey",
         }}
       >
         {isLoading ? (
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '100%',
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100%",
             }}
           >
-            <CircularProgress sx={{ color: 'grey' }} />
+            <CircularProgress sx={{ color: "grey" }} />
             <Typography variant="body1" color="textSecondary">
               Loading pending actions...
             </Typography>
@@ -135,14 +151,14 @@ const PendingNominationsTable: React.FC<PendingNominationsTableProps> = ({
         ) : (
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '100%',
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100%",
             }}
           >
-            <InfoOutlinedIcon sx={{ fontSize: 25, mb: 0.3, color: 'grey' }} />
+            <InfoOutlinedIcon sx={{ fontSize: 25, mb: 0.3, color: "grey" }} />
             <Typography variant="body1" color="textSecondary">
               No pending actions available.
             </Typography>

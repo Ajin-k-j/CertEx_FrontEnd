@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { fetchDepartmentStatistics } from '../../api/DepartmentStatisticsApi';
-import { DepartmentStatistics } from '../../types/DepartmentStatistics.types';
-import StatisticsCard from '../../components/StatisticsCard/StatisticsCard';
-import { Work, Group, Badge } from '@mui/icons-material';
+import React, { useEffect, useState } from "react";
+import { fetchDepartmentStatistics } from "../../api/DepartmentStatisticsApi";
+import { DepartmentStatistics } from "../../types/DepartmentStatistics.types";
+import StatisticsCard from "../../components/StatisticsCard/StatisticsCard";
+import { Work, Group, Badge } from "@mui/icons-material";
 
 const DepartmentStatisticsPage: React.FC = () => {
   const [data, setData] = useState<DepartmentStatistics>({
-    department: '',
+    department: "",
     employees: 0,
     certifications: 0,
   });
@@ -30,9 +30,9 @@ const DepartmentStatisticsPage: React.FC = () => {
   };
 
   const labels = {
-    department: 'Department',
-    employees: 'Employees',
-    certifications: 'Certifications',
+    department: "Department",
+    employees: "Employees",
+    certifications: "Certifications",
   };
 
   return <StatisticsCard data={data} icons={icons} labels={labels} />;

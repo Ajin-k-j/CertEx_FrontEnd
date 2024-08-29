@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Dialog,
@@ -16,16 +16,25 @@ import {
   Autocomplete,
   IconButton,
   useTheme,
-} from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
-import { fetchProvidersjson, createProviderjson } from '../../api/FetchProviderApi';
-import { fetchCategoriesjson, createCategoryjson } from '../../api/FetchCategoriesApi';
-import { submitCertification, updateCertification } from '../../api/AllCertificationsApi';
-import { showToast } from '../../utils/toastUtils';
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import {
+  fetchProvidersjson,
+  createProviderjson,
+} from "../../api/FetchProviderApi";
+import {
+  fetchCategoriesjson,
+  createCategoryjson,
+} from "../../api/FetchCategoriesApi";
+import {
+  submitCertification,
+  updateCertification,
+} from "../../api/AllCertificationsApi";
+import { showToast } from "../../utils/toastUtils";
 
 interface Provider {
   id: string;
@@ -44,7 +53,6 @@ interface CertificationFormModalProps {
   initialValues: any;
 }
 
-
 const CertificationFormModal: React.FC<CertificationFormModalProps> = ({
   open,
   onClose,
@@ -52,25 +60,39 @@ const CertificationFormModal: React.FC<CertificationFormModalProps> = ({
   initialValues,
 }) => {
   const theme = useTheme();
-  const [certificationName, setCertificationName] = useState(initialValues.certification_name || '');
-  const [description, setDescription] = useState(initialValues.description || '');
-  const [criticality, setCriticality] = useState(initialValues.critical || '');
-  const [officialLink, setOfficialLink] = useState(initialValues.official_link || '');
+  const [certificationName, setCertificationName] = useState(
+    initialValues.certification_name || ""
+  );
+  const [description, setDescription] = useState(
+    initialValues.description || ""
+  );
+  const [criticality, setCriticality] = useState(initialValues.critical || "");
+  const [officialLink, setOfficialLink] = useState(
+    initialValues.official_link || ""
+  );
   const [provider, setProvider] = useState<Provider | null>(null);
   const [tags, setTags] = useState<Tag[]>([]);
-  const [nominationStatus, setNominationStatus] = useState(initialValues.nomination_status || '');
-  const [nominationOpenDate, setNominationOpenDate] = useState<dayjs.Dayjs | null>(
-    initialValues.nomination_open_date ? dayjs(initialValues.nomination_open_date) : null,
+  const [nominationStatus, setNominationStatus] = useState(
+    initialValues.nomination_status || ""
   );
-  const [nominationCloseDate, setNominationCloseDate] = useState<dayjs.Dayjs | null>(
-    initialValues.nomination_close_date ? dayjs(initialValues.nomination_close_date) : null,
-  );
+  const [nominationOpenDate, setNominationOpenDate] =
+    useState<dayjs.Dayjs | null>(
+      initialValues.nomination_open_date
+        ? dayjs(initialValues.nomination_open_date)
+        : null
+    );
+  const [nominationCloseDate, setNominationCloseDate] =
+    useState<dayjs.Dayjs | null>(
+      initialValues.nomination_close_date
+        ? dayjs(initialValues.nomination_close_date)
+        : null
+    );
   const [providers, setProviders] = useState<Provider[]>([]);
   const [categories, setCategories] = useState<Tag[]>([]);
   const [openCreateProviderModal, setOpenCreateProviderModal] = useState(false);
   const [openCreateCategoryModal, setOpenCreateCategoryModal] = useState(false);
-  const [newProvider, setNewProvider] = useState('');
-  const [newCategory, setNewCategory] = useState('');
+  const [newProvider, setNewProvider] = useState("");
+  const [newCategory, setNewCategory] = useState("");
 
   useEffect(() => {
     const loadProviders = async () => {
@@ -78,11 +100,11 @@ const CertificationFormModal: React.FC<CertificationFormModalProps> = ({
         const data = await fetchProvidersjson();
         setProviders(data);
         if (initialValues.provider) {
-          const provider = data.find(p => p.name === initialValues.provider);
+          const provider = data.find((p) => p.name === initialValues.provider);
           setProvider(provider || null);
         }
       } catch (error) {
-        showToast('Failed to load providers', 'error');
+        showToast("Failed to load providers", "error");
       }
     };
 
@@ -91,11 +113,13 @@ const CertificationFormModal: React.FC<CertificationFormModalProps> = ({
         const data = await fetchCategoriesjson();
         setCategories(data);
         if (initialValues.tags) {
-          const selectedTags = data.filter(c => initialValues.tags.includes(c.name));
+          const selectedTags = data.filter((c) =>
+            initialValues.tags.includes(c.name)
+          );
           setTags(selectedTags);
         }
       } catch (error) {
-        showToast('Failed to load categories', 'error');
+        showToast("Failed to load categories", "error");
       }
     };
 
@@ -111,13 +135,16 @@ const CertificationFormModal: React.FC<CertificationFormModalProps> = ({
     setNominationStatus(event.target.value as string);
   };
 
-  const handleProviderChange = (event: React.SyntheticEvent, newValue: Provider | null) => {
+  const handleProviderChange = (
+    event: React.SyntheticEvent,
+    newValue: Provider | null
+  ) => {
     setProvider(newValue);
   };
 
   const handleTagChange = (event: React.SyntheticEvent, value: Tag[]) => {
     if (value.length > 6) {
-      showToast('Only 6 tags allowed', 'error');
+      showToast("Only 6 tags allowed", "error");
       return;
     }
     setTags(value);
@@ -128,11 +155,11 @@ const CertificationFormModal: React.FC<CertificationFormModalProps> = ({
       const createdProvider = await createProviderjson(newProvider);
       setProviders([...providers, createdProvider]);
       setProvider(createdProvider);
-      setNewProvider('');
+      setNewProvider("");
       setOpenCreateProviderModal(false);
-      showToast('Provider created successfully!', 'success');
+      showToast("Provider created successfully!", "success");
     } catch (error) {
-      showToast('Failed to create provider', 'error');
+      showToast("Failed to create provider", "error");
     }
   };
 
@@ -141,40 +168,45 @@ const CertificationFormModal: React.FC<CertificationFormModalProps> = ({
       const createdCategory = await createCategoryjson(newCategory);
       setCategories([...categories, createdCategory]);
       setTags([...tags, createdCategory]);
-      setNewCategory('');
+      setNewCategory("");
       setOpenCreateCategoryModal(false);
-      showToast('Category created successfully!', 'success');
+      showToast("Category created successfully!", "success");
     } catch (error) {
-      showToast('Failed to create category', 'error');
+      showToast("Failed to create category", "error");
     }
   };
 
   const validateForm = () => {
-    if (!certificationName || !description || !criticality || !officialLink || !nominationStatus) {
+    if (
+      !certificationName ||
+      !description ||
+      !criticality ||
+      !officialLink ||
+      !nominationStatus
+    ) {
       return false;
     }
 
     if (!provider) {
       return false;
     }
-  
+
     if (tags.length === 0) {
       return false;
     }
-  
-    if (nominationStatus === 'Accepting') {
+
+    if (nominationStatus === "Accepting") {
       if (!nominationOpenDate || !nominationCloseDate) {
         return false;
       }
     }
-  
+
     return true;
   };
 
-  
   const handleSubmit = async () => {
     if (!validateForm()) {
-      showToast('Please fill in all required fields', 'error');
+      showToast("Please fill in all required fields", "error");
       return;
     }
     const values = {
@@ -182,8 +214,8 @@ const CertificationFormModal: React.FC<CertificationFormModalProps> = ({
       description,
       critical: criticality,
       official_link: officialLink,
-      provider: provider?.name || '',
-      tags: tags.map(tag => tag.name),
+      provider: provider?.name || "",
+      tags: tags.map((tag) => tag.name),
       nomination_status: nominationStatus,
       nomination_open_date: nominationOpenDate?.toISOString() || null,
       nomination_close_date: nominationCloseDate?.toISOString() || null,
@@ -196,9 +228,9 @@ const CertificationFormModal: React.FC<CertificationFormModalProps> = ({
         await submitCertification(values); // Create new certification
       }
       onSubmit(values);
-      showToast('Certification submitted successfully!', 'success');
+      showToast("Certification submitted successfully!", "success");
     } catch (error) {
-      showToast('Failed to submit certification', 'error');
+      showToast("Failed to submit certification", "error");
     }
   };
 
@@ -206,7 +238,9 @@ const CertificationFormModal: React.FC<CertificationFormModalProps> = ({
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-          <DialogTitle>{initialValues.id ? 'Edit Certification' : 'Add Certification'}</DialogTitle>
+          <DialogTitle>
+            {initialValues.id ? "Edit Certification" : "Add Certification"}
+          </DialogTitle>
           <DialogContent>
             <Stack spacing={2}>
               <TextField
@@ -217,10 +251,10 @@ const CertificationFormModal: React.FC<CertificationFormModalProps> = ({
                 required
                 InputLabelProps={{
                   style: {
-                    backgroundColor: 'white',
-                    padding: '0 4px',
-                    marginTop: '5px', // Add margin to avoid overlap
-                  }
+                    backgroundColor: "white",
+                    padding: "0 4px",
+                    marginTop: "5px", // Add margin to avoid overlap
+                  },
                 }}
               />
               <TextField
@@ -233,15 +267,24 @@ const CertificationFormModal: React.FC<CertificationFormModalProps> = ({
                 required
                 InputLabelProps={{
                   style: {
-                    backgroundColor: 'white',
-                    padding: '0 4px',
-                  }
+                    backgroundColor: "white",
+                    padding: "0 4px",
+                  },
                 }}
               />
               <Stack direction="row" spacing={2}>
                 <FormControl fullWidth>
-                  <InputLabel sx={{ backgroundColor: 'white', padding: '0 4px' }}>Criticality</InputLabel>
-                  <Select value={criticality} required onChange={handleCriticalityChange} required>
+                  <InputLabel
+                    sx={{ backgroundColor: "white", padding: "0 4px" }}
+                  >
+                    Criticality
+                  </InputLabel>
+                  <Select
+                    value={criticality}
+                    required
+                    onChange={handleCriticalityChange}
+                    required
+                  >
                     <MenuItem value="High">High</MenuItem>
                     <MenuItem value="Medium">Medium</MenuItem>
                     <MenuItem value="Low">Low</MenuItem>
@@ -255,97 +298,141 @@ const CertificationFormModal: React.FC<CertificationFormModalProps> = ({
                   required
                   InputLabelProps={{
                     style: {
-                      backgroundColor: 'white',
-                      padding: '0 4px',
-                    }
+                      backgroundColor: "white",
+                      padding: "0 4px",
+                    },
                   }}
                 />
               </Stack>
               <Stack direction="row" spacing={2}>
-  <Stack direction="row" spacing={1} alignItems="center" flexGrow={1}>
-    <Autocomplete
-      sx={{ width: '25vw' }}
-      options={providers}
-      value={provider}
-      required
-      onChange={handleProviderChange}
-      getOptionLabel={(option) => option.name || ''}
-      renderInput={(params) => (
-        <TextField 
-          {...params} 
-          label="Provider" 
-          fullWidth 
-          InputLabelProps={{ 
-            style: { backgroundColor: 'white', padding: '0 4px' } 
-          }} 
-        />
-      )}
-    />
-    <IconButton onClick={() => setOpenCreateProviderModal(true)}>
-      <AddIcon />
-    </IconButton>
-  </Stack>
-  <Stack direction="row" spacing={1} alignItems="center" flexGrow={1}>
-    <Autocomplete
-      sx={{ width: '25vw' }}
-      multiple
-      options={categories}
-      value={tags}
-      required
-      onChange={handleTagChange}
-      getOptionLabel={(option) => option.name || ''}
-      renderTags={(value, getTagProps) =>
-        value.map((option, index) => (
-          <Chip
-            key={option.id}
-            label={option.name}
-            {...getTagProps({ index })}
-            sx={{ backgroundColor: theme.palette.grey[300] }}
-          />
-        ))
-      }
-      renderInput={(params) => (
-        <TextField 
-          {...params} 
-          label="Categories" 
-          fullWidth 
-          InputLabelProps={{ 
-            style: { backgroundColor: 'white', padding: '0 4px' } 
-          }} 
-        />
-      )}
-    />
-    <IconButton onClick={() => setOpenCreateCategoryModal(true)}>
-      <AddIcon />
-    </IconButton>
-  </Stack>
-</Stack>
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  alignItems="center"
+                  flexGrow={1}
+                >
+                  <Autocomplete
+                    sx={{ width: "25vw" }}
+                    options={providers}
+                    value={provider}
+                    required
+                    onChange={handleProviderChange}
+                    getOptionLabel={(option) => option.name || ""}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Provider"
+                        fullWidth
+                        InputLabelProps={{
+                          style: { backgroundColor: "white", padding: "0 4px" },
+                        }}
+                      />
+                    )}
+                  />
+                  <IconButton onClick={() => setOpenCreateProviderModal(true)}>
+                    <AddIcon />
+                  </IconButton>
+                </Stack>
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  alignItems="center"
+                  flexGrow={1}
+                >
+                  <Autocomplete
+                    sx={{ width: "25vw" }}
+                    multiple
+                    options={categories}
+                    value={tags}
+                    required
+                    onChange={handleTagChange}
+                    getOptionLabel={(option) => option.name || ""}
+                    renderTags={(value, getTagProps) =>
+                      value.map((option, index) => (
+                        <Chip
+                          key={option.id}
+                          label={option.name}
+                          {...getTagProps({ index })}
+                          sx={{ backgroundColor: theme.palette.grey[300] }}
+                        />
+                      ))
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Categories"
+                        fullWidth
+                        InputLabelProps={{
+                          style: { backgroundColor: "white", padding: "0 4px" },
+                        }}
+                      />
+                    )}
+                  />
+                  <IconButton onClick={() => setOpenCreateCategoryModal(true)}>
+                    <AddIcon />
+                  </IconButton>
+                </Stack>
+              </Stack>
               <Stack direction="row" spacing={2}>
-                <FormControl sx={{width:"30vw"}} required>
-                  <InputLabel sx={{ backgroundColor: 'white', padding: '0 4px' }}>Nomination Status</InputLabel>
-                  <Select value={nominationStatus} required onChange={handleNominationStatusChange}>
+                <FormControl sx={{ width: "30vw" }} required>
+                  <InputLabel
+                    sx={{ backgroundColor: "white", padding: "0 4px" }}
+                  >
+                    Nomination Status
+                  </InputLabel>
+                  <Select
+                    value={nominationStatus}
+                    required
+                    onChange={handleNominationStatusChange}
+                  >
                     <MenuItem value="Accepting">Accepting</MenuItem>
                     <MenuItem value="Not Accepting">Not Accepting</MenuItem>
-                    <MenuItem value="Always Accepting">Always Accepting</MenuItem>
+                    <MenuItem value="Always Accepting">
+                      Always Accepting
+                    </MenuItem>
                   </Select>
                 </FormControl>
-              {nominationStatus === 'Accepting' && (
-                <Stack direction="row" spacing={2}>
-                  <DatePicker
-                    label="Nomination Open Date"
-                    value={nominationOpenDate}
-                    onChange={(newValue) => setNominationOpenDate(newValue)}
-                    renderInput={(params) => <TextField {...params} fullWidth required InputLabelProps={{ style: { backgroundColor: 'white', padding: '0 4px' } }} />}
-                  />
-                  <DatePicker
-                    label="Nomination Close Date"
-                    value={nominationCloseDate}
-                    onChange={(newValue) => setNominationCloseDate(newValue)}
-                    minDate={nominationOpenDate}
-                    renderInput={(params) => <TextField {...params} fullWidth required InputLabelProps={{ style: { backgroundColor: 'white', padding: '0 4px' } }} />}
-                  />
-                </Stack>
-              )}
+                {nominationStatus === "Accepting" && (
+                  <Stack direction="row" spacing={2}>
+                    <DatePicker
+                      label="Nomination Open Date"
+                      value={nominationOpenDate}
+                      onChange={(newValue) => setNominationOpenDate(newValue)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          fullWidth
+                          required
+                          InputLabelProps={{
+                            style: {
+                              backgroundColor: "white",
+                              padding: "0 4px",
+                            },
+                          }}
+                        />
+                      )}
+                    />
+                    <DatePicker
+                      label="Nomination Close Date"
+                      value={nominationCloseDate}
+                      onChange={(newValue) => setNominationCloseDate(newValue)}
+                      minDate={nominationOpenDate}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          fullWidth
+                          required
+                          InputLabelProps={{
+                            style: {
+                              backgroundColor: "white",
+                              padding: "0 4px",
+                            },
+                          }}
+                        />
+                      )}
+                    />
+                  </Stack>
+                )}
               </Stack>
             </Stack>
           </DialogContent>
@@ -358,19 +445,23 @@ const CertificationFormModal: React.FC<CertificationFormModalProps> = ({
               variant="contained"
               color="primary"
               sx={{
-                fontWeight: 'bold',
+                fontWeight: "bold",
                 padding: 1,
-                marginLeft: 'auto',
+                marginLeft: "auto",
                 marginRight: 2,
               }}
               disabled={!validateForm()}
             >
-              {initialValues.id ? 'Update' : 'Submit'}
+              {initialValues.id ? "Update" : "Submit"}
             </Button>
           </DialogActions>
         </Dialog>
       </LocalizationProvider>
-      <Dialog open={openCreateProviderModal} onClose={() => setOpenCreateProviderModal(false)} fullWidth>
+      <Dialog
+        open={openCreateProviderModal}
+        onClose={() => setOpenCreateProviderModal(false)}
+        fullWidth
+      >
         <DialogTitle>Create Provider</DialogTitle>
         <DialogContent>
           <TextField
@@ -381,14 +472,17 @@ const CertificationFormModal: React.FC<CertificationFormModalProps> = ({
             required
             InputLabelProps={{
               style: {
-                backgroundColor: 'white',
-                padding: '0 4px',
-              }
+                backgroundColor: "white",
+                padding: "0 4px",
+              },
             }}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenCreateProviderModal(false)} color="primary">
+          <Button
+            onClick={() => setOpenCreateProviderModal(false)}
+            color="primary"
+          >
             Cancel
           </Button>
           <Button onClick={handleCreateProvider} color="primary">
@@ -396,7 +490,11 @@ const CertificationFormModal: React.FC<CertificationFormModalProps> = ({
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={openCreateCategoryModal} onClose={() => setOpenCreateCategoryModal(false)} fullWidth>
+      <Dialog
+        open={openCreateCategoryModal}
+        onClose={() => setOpenCreateCategoryModal(false)}
+        fullWidth
+      >
         <DialogTitle>Create Category</DialogTitle>
         <DialogContent>
           <TextField
@@ -407,14 +505,17 @@ const CertificationFormModal: React.FC<CertificationFormModalProps> = ({
             required
             InputLabelProps={{
               style: {
-                backgroundColor: 'white',
-                padding: '0 4px',
-              }
+                backgroundColor: "white",
+                padding: "0 4px",
+              },
             }}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenCreateCategoryModal(false)} color="primary">
+          <Button
+            onClick={() => setOpenCreateCategoryModal(false)}
+            color="primary"
+          >
             Cancel
           </Button>
           <Button onClick={handleCreateCategory} color="primary">

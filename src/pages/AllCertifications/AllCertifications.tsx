@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchCertifications } from "../../api/AllCertificationsApi";
 import { Box, Typography } from "@mui/material";
 import { InfoOutlined } from "@mui/icons-material";
-import { ThreeDots } from 'react-loader-spinner'; // Import professional spinner
+import { ThreeDots } from "react-loader-spinner"; // Import professional spinner
 import styles from "./AllCertifications.module.css";
 import CertificationCard from "../../components/CertificationCard/CertificationCard";
 import FilterChips from "../../components/FilterChipsBox/FilterChips";
@@ -11,15 +11,21 @@ import TopFilter from "../../components/TopFilter/TopFilter";
 import LeftFilter from "../../components/LeftFilter/LeftFilter";
 import CertificationCardViewModal from "../../components/CertificationCardViewModal/CertificationCardViewModal";
 import NominationFormModal from "../../components/NominationFormModal/NominationFormModal";
-import { SortOption, CertificationLevel, CertificationData } from "../../types/AllCertifications.types";
+import {
+  SortOption,
+  CertificationLevel,
+  CertificationData,
+} from "../../types/AllCertifications.types";
 
-const CACHE_KEY = 'certifications_data';
+const CACHE_KEY = "certifications_data";
 const CACHE_EXPIRY = 1000 * 60 * 5; // 5 minutes
 
 const AllCertifications: React.FC = () => {
   const [data, setData] = useState<CertificationData[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedLevel, setSelectedLevel] = useState<CertificationLevel | "all">("all");
+  const [selectedLevel, setSelectedLevel] = useState<
+    CertificationLevel | "all"
+  >("all");
   const [sortOption, setSortOption] = useState<SortOption>("latest");
   const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -28,22 +34,27 @@ const AllCertifications: React.FC = () => {
   // State to manage modals visibility and content
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [nominationModalOpen, setNominationModalOpen] = useState(false);
-  const [selectedCertification, setSelectedCertification] = useState<CertificationData | null>(null);
+  const [selectedCertification, setSelectedCertification] =
+    useState<CertificationData | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const cachedData = localStorage.getItem(CACHE_KEY);
-        const cacheTime = localStorage.getItem(CACHE_KEY + '_time');
+        const cacheTime = localStorage.getItem(CACHE_KEY + "_time");
         const currentTime = new Date().getTime();
 
-        if (cachedData && cacheTime && (currentTime - parseInt(cacheTime) < CACHE_EXPIRY)) {
+        if (
+          cachedData &&
+          cacheTime &&
+          currentTime - parseInt(cacheTime) < CACHE_EXPIRY
+        ) {
           setData(JSON.parse(cachedData));
         } else {
           const certifications = await fetchCertifications();
           setData(certifications);
           localStorage.setItem(CACHE_KEY, JSON.stringify(certifications));
-          localStorage.setItem(CACHE_KEY + '_time', currentTime.toString());
+          localStorage.setItem(CACHE_KEY + "_time", currentTime.toString());
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -82,10 +93,14 @@ const AllCertifications: React.FC = () => {
         setSortOption("latest");
         break;
       case "selectedProviders":
-        setSelectedProviders(prev => prev.filter(provider => provider !== value));
+        setSelectedProviders((prev) =>
+          prev.filter((provider) => provider !== value)
+        );
         break;
       case "selectedCategories":
-        setSelectedCategories(prev => prev.filter(category => category !== value));
+        setSelectedCategories((prev) =>
+          prev.filter((category) => category !== value)
+        );
         break;
       default:
         break;
@@ -198,8 +213,12 @@ const AllCertifications: React.FC = () => {
             </Box>
           ) : (
             <div className={styles.cardDisplay}>
-              {filteredData.map(cert => (
-                <CertificationCard key={cert.id} {...cert} onClick={() => handleCardClick(cert)} />
+              {filteredData.map((cert) => (
+                <CertificationCard
+                  key={cert.id}
+                  {...cert}
+                  onClick={() => handleCardClick(cert)}
+                />
               ))}
             </div>
           )}
@@ -217,8 +236,8 @@ const AllCertifications: React.FC = () => {
           tags={selectedCertification.tags}
           officialLink={selectedCertification.officialLink}
           nominationStatus={selectedCertification.nominationStatus}
-          nominationOpenDate={selectedCertification.nominationOpenDate} 
-          nominationCloseDate={selectedCertification.nominationCloseDate} 
+          nominationOpenDate={selectedCertification.nominationOpenDate}
+          nominationCloseDate={selectedCertification.nominationCloseDate}
           onNominate={handleNominateClick}
         />
       )}
@@ -229,8 +248,8 @@ const AllCertifications: React.FC = () => {
           onClose={handleCloseNominationModal}
           id={selectedCertification.id}
           certificationName={selectedCertification.certificationName}
-          nominationOpenDate={selectedCertification.nominationOpenDate} 
-          nominationCloseDate={selectedCertification.nominationCloseDate} 
+          nominationOpenDate={selectedCertification.nominationOpenDate}
+          nominationCloseDate={selectedCertification.nominationCloseDate}
           nominationStatus={selectedCertification.nominationStatus}
         />
       )}

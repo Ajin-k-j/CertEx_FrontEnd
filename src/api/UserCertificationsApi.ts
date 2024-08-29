@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 // Define the interface for the certification data
 interface Certification {
@@ -25,21 +25,22 @@ export interface Row {
 // Function to fetch certifications
 export const fetchCertifications = async (): Promise<Row[]> => {
   try {
-    const response = await axios.get<{ user_id: number; certifications: Certification[] }>(
-      '../../public/Data/User1_CertificateData.json'
-    );
+    const response = await axios.get<{
+      user_id: number;
+      certifications: Certification[];
+    }>("../../public/Data/User1_CertificateData.json");
     const data = response.data.certifications;
     return data.map((item) => ({
       id: item.certification_id,
-      certificationName: item['Certification Name'],
+      certificationName: item["Certification Name"],
       provider: item.Provider,
       level: item.Level,
       category: item.Category,
-      fromDate: item['From Date'],
-      expiryDate: item['Expiry Date'],
+      fromDate: item["From Date"],
+      expiryDate: item["Expiry Date"],
     }));
   } catch (error) {
-    console.error('Error fetching data:', error);
-    throw new Error('Error fetching data');
+    console.error("Error fetching data:", error);
+    throw new Error("Error fetching data");
   }
 };

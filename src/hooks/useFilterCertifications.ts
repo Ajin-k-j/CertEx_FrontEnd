@@ -1,8 +1,10 @@
 // src/hooks/useFilterCertifications.ts
 import { useState, useEffect, useCallback } from "react";
 import { CertificationData } from "../types/AllCertifications.types";
-import { CertificationLevel, SortOption } from "../types/AllCertifications.types";
-
+import {
+  CertificationLevel,
+  SortOption,
+} from "../types/AllCertifications.types";
 
 interface UseFilterCertificationsProps {
   data: CertificationData[];
@@ -27,22 +29,24 @@ const useFilterCertifications = ({
     let result = data;
 
     if (searchQuery) {
-      result = result.filter(item =>
+      result = result.filter((item) =>
         item.certificationName.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
     if (selectedLevel !== "all") {
-      result = result.filter(item => item.level === selectedLevel);
+      result = result.filter((item) => item.level === selectedLevel);
     }
 
     if (selectedProviders.length > 0) {
-      result = result.filter(item => selectedProviders.includes(item.providerName));
+      result = result.filter((item) =>
+        selectedProviders.includes(item.providerName)
+      );
     }
 
     if (selectedCategories.length > 0) {
-      result = result.filter(item =>
-        item.tags.some(tag => selectedCategories.includes(tag))
+      result = result.filter((item) =>
+        item.tags.some((tag) => selectedCategories.includes(tag))
       );
     }
 
@@ -69,7 +73,14 @@ const useFilterCertifications = ({
     }
 
     setFilteredData(result);
-  }, [data, searchQuery, selectedLevel, sortOption, selectedProviders, selectedCategories]);
+  }, [
+    data,
+    searchQuery,
+    selectedLevel,
+    sortOption,
+    selectedProviders,
+    selectedCategories,
+  ]);
 
   useEffect(() => {
     applyFilters();

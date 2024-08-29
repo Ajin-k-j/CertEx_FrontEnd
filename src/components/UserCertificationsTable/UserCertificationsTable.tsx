@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  DataGrid,
-  GridColDef,
-} from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import {
   TextField,
   Box,
@@ -176,7 +173,7 @@ const UserCertificationsTable: React.FC = () => {
             gap: 2,
             width: "100%",
             boxSizing: "border-box",
-            marginLeft:1
+            marginLeft: 1,
           }}
         >
           <Box
@@ -278,13 +275,13 @@ const UserCertificationsTable: React.FC = () => {
               <DataGrid
                 rows={filteredRows}
                 columns={columns}
-              //   pagination={{
-              //   pageSize: 5,
-              //  rowsPerPageOptions: [5, 10, 15],
-              // }}
-  rowHeight={40}
-  sx={{ width: "100%" }}
-/>
+                //   pagination={{
+                //   pageSize: 5,
+                //  rowsPerPageOptions: [5, 10, 15],
+                // }}
+                rowHeight={40}
+                sx={{ width: "100%" }}
+              />
             </Box>
           )}
         </Paper>
