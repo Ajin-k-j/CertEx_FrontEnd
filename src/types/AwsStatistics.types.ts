@@ -1,5 +1,4 @@
 export interface AwsStatistics {
-  totalAccounts: string;
-  activeAccounts: number;
-  inactiveAccounts: number;
+    totalAwsNominations: number;
+    pendingNominations: number;
 }

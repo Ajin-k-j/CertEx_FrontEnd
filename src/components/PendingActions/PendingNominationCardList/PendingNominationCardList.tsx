@@ -1,3 +1,5 @@
+import React from 'react';
+import { Card, CardContent, Grid, Typography, Button } from '@mui/material';
 import React, { useState } from "react";
 import { Card, CardContent, Grid, Typography, Button } from "@mui/material";
 import PendingNominationModal from "../PendingActionsModal/PendingActionsModal";
@@ -16,8 +18,10 @@ interface Nomination {
 
 interface PendingNominationCardProps {
   nomination: Nomination;
+  onViewApproveClick: (nomination: Nomination) => void;
 }
 
+const PendingNominationCard: React.FC<PendingNominationCardProps> = ({ nomination, onViewApproveClick }) => {
 const PendingNominationCard: React.FC<PendingNominationCardProps> = ({
   nomination,
 }) => {
@@ -33,6 +37,9 @@ const PendingNominationCard: React.FC<PendingNominationCardProps> = ({
 
   return (
     <>
+      <Card variant="outlined" sx={{ borderRadius: '8px', backgroundColor: 'white' }}>
+        <CardContent sx={{ padding: '8px !important' }}>
+          <Grid container spacing={1.8} alignItems="center"  wrap="nowrap">
       <Card
         variant="outlined"
         sx={{ borderRadius: "8px", backgroundColor: "white" }}
@@ -69,10 +76,12 @@ const PendingNominationCard: React.FC<PendingNominationCardProps> = ({
                 {nomination.criticality}
               </Typography>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               <Button
                 variant="outlined"
                 size="small"
+                sx={{ fontSize: '0.75rem', borderRadius: '8px' }}
+                onClick={() => onViewApproveClick(nomination)}
                 sx={{
                   fontSize: "0.75rem",
                   padding: "4px 8px",
@@ -86,13 +95,7 @@ const PendingNominationCard: React.FC<PendingNominationCardProps> = ({
           </Grid>
         </CardContent>
       </Card>
-
-      <PendingNominationModal
-        nomination={nomination}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-      />
-    </>
+  </>
   );
 };
 

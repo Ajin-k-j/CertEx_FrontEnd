@@ -1,10 +1,15 @@
-import { useState } from "react";
+
+import { useState } from 'react';
 import PendingNominationsTable from "../../components/PendingActions/PendingActionsTable/PendingActionsTable";
-import { fetchPendingNominations } from "../../api/PendingActionTableAPI";
-import CertificationChartss from "../../components/LDAdminBarGraph/LDAdminBarGraph";
-import DashboardActions from "../../components/DashboardActions/DashboardActions";
+import { fetchPendingNominations } from '../../api/PendingActionTableAPI';
+import CertificationChartss from '../../components/BarGraph/LDAdminBarGraph/LDAdminBarGraph';
+import DashboardActions from '../../components/DashboardActions/DashboardActions';
 import PendingNominationCard from "../../components/PendingActions/PendingNominationCardList/PendingNominationCardList";
-import CertificationManagementPage from "../../components/AllCertificationsAdmin/AllCertificationsManagement";
+import CertificationManagementPage from '../../components/AllCertificationsAdmin/AllCertificationsManagement';
+import LdNominationTable from '../../components/LdNominationTable/LdNominationTable';
+import { Grid } from "@mui/material";
+
+
 
 const LDAdminDashboard = () => {
   const [openCertificationModal, setOpenCertificationModal] = useState(false);
@@ -37,27 +42,59 @@ const LDAdminDashboard = () => {
   };
 
   return (
-    <>
-      <div style={{ display: "flex", justifyContent: "space-around" }}>
-        <CertificationChartss />
+
+
+    <Grid container spacing={1} sx={{ padding: ".1rem" }}>
+      {/* Left Column */}
+      <Grid item xs={12} md={8} lg={6}>
+        <Grid container spacing={1} direction="column">
+          <Grid item>
+            <CertificationChartss />
+          </Grid>
+          <Grid item>
+            <DashboardActions buttons={ldButtons} />
+          </Grid>
+        </Grid>
+      </Grid>
+    
+      {/* Right Column */}
+      <Grid item xs={12} md={4} lg={5.7}>
         <PendingNominationsTable
           fetchNominations={fetchPendingNominations}
           itemsPerPage={3}
           CardComponent={PendingNominationCard}
-          containerHeight="230px"
-          containerWidth="455vw"
+          containerHeight="73.6vh"
+          containerWidth="100%" // Use full width of the grid item
         />
-      </div>
-      <DashboardActions title="Admin Controls" buttons={ldButtons} />
-
+      </Grid>
+    
+      {/* Full-width Row for LdNominationTable */}
+      <Grid item xs={12}>
+        <LdNominationTable />
+      </Grid>
+    
+      {/* Conditional Rendering of CertificationManagementPage Modal */}
       {openCertificationModal && (
-        <CertificationManagementPage
-          open={openCertificationModal}
-          onClose={handleCloseModal}
-        />
+        <Grid item xs={12}>
+          <CertificationManagementPage
+            open={openCertificationModal}
+            onClose={handleCloseModal}
+          />
+        </Grid>
       )}
-    </>
+    </Grid>
+    
+    
   );
 };
 
 export default LDAdminDashboard;
+
+
+
+
+
+
+
+
+

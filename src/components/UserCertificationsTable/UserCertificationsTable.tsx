@@ -24,7 +24,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
 import { fetchCertifications, Row } from "../../api/UserCertificationsApi";
 
-// Define your component
 const UserCertificationsTable: React.FC = () => {
   const [rows, setRows] = useState<Row[]>([]);
   const [filteredRows, setFilteredRows] = useState<Row[]>([]);
@@ -40,12 +39,25 @@ const UserCertificationsTable: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
   useEffect(() => {
     const loadCertifications = async () => {
       try {
         const data = await fetchCertifications();
-        setRows(data);
-        setFilteredRows(data);
+        const formattedData = data.map(row => ({
+          ...row,
+          fromDate: formatDate(row.fromDate),
+          expiryDate: formatDate(row.expiryDate),
+        }));
+        setRows(formattedData);
+        setFilteredRows(formattedData);
       } catch {
         setError("Failed to load data");
       } finally {
@@ -60,7 +72,7 @@ const UserCertificationsTable: React.FC = () => {
     const lowercasedQuery = searchQuery.toLowerCase();
     const filtered = rows.filter(
       (row) =>
-        (selectedProvider === "" || row.provider === selectedProvider) &&
+        (selectedProvider === "" || row.providerName === selectedProvider) &&
         Object.values(row).some((value) =>
           String(value).toLowerCase().includes(lowercasedQuery)
         )
@@ -118,7 +130,7 @@ const UserCertificationsTable: React.FC = () => {
       width: isMobile ? 150 : isTablet ? 220 : 290,
     },
     {
-      field: "provider",
+      field: "providerName",
       headerName: "Provider",
       width: isMobile ? 80 : isTablet ? 90 : 120,
     },
@@ -163,7 +175,7 @@ const UserCertificationsTable: React.FC = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box sx={{ overflow: "hidden", alignItems: "center" }}>
+      <Box sx={{ overflow: "hidden", width: "100%", margin: 1.5 }}>
         <Paper
           sx={{
             p: 2,
@@ -173,7 +185,6 @@ const UserCertificationsTable: React.FC = () => {
             gap: 2,
             width: "100%",
             boxSizing: "border-box",
-            marginLeft: 1,
           }}
         >
           <Box
@@ -182,6 +193,7 @@ const UserCertificationsTable: React.FC = () => {
               justifyContent: "space-between",
               flexDirection: isMobile ? "column" : "row",
               alignItems: isMobile ? "flex-start" : "center",
+              width: "100%",
             }}
           >
             <Typography variant={isMobile ? "h6" : "h5"}>
@@ -194,6 +206,7 @@ const UserCertificationsTable: React.FC = () => {
                 alignItems: "center",
                 gap: isMobile ? 1 : 2,
                 width: isMobile ? "100%" : "auto",
+                justifyContent: "flex-end",
               }}
             >
               <TextField
@@ -219,10 +232,10 @@ const UserCertificationsTable: React.FC = () => {
                   label="Provider"
                 >
                   <MenuItem value="">All</MenuItem>
-                  {Array.from(new Set(rows.map((row) => row.provider))).map(
-                    (provider) => (
-                      <MenuItem key={provider} value={provider}>
-                        {provider}
+                  {Array.from(new Set(rows.map((row) => row.providerName))).map(
+                    (providerName) => (
+                      <MenuItem key={providerName} value={providerName}>
+                        {providerName}
                       </MenuItem>
                     )
                   )}
@@ -275,12 +288,21 @@ const UserCertificationsTable: React.FC = () => {
               <DataGrid
                 rows={filteredRows}
                 columns={columns}
-                //   pagination={{
-                //   pageSize: 5,
-                //  rowsPerPageOptions: [5, 10, 15],
-                // }}
                 rowHeight={40}
-                sx={{ width: "100%" }}
+                sx={{
+                  width: "100%",
+                  "& .MuiDataGrid-cell": {
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    "&[title]": {
+                      pointerEvents: "none",
+                    },
+                  },
+                  "& .MuiDataGrid-cell:focus": {
+                    outline: "none",
+                  },
+                }}
               />
             </Box>
           )}
@@ -299,17 +321,16 @@ const UserCertificationsTable: React.FC = () => {
               transform: "translate(-50%, -50%)",
               width: isMobile ? "90%" : 500,
               bgcolor: "background.paper",
-              borderRadius: 2,
+              borderRadius: 7,
               boxShadow: 24,
               p: 3,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              borderTop: `8px solid ${
-                selectedRow
-                  ? getModalBorderColor(selectedRow.level)
-                  : "transparent"
-              }`,
+              borderTop: 4,
+              borderColor: selectedRow
+                ? getModalBorderColor(selectedRow.level)
+                : "transparent",
             }}
           >
             <IconButton
@@ -330,7 +351,7 @@ const UserCertificationsTable: React.FC = () => {
               <strong>Certification Name:</strong>{" "}
               {selectedRow?.certificationName}
               <br />
-              <strong>Provider:</strong> {selectedRow?.provider}
+              <strong>Provider:</strong> {selectedRow?.providerName}
               <br />
               <strong>Level:</strong> {selectedRow?.level}
               <br />

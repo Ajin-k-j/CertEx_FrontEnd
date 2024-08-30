@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { fetchDepartmentStatistics } from "../../api/DepartmentStatisticsApi";
-import { DepartmentStatistics } from "../../types/DepartmentStatistics.types";
-import StatisticsCard from "../../components/StatisticsCard/StatisticsCard";
-import { Work, Group, Badge } from "@mui/icons-material";
+import React, { useEffect, useState } from 'react';
+import { fetchDepartmentStatistics } from '../../api/DepartmentStatisticsApi';
+import { DepartmentStatistics } from '../../types/DepartmentStatistics.types';
+import StatisticsCard from '../../components/StatisticsCard/StatisticsCard';
+import { Work, Group, Badge } from '@mui/icons-material';
+import { CircularProgress, Box } from '@mui/material';
 
 const DepartmentStatisticsPage: React.FC = () => {
   const [data, setData] = useState<DepartmentStatistics>({
@@ -10,6 +11,7 @@ const DepartmentStatisticsPage: React.FC = () => {
     employees: 0,
     certifications: 0,
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
@@ -18,24 +20,42 @@ const DepartmentStatisticsPage: React.FC = () => {
         setData(fetchedData);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false); // Set loading to false after data is fetched
       }
     };
     loadData();
   }, []);
 
+  const mappedData = {
+    primary: data.department,
+    secondary: data.employees,
+    tertiary: data.certifications,
+  };
+
   const icons = {
-    department: <Work />,
-    employees: <Group />,
-    certifications: <Badge />,
+    primary: <Work />,
+    secondary: <Group />,
+    tertiary: <Badge />,
   };
 
   const labels = {
-    department: "Department",
-    employees: "Employees",
-    certifications: "Certifications",
+    primary: 'Department',
+    secondary: 'Employees',
+    tertiary: 'Certifications',
   };
 
-  return <StatisticsCard data={data} icons={icons} labels={labels} />;
+  return (
+    <div>
+      {loading ? (
+        <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+          <CircularProgress />
+        </Box>
+      ) : (
+        <StatisticsCard data={mappedData} icons={icons} labels={labels} />
+      )}
+    </div>
+  );
 };
 
 export default DepartmentStatisticsPage;

@@ -74,8 +74,9 @@ const SimilarCertifications: React.FC = () => {
     <Box
       sx={{
         maxWidth: 290,
-        m: "2vh",
-        marginLeft: "1vh",
+        height: '38vh',
+        m: '2vh',
+        marginLeft:'1vh',
         backgroundColor: "white",
         padding: "10px",
         borderRadius: "8px",

@@ -1,93 +1,104 @@
-import React from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import React from 'react';
+import { Box, Grid, Typography, CircularProgress } from '@mui/material';
 
 interface StatisticsCardProps {
   data: {
-    department: string;
-    employees: number;
-    certifications: number;
+    primary?: string;
+    secondary?: number;
+    tertiary?: number;
   };
   icons: {
-    department: React.ReactElement;
-    employees: React.ReactElement;
-    certifications: React.ReactElement;
+    primary?: React.ReactElement;
+    secondary?: React.ReactElement;
+    tertiary?: React.ReactElement;
   };
   labels: {
-    department: string;
-    employees: string;
-    certifications: string;
+    primary?: string;
+    secondary?: string;
+    tertiary?: string;
   };
+  loading?: boolean;
 }
 
-const StatisticsCard: React.FC<StatisticsCardProps> = ({
-  data,
-  icons,
-  labels,
-}) => {
-  const isEmpty = Object.values(data).every(
-    (value) => value === "" || value === 0
-  );
+const StatisticsCard: React.FC<StatisticsCardProps> = ({ data, icons, labels, loading = false }) => {
+  const isEmpty = Object.values(data).every((value) => value === '' || value === 0);
 
   return (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "white",
-        borderRadius: "20px",
-        padding: "15px",
-        boxShadow: "none",
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        backgroundColor: 'white',
+        borderRadius: '15px',
+        padding: '10px',
+        boxShadow: 'none',
         width: {
-          xs: "90vw",
-          sm: "70vw",
-          md: "50vw",
-          lg: "40vw",
+          xs: '90vw',
+          sm: '70vw',
+          md: '49vw',
+          lg: '44vw',
         },
-        height: {
-          xs: "15vh",
-          sm: "12vh",
-          md: "10vh",
-          lg: "8vh",
-        },
-        textAlign: "center",
+        height: 'auto',
+        textAlign: 'center',
+        marginLeft: 1.5,
       }}
     >
-      {isEmpty ? (
-        <Typography variant="h6" sx={{ color: "#808080" }}>
+      {loading ? (
+        <Box display="flex" justifyContent="center" alignItems="center" height="100px">
+          <CircularProgress />
+        </Box>
+      ) : isEmpty ? (
+        <Typography variant="h6" sx={{ color: '#808080' }}>
           No data available.
         </Typography>
       ) : (
-        <Grid container spacing={3} alignItems="center">
+        <Grid container spacing={2} alignItems="center" justifyContent="space-around">
           {Object.keys(data).map((key) => (
-            <React.Fragment key={key}>
-              <Grid item>
+            <Grid item xs={4} sm={4} md={3} lg={3} key={key}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                }}
+              >
                 <Box
                   sx={{
-                    backgroundColor: "#7FFFD4",
-                    borderRadius: "50%",
-                    padding: "10px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    backgroundColor: '#7FFFD4',
+                    borderRadius: '50%',
+                    padding: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: '15px', // Space between icon and text
                   }}
                 >
                   {icons[key as keyof typeof icons]}
                 </Box>
-              </Grid>
-              <Grid item sx={{ marginLeft: -2, textAlign: "left" }}>
-                <Typography variant="subtitle1" sx={{ color: "#808080" }}>
-                  {labels[key as keyof typeof labels]}
-                </Typography>
-                <Typography
-                  variant="h6"
-                  sx={{ fontWeight: "bold", fontSize: 20 }}
-                >
-                  {data[key as keyof typeof data]}
-                </Typography>
-              </Grid>
-            </React.Fragment>
+                <Box sx={{ textAlign: 'left' }}>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{
+                      color: '#808080',
+                    }}
+                  >
+                    {labels[key as keyof typeof labels]}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontWeight: 'bold',
+                      fontSize: 18,
+                    }}
+                  >
+                    {data[key as keyof typeof data]}
+                  </Typography>
+                </Box>
+              </Box>
+            </Grid>
           ))}
         </Grid>
       )}

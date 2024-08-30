@@ -1,0 +1,47 @@
+[
+    {
+      "nominationId": 1,
+      "employeeName": "John Doe",
+      "email": "john.doe@example.com",
+      "department": "Finance",
+      "certificationName": "AWS Certified Solutions Architect",
+      "criticality": "High",
+      "provider": "AWS",
+      "level": "Expert",
+      "date": "2024-07-01"
+    },
+    {
+      "nominationId": 2,
+      "employeeName": "Jane Smith",
+      "email": "jane.smith@example.com",
+      "department": "IT",
+      "certificationName": "AWS Certified Developer",
+      "criticality": "Medium",
+      "provider": "AWS",
+      "level": "Intermediate",
+      "date": "2024-06-15"
+    },
+    {
+      "nominationId": 3,
+      "employeeName": "Alice Johnson",
+      "email": "alice.johnson@example.com",
+      "department": "Marketing",
+      "certificationName": "AWS Certified SysOps Administrator",
+      "criticality": "Low",
+      "provider": "AWS",
+      "level": "Beginner",
+      "date": "2024-05-20"
+    },
+    {
+      "nominationId": 4,
+      "employeeName": "Bob Brown",
+      "email": "bob.brown@example.com",
+      "department": "Human Resources",
+      "certificationName": "AWS Certified Security Specialist",
+      "criticality": "High",
+      "provider": "AWS",
+      "level": "Expert",
+      "date": "2024-08-10"
+    }
+  ]
+  

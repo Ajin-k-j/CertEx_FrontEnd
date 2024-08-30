@@ -1,0 +1,112 @@
+[
+  {
+    "nominationId": 1,
+    "employeeName": "Jane Cooper",
+    "email": "jane@microsoft.com",
+    "provider": "AWS",
+    "certificationName": "Cyber Security",
+    "level": "Intermediate",
+    "plannedMonthOfExam": "July",
+    "status": "Accepting",
+    "motivationDescription": "To enhance data analysis skills"
+  },
+  {
+    "nominationId": 2,
+    "employeeName": "John Doe",
+    "email": "john@example.com",
+    "provider": "GCP",
+    "certificationName": "Cloud Architect",
+    "level": "Expert",
+    "plannedMonthOfExam": "August",
+    "status": "Not Approved",
+    "motivationDescription": "To enhance data analysis skills"
+  },
+  {
+    "nominationId": 3,
+    "employeeName": "Alice Johnson",
+    "email": "alice@amazon.com",
+    "provider": "AWS",
+    "certificationName": "Solutions Architect",
+    "level": "Expert",
+    "plannedMonthOfExam": "September",
+    "status": "Accepting",
+    "motivationDescription": "To enhance data analysis skills"
+  },
+  {
+    "nominationId": 4,
+    "employeeName": "Bob Smith",
+    "email": "bob@google.com",
+    "provider": "GCP",
+    "certificationName": "Data Engineer",
+    "level": "Intermediate",
+    "plannedMonthOfExam": "October",
+    "status": "Not Approved",
+    "motivationDescription": "To enhance data analysis skills"
+  },
+  {
+    "nominationId": 5,
+    "employeeName": "Carol White",
+    "email": "carol@azure.com",
+    "provider": "Azure",
+    "certificationName": "DevOps Engineer",
+    "level": "Intermediate",
+    "plannedMonthOfExam": "November",
+    "status": "Accepting",
+    "motivationDescription": "To enhance data analysis skills"
+  },
+  {
+    "nominationId": 6,
+    "employeeName": "David Brown",
+    "email": "david@amazon.com",
+    "provider": "AWS",
+    "certificationName": "Networking Specialist",
+    "level": "Intermediate",
+    "plannedMonthOfExam": "December",
+    "status": "Accepting",
+    "motivationDescription": "To enhance data analysis skills"
+  },
+  {
+    "nominationId": 7,
+    "employeeName": "Emily Davis",
+    "email": "emily@azure.com",
+    "provider": "Azure",
+    "certificationName": "AI Engineer",
+    "level": "Beginner",
+    "plannedMonthOfExam": "January",
+    "status": "Not Approved",
+    "motivationDescription": "To enhance data analysis skills"
+  },
+  {
+    "nominationId": 8,
+    "employeeName": "Frank Wilson",
+    "email": "frank@google.com",
+    "provider": "GCP",
+    "certificationName": "Cloud Developer",
+    "level": "Intermediate",
+    "plannedMonthOfExam": "February",
+    "status": "Accepting",
+    "motivationDescription": "To enhance data analysis skills"
+  },
+  {
+    "nominationId": 9,
+    "employeeName": "Grace Hall",
+    "email": "grace@microsoft.com",
+    "provider": "AWS",
+    "certificationName": "Machine Learning",
+    "level": "Beginner",
+    "plannedMonthOfExam": "March",
+    "status": "Not Approved",
+    "motivationDescription": "To enhance data analysis skills"
+  },
+  {
+    "nominationId": 10,
+    "employeeName": "Henry King",
+    "email": "henry@amazon.com",
+    "provider": "AWS",
+    "certificationName": "Security Specialist",
+    "level": "Beginner",
+    "plannedMonthOfExam": "April",
+    "status": "Accepting",
+    "motivationDescription": "To enhance data analysis skills"
+  }
+]
