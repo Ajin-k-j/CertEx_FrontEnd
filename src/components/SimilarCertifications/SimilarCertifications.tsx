@@ -93,7 +93,7 @@ const SimilarCertifications: React.FC = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            p: "1.6rem",
+            p: "1.4rem",
             backgroundColor: "#f9f9f9",
             borderRadius: "8px",
           }}

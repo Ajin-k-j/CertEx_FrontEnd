@@ -283,7 +283,6 @@ const CertificationFormModal: React.FC<CertificationFormModalProps> = ({
                     value={criticality}
                     required
                     onChange={handleCriticalityChange}
-                    required
                   >
                     <MenuItem value="High">High</MenuItem>
                     <MenuItem value="Medium">Medium</MenuItem>
