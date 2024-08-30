@@ -76,8 +76,7 @@ const PendingNominationsTable: React.FC<PendingNominationsTableProps> = ({
   return (
     <Box
       sx={{
-        maxWidth: "100%",
-        width: containerWidth, // Use the containerWidth prop
+        width: "47vw",  
         minHeight: '385px',
         height: containerHeight,
         backgroundColor: 'white',
@@ -118,7 +117,7 @@ const PendingNominationsTable: React.FC<PendingNominationsTableProps> = ({
           borderRadius: 2,
           p: 0.6,
           pt: 1,
-          height: '55vh',
+          height: '60vh',
         }}
       >
         {isLoading ? (
