@@ -44,10 +44,10 @@ const LDAdminDashboard = () => {
   return (
 
 
-    <Grid container spacing={1} sx={{ padding: ".1rem" }}>
+    <Grid container spacing={-2} sx={{ padding: ".1rem" }}>
       {/* Left Column */}
       <Grid item xs={12} md={8} lg={6}>
-        <Grid container spacing={1} direction="column">
+        <Grid container spacing={.2} direction="column">
           <Grid item>
             <CertificationChartss />
           </Grid>

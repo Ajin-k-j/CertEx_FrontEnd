@@ -19,14 +19,14 @@ const DashboardActions: React.FC<DashboardActionsProps> = ({  buttons }) => {
         padding: { xs: '2vh', sm: '3vh', md: '2vh' },
         textAlign: 'center',
         maxWidth: { xs: '100%', sm: '80%', md: '45vw' },
-        marginLeft:{xs:'1.1vw', sm: '1.1vw', md: '1.1vw'},
-      
+        marginLeft:{xs:'1.1vw', sm: '1.1vw', md: '1vw'},
+        
       }}
     >
       <Typography
         variant="h6"
         sx={{
-          marginTop: "-2vh",
+          marginTop: "-1vh",
           marginBottom: "1vh",
           fontWeight: "bold",
           fontSize: { xs: "2vh", sm: "2.5vh", md: "3vh" },
