@@ -1,5 +1,4 @@
 import axios from "axios";
-import axios from "axios";
 
 // Define the interface for the certification data
 interface Certification {
