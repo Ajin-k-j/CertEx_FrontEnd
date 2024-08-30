@@ -3,7 +3,6 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 
-
 interface CertificationCardProps {
   id: number;
   providerName: string;
@@ -12,7 +11,7 @@ interface CertificationCardProps {
   description: string;
   tags: string[];
   officialLink: string;
-  onClick: () => void;  // Function to handle click event
+  onClick: () => void; // Function to handle click event
 }
 
 const CertificationCard: React.FC<CertificationCardProps> = ({
@@ -24,8 +23,7 @@ const CertificationCard: React.FC<CertificationCardProps> = ({
   onClick,
 }) => {
   const borderColor =
-    level === "Beginner" ? "green" :
-    level === "Intermediate" ? "blue" : "red";
+    level === "Beginner" ? "green" : level === "Intermediate" ? "blue" : "red";
 
   const truncateDescription = (text: string, limit: number) => {
     const words = text.split(" ");
@@ -55,7 +53,13 @@ const CertificationCard: React.FC<CertificationCardProps> = ({
       }}
       onClick={onClick}
     >
-      <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+      <CardContent
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
         <Typography sx={{ fontSize: 11 }} color="text.secondary" gutterBottom>
           {providerName}
         </Typography>
@@ -89,7 +93,7 @@ const CertificationCard: React.FC<CertificationCardProps> = ({
               variant="body2"
               sx={{
                 fontWeight: "bold",
-                color:"grey"
+                color: "grey",
               }}
             >
               {tag}

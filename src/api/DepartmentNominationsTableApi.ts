@@ -1,10 +1,10 @@
 // api/fetchNominations.ts
-import axios from 'axios';
-import { NominationRow } from '../types/DepartmentNominationsTable.types';
+import axios from "axios";
+import { NominationRow } from "../types/DepartmentNominationsTable.types";
 // sample api : '../../public/Data/DepartmentNominationsData.json'
 
 // Define the API URL
-const API_URL = 'https://localhost:7209/api/DepartmentNominations/1';
+const API_URL = "https://localhost:7209/api/DepartmentNominations/1";
 
 export const fetchNominations = async (): Promise<NominationRow[]> => {
   try {
@@ -12,7 +12,7 @@ export const fetchNominations = async (): Promise<NominationRow[]> => {
     const response = await axios.get<NominationRow[]>(API_URL);
     return response.data;
   } catch (error) {
-    console.error('Error fetching data', error);
+    console.error("Error fetching data", error);
     // Rethrow the error to be handled by the caller
     throw error;
   }

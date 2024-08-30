@@ -11,7 +11,7 @@ type Role = 'user' | 'departmentHead' | 'LDAdmin' | 'AWSAdmin';
 
 const fetchUserRole = (): Role => {
   // Dummy function to simulate fetching user role
-  return 'LDAdmin';
+  return 'departmentHead';
 };
 
 const Navbar: React.FC = () => {
@@ -86,20 +86,7 @@ const Navbar: React.FC = () => {
           </>
         ) : (
           <>
-          {/* for adding buttons in admin nav use the below code */}
-            {/* <Button
-              color="inherit"
-              sx={{
-                fontSize: '0.75rem',
-                padding: '14px 8px',
-                color: location.pathname.includes('admin') ? 'blue' : 'inherit',
-                borderBottom: location.pathname.includes('admin') ? '2px solid blue' : 'none',
-              }}
-              onClick={() => navigate(`/${userRole.toLowerCase().replace('admin', '-admin')}`)}
-            >
-              <AdminPanelSettingsIcon sx={{ marginRight: 0.5, fontSize: '0.75rem' }} />
-              {userRole === 'departmentHead' ? 'Department' : userRole === 'LDAdmin' ? 'LD Admin' : 'AWS Admin'}
-            </Button> */}
+         
           </>
         )}
 

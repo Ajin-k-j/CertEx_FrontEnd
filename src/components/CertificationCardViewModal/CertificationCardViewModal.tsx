@@ -19,7 +19,7 @@ interface CertificationCardViewModalProps {
   officialLink: string;
   onNominate: () => void;
   nominationStatus: string;
-  nominationOpenDate: string; 
+  nominationOpenDate: string;
   nominationCloseDate: string;
 }
 
@@ -53,10 +53,14 @@ const CertificationCardViewModal: React.FC<CertificationCardViewModalProps> = ({
   const getNominationStatusMessage = () => {
     if (nominationStatus === "Accepting") {
       if (nominationOpenDate && new Date(nominationOpenDate) > new Date()) {
-        return `Nominations will open from ${new Date(nominationOpenDate).toLocaleDateString()}.`;
+        return `Nominations will open from ${new Date(
+          nominationOpenDate
+        ).toLocaleDateString()}.`;
       }
       if (nominationCloseDate) {
-        return `Nomination is open until ${new Date(nominationCloseDate).toLocaleDateString()}.`;
+        return `Nomination is open until ${new Date(
+          nominationCloseDate
+        ).toLocaleDateString()}.`;
       }
       return "Nomination is Open.";
     }
@@ -111,9 +115,11 @@ const CertificationCardViewModal: React.FC<CertificationCardViewModalProps> = ({
             sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}
           >
             {tags.map((tag, index) => (
-              <span key={index} style={{fontWeight: "bold", color:"grey" }}>
+              <span key={index} style={{ fontWeight: "bold", color: "grey" }}>
                 {tag}
-                {index < tags.length - 1 && <span style={{ margin: "0.5rem" }}>•</span>}
+                {index < tags.length - 1 && (
+                  <span style={{ margin: "0.5rem" }}>•</span>
+                )}
               </span>
             ))}
           </Typography>
@@ -131,7 +137,10 @@ const CertificationCardViewModal: React.FC<CertificationCardViewModalProps> = ({
               marginTop: "10px",
             }}
           >
-            <Typography variant="body2" sx={{ fontWeight: "bold", color: "#d32f2f" }}>
+            <Typography
+              variant="body2"
+              sx={{ fontWeight: "bold", color: "#d32f2f" }}
+            >
               {getNominationStatusMessage()}
             </Typography>
           </Box>

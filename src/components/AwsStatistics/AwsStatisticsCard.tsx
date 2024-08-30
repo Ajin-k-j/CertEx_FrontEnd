@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import StatisticsCard from '../StatisticsCard/StatisticsCard';
-import { People, Done } from '@mui/icons-material';
-import fetchAwsTotalData from '../../api/AwsStatisticsApi';
-import { AwsStatistics } from '../../types/AwsStatistics.types';
-import { CircularProgress, Box } from '@mui/material';
+import React, { useEffect, useState } from "react";
+import StatisticsCard from "../StatisticsCard/StatisticsCard";
+import { People, Done } from "@mui/icons-material";
+import fetchAwsTotalData from "../../api/AwsStatisticsApi";
+import { AwsStatistics } from "../../types/AwsStatistics.types";
+import { CircularProgress, Box } from "@mui/material";
 
 const AwsStatisticsPage: React.FC = () => {
   const [data, setData] = useState({
-    primary: '',
+    primary: "",
     secondary: 0,
   });
   const [loading, setLoading] = useState(true); // Loading state
@@ -35,14 +35,19 @@ const AwsStatisticsPage: React.FC = () => {
   };
 
   const labels = {
-    primary: 'Total AWS Nominations', 
-    secondary: 'Pending Nominations',
+    primary: "Total AWS Nominations",
+    secondary: "Pending Nominations",
   };
 
   return (
     <div>
       {loading ? (
-        <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100vh"
+        >
           <CircularProgress />
         </Box>
       ) : (

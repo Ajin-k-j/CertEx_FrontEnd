@@ -1,13 +1,17 @@
-import axios from 'axios';
+import axios from "axios";
 // Default initial values
-const initialCertificationId = 1; 
-const initialNominationId = '66ef'; 
+const initialCertificationId = 1;
+const initialNominationId = "66ef";
 
-  const baseURL =  "http://localhost:5000";
+const baseURL = "http://localhost:5000";
 
-export const fetchCertificationById = async (certification_id: number = initialCertificationId) => {
+export const fetchCertificationById = async (
+  certification_id: number = initialCertificationId
+) => {
   try {
-    const response = await axios.get(`${baseURL}/certification?certification_id=${certification_id}`);
+    const response = await axios.get(
+      `${baseURL}/certification?certification_id=${certification_id}`
+    );
     const certificationData = response.data;
 
     if (certificationData.length > 0) {
@@ -17,20 +21,34 @@ export const fetchCertificationById = async (certification_id: number = initialC
     }
   } catch (error) {
     if (error instanceof Error) {
-      console.error(`Error fetching certification with ID ${certification_id}:`, error.message);
-      return { error: `Failed to fetch certification with ID ${certification_id}. Please try again later.` };
+      console.error(
+        `Error fetching certification with ID ${certification_id}:`,
+        error.message
+      );
+      return {
+        error: `Failed to fetch certification with ID ${certification_id}. Please try again later.`,
+      };
     } else {
-      console.error(`Unexpected error fetching certification with ID ${certification_id}:`, error);
+      console.error(
+        `Unexpected error fetching certification with ID ${certification_id}:`,
+        error
+      );
       return { error: `An unexpected error occurred. Please try again later.` };
     }
   }
 };
 
 // Function to fetch nomination by ID or update it
-export const fetchNominationById = async (id: string = initialNominationId, updateData?: any) => {
+export const fetchNominationById = async (
+  id: string = initialNominationId,
+  updateData?: any
+) => {
   try {
     if (updateData) {
-      const response = await axios.patch(`${baseURL}/nominations/${id}`, updateData);
+      const response = await axios.patch(
+        `${baseURL}/nominations/${id}`,
+        updateData
+      );
       return response.data;
     } else {
       const response = await axios.get(`${baseURL}/nominations/${id}`);
@@ -39,30 +57,34 @@ export const fetchNominationById = async (id: string = initialNominationId, upda
   } catch (error) {
     if (error instanceof Error) {
       console.error(`Error fetching nomination with ID ${id}:`, error.message);
-      return { error: `Failed to fetch nomination with ID ${id}. Please try again later.` };
+      return {
+        error: `Failed to fetch nomination with ID ${id}. Please try again later.`,
+      };
     } else {
-      console.error(`Unexpected error fetching nomination with ID ${id}:`, error);
+      console.error(
+        `Unexpected error fetching nomination with ID ${id}:`,
+        error
+      );
       return { error: `An unexpected error occurred. Please try again later.` };
     }
   }
 };
 
-
 // New endpoint to handle file upload
 export const uploadCertificateFile = async (file: File) => {
   const formData = new FormData();
-  formData.append('file', file);
+  formData.append("file", file);
 
   try {
     const response = await axios.post(`${baseURL}/upload`, formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
       },
     });
     return response.data; // Assuming the response contains the file URL
   } catch (error) {
-    console.error('Error uploading file:', error);
-    throw new Error('Failed to upload file. Please try again later.');
+    console.error("Error uploading file:", error);
+    throw new Error("Failed to upload file. Please try again later.");
   }
 };
 
@@ -79,18 +101,29 @@ export const updateInvoice = async (
   try {
     const updateData = {
       ...invoiceData,
-      invoice_status: 'updated', // Set the invoice_status to 'updated'
+      invoice_status: "updated", // Set the invoice_status to 'updated'
     };
 
-    const response = await axios.patch(`${baseURL}/nominations/${nominationId}`, updateData);
+    const response = await axios.patch(
+      `${baseURL}/nominations/${nominationId}`,
+      updateData
+    );
 
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
-      console.error(`Error updating invoice for nomination ID ${nominationId}:`, error.message);
-      return { error: `Failed to update invoice for nomination ID ${nominationId}. Please try again later.` };
+      console.error(
+        `Error updating invoice for nomination ID ${nominationId}:`,
+        error.message
+      );
+      return {
+        error: `Failed to update invoice for nomination ID ${nominationId}. Please try again later.`,
+      };
     } else {
-      console.error(`Unexpected error updating invoice for nomination ID ${nominationId}:`, error);
+      console.error(
+        `Unexpected error updating invoice for nomination ID ${nominationId}:`,
+        error
+      );
       return { error: `An unexpected error occurred. Please try again later.` };
     }
   }

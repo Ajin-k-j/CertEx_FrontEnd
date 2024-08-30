@@ -3,7 +3,9 @@ import { NominationData } from "../types/NominationForm.types";
 
 export const fetchFinancialYear = async () => {
   try {
-    const response = await apiClient.get<{ from_date: string; to_date: string }[]>("/financial_years");
+    const response = await apiClient.get<
+      { from_date: string; to_date: string }[]
+    >("/financial_years");
     return response.data[0] || null;
   } catch (error) {
     console.error("Error fetching financial year:", error);
