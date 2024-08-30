@@ -89,9 +89,9 @@ const UserPendingNomination: React.FC = () => {
 
     return (
         <Box
-            sx={{
+            sx={{            
                 maxWidth: '550vw',
-                height: '52vh',
+                height: '53vh',
                 mt: 1.5,
                 backgroundColor: 'white',
                 borderRadius: '15px',
@@ -123,14 +123,15 @@ const UserPendingNomination: React.FC = () => {
             </Box>
             <Box
                 sx={{
+                    
                     backgroundColor: pendingActions.length > 0 ? '#f0f0f0' : '#f5f5f5',
                     borderRadius: 2,
-                    p: 0.4,
+                    p: 0.5,
                     pt: 1,
-                    height: '170px',
+                    height: '245px',
                 }}
             >
-                <Grid container direction="column" spacing={1}>
+                <Grid container direction="column" spacing={.1}>
                     {displayedActions.map((action) => (
                         <Grid item key={action.id}>
                             <UserPendingNominationsForEach certificationName={action.certificationName} />
