@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import PendingNominationsTable from "../../components/PendingActions/PendingActionsTable/PendingActionsTable";
 import { fetchPendingNominations } from '../../api/PendingActionTableAPI';

@@ -218,7 +218,7 @@ const LdNominationTable: React.FC = () => {
     // Collect email addresses from the selected rows
     const selectedRows = filteredRows.filter((row) => selectionModel.includes(row.nomination_id));
     const emailAddresses = selectedRows.map(row => row.email).join(',');
-    console.log(emailAddresses);
+    console.log("Email Addresses:",emailAddresses);
     // Open mail client with all selected email addresses
     window.location.href = `mailto:${emailAddresses}`;
   };
