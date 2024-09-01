@@ -11,21 +11,13 @@ import AWSAdminDashboard from "./pages/AwsAdminDashboard/AwsAdminDashboard";
 import MessagePage from "./pages/APIMessagePage/MessagePage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ReviewNomination from "./pages/ReviewNomination/ReviewNomination";
+import AwsAdminReview from "./pages/AwsAdminReview/AwsAdminReview";
+
 const App: React.FC = () => {
   return (
     <Router>
       <Navbar />
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -47,6 +39,8 @@ const App: React.FC = () => {
           path="/message"
           element={<MessagePage message="Default message" success={true} />}
         />
+        <Route path="/review-nomination/:id" element={<ReviewNomination />} />
+        <Route path="/aws-admin-review/:id" element={<AwsAdminReview />} />
       </Routes>
       <Footer />
     </Router>
