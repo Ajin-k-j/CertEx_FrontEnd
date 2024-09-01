@@ -1,7 +1,5 @@
 import axios from "axios";
 import { AwsStatistics } from "../types/AwsStatistics.types";
-import axios from "axios";
-import { AwsStatistics } from "../types/AwsStatistics.types";
 
 const fetchAwsTotalData = async (): Promise<AwsStatistics> => {
   try {

@@ -6,7 +6,7 @@ export const fetchDepartmentStatistics = async (): Promise<DepartmentStatistics>
     const response = await axios.get<DepartmentStatistics>(
       'https://localhost:7209/api/DepartmentStats/1'
     );
-    return response.data;F
+    return response.data;
   } catch (error) {
     console.error(error);
     throw error;
