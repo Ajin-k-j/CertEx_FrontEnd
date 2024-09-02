@@ -7,6 +7,7 @@ import PendingNominationCard from "../../components/PendingActions/PendingNomina
 import CertificationManagementPage from '../../components/AllCertificationsAdmin/AllCertificationsManagement';
 import LdNominationTable from '../../components/LdNominationTable/LdNominationTable';
 import { Grid } from "@mui/material";
+import LDCertificationCostTable from '../../components/LDCertificationCostTable/LDCertificationCostTable'
 
 
 
@@ -71,6 +72,9 @@ const LDAdminDashboard = () => {
       <Grid item xs={12}>
         <LdNominationTable />
       </Grid>
+
+
+      <LDCertificationCostTable />
     
       {/* Conditional Rendering of CertificationManagementPage Modal */}
       {openCertificationModal && (

@@ -1,0 +1,131 @@
+[
+    {
+      "id": 1,
+      "provider": "Provider A",
+      "January": {
+        "Count": 10,
+        "EstimatedCost": 1000,
+        "ActualCost": 950
+      },
+      "February": {
+        "Count": 8,
+        "EstimatedCost": 800,
+        "ActualCost": 750
+      },
+      "March": {
+        "Count": 12,
+        "EstimatedCost": 1200,
+        "ActualCost": 1100
+      },
+      "April": {
+        "Count": 9,
+        "EstimatedCost": 900,
+        "ActualCost": 850
+      },
+      "May": {
+        "Count": 11,
+        "EstimatedCost": 1100,
+        "ActualCost": 1050
+      },
+      "June": {
+        "Count": 7,
+        "EstimatedCost": 700,
+        "ActualCost": 650
+      },
+      "July": {
+        "Count": 14,
+        "EstimatedCost": 1400,
+        "ActualCost": 1350
+      },
+      "August": {
+        "Count": 6,
+        "EstimatedCost": 600,
+        "ActualCost": 580
+      },
+      "September": {
+        "Count": 13,
+        "EstimatedCost": 1300,
+        "ActualCost": 1250
+      },
+      "October": {
+        "Count": 9,
+        "EstimatedCost": 900,
+        "ActualCost": 850
+      },
+      "November": {
+        "Count": 15,
+        "EstimatedCost": 1500,
+        "ActualCost": 1400
+      },
+      "December": {
+        "Count": 10,
+        "EstimatedCost": 1000,
+        "ActualCost": 980
+      }
+    },
+    {
+      "id": 2,
+      "provider": "Provider B",
+      "January": {
+        "Count": 5,
+        "EstimatedCost": 500,
+        "ActualCost": 480
+      },
+      "February": {
+        "Count": 6,
+        "EstimatedCost": 600,
+        "ActualCost": 580
+      },
+      "March": {
+        "Count": 7,
+        "EstimatedCost": 700,
+        "ActualCost": 670
+      },
+      "April": {
+        "Count": 8,
+        "EstimatedCost": 800,
+        "ActualCost": 750
+      },
+      "May": {
+        "Count": 9,
+        "EstimatedCost": 900,
+        "ActualCost": 870
+      },
+      "June": {
+        "Count": 4,
+        "EstimatedCost": 400,
+        "ActualCost": 380
+      },
+      "July": {
+        "Count": 10,
+        "EstimatedCost": 1000,
+        "ActualCost": 950
+      },
+      "August": {
+        "Count": 3,
+        "EstimatedCost": 300,
+        "ActualCost": 290
+      },
+      "September": {
+        "Count": 6,
+        "EstimatedCost": 600,
+        "ActualCost": 570
+      },
+      "October": {
+        "Count": 7,
+        "EstimatedCost": 700,
+        "ActualCost": 680
+      },
+      "November": {
+        "Count": 5,
+        "EstimatedCost": 500,
+        "ActualCost": 480
+      },
+      "December": {
+        "Count": 8,
+        "EstimatedCost": 800,
+        "ActualCost": 770
+      }
+    }
+  ]
+  
