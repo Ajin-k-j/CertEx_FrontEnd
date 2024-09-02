@@ -11,6 +11,8 @@
     "test": "jest"
   },
   "dependencies": {
+    "@azure/msal-browser": "^3.22.0",
+    "@azure/msal-react": "^2.0.22",
     "@date-io/date-fns": "^3.0.0",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
@@ -29,7 +31,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-loader-spinner": "^6.1.6",
-    "react-router-dom": "^6.26.0",
+    "react-router-dom": "^6.26.1",
     "react-toastify": "^10.0.5",
     "recharts": "^2.12.7",
     "styled-components": "^6.1.12",

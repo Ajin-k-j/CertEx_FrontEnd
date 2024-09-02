@@ -3,3 +3,11 @@ body {
   font-family: Arial, sans-serif;
   background-color: #f0f0f0; /* Grey background color */
 }
+
+.centered-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  text-align: center;
+}
