@@ -94,7 +94,7 @@ const ReviewAwsCredentials: React.FC = () => {
 
   return (
     <div style={containerStyle}>
-      <h2 style={headingStyle}>Review AWS Credentials Setup</h2>
+      <h2 style={headingStyle}>Review and share AWS Credentials</h2>
       <div style={infoStyle}>
         <p><strong>Employee:</strong> {employeeName}</p>
         <p><strong>E-mail:</strong> {email}</p>

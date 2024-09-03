@@ -1,5 +1,4 @@
 import React from "react";
-import { Box } from "@mui/material";
 import { Grid } from "@mui/material";
 import SimilarCertifications from "../../components/SimilarCertifications/SimilarCertifications";
 import UpcomingExams from "../../components/UpcomingExams/UpcomingExams";
