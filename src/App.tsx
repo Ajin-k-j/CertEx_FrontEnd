@@ -13,6 +13,8 @@ import ReviewNomination from './pages/ReviewNomination/ReviewNomination';
 import AwsAdminReview from './pages/AwsAdminReview/AwsAdminReview';
 import LoginPage from './pages/LoginPage/LoginPage';
 import { loginRequest } from './authconfig';
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import './app.css';
 
 const App: React.FC = () => {
@@ -56,6 +58,17 @@ const App: React.FC = () => {
 
   return (
     <>
+    <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       {shouldDisplayNavbarFooter && <Navbar />}
       <Routes>
         <Route path="/" element={<AllCertifications />} />
