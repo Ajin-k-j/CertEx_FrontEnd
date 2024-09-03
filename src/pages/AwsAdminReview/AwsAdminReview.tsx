@@ -149,7 +149,10 @@ const ReviewAwsCredentials: React.FC = () => {
 
 // Styling for the component
 const containerStyle: React.CSSProperties = {
-  padding: '20px',
+  paddingTop:'5px',
+  paddingBottom: '25px',
+  paddingRight:'25px',
+  paddingLeft:'25px',
   maxWidth: '600px',
   margin: 'auto',
   marginTop: '30px', // Added margin at the top

@@ -155,10 +155,10 @@ const ReviewNomination: React.FC = () => {
 
 // Styling for the component
 const containerStyle: React.CSSProperties = {
-  marginTop: '10px', // Margin added to account for missing Navbar
+  marginTop: '8px', // Margin added to account for missing Navbar
   paddingLeft: '30px',
   paddingRight: '30px',
-  paddingBottom:'5px',
+  paddingBottom:'10px',
   maxWidth: '600px',
   marginLeft: 'auto',
   marginRight: 'auto',

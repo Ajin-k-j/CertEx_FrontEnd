@@ -58,13 +58,13 @@ const LDAdminDashboard = () => {
       </Grid>
     
       {/* Right Column */}
-      <Grid item xs={12} md={4} lg={5.7}>
-        <PendingNominationsTable
+      <Grid item xs={12} md={4} lg={5.8}>
+      <PendingNominationsTable
           fetchNominations={fetchPendingNominations}
-          itemsPerPage={3}
+          itemsPerPage={7}
           CardComponent={PendingNominationCard}
-          containerHeight="73.6vh"
-          containerWidth="100%" // Use full width of the grid item
+          containerHeight="460px"
+          containerWidth="475vw"
         />
       </Grid>
     
