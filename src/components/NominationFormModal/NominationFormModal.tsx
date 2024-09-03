@@ -146,7 +146,7 @@ const NominationFormModal: React.FC<NominationFormModalProps> = ({
               <Field
                 as={TextField}
                 name="motivation"
-                label="What motivates you to take this certification?"
+                label="Justification for Certification Choice"
                 type="text"
                 fullWidth
                 variant="outlined"
