@@ -67,11 +67,18 @@ const LeftFilter: React.FC<LeftFilterProps> = ({
       sx={{
         backgroundColor: "#ffffff",
         padding: 2,
+<<<<<<< HEAD
         paddingBottom: 1,
         paddingLeft: 3,
         paddingRight: 3,
         borderRadius: 1,
         height: "auto",
+=======
+        paddingLeft:3,
+        paddingRight: 3, 
+        borderRadius: 1, // Optional: Add rounded corners
+        height: "auto", // Ensure it takes full height of the parent container
+>>>>>>> 8e3136ee0d497ec099ea3728b2d5e6f8ca473d4f
       }}
     >
       <Box

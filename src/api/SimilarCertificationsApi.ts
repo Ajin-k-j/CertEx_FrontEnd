@@ -1,4 +1,3 @@
-// src/api/SimilarCertificationsApi.ts
 import apiClient from "./BaseApi";
 import { CertificationData } from "../types/AllCertifications.types";
 

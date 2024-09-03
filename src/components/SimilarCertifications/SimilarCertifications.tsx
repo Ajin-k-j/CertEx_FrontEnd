@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect, useState, useCallback } from "react";
 import { Box, Typography, IconButton, Button } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -196,3 +197,5 @@ const SimilarCertifications: React.FC = () => {
 };
 
 export default SimilarCertifications;
+=======
+>>>>>>> 8e3136ee0d497ec099ea3728b2d5e6f8ca473d4f

@@ -57,4 +57,4 @@ const EmployeeDashboard: React.FC = () => {
   );
 };
 
-export default EmployeeDashboard;
+export default EmployeeDashboard
