@@ -7,8 +7,8 @@ export const msalConfig: Configuration = {
     redirectUri: "http://localhost:5173", // Replace with your redirect URI
   },
   cache: {
-    cacheLocation: "sessionStorage",
-    storeAuthStateInCookie: false,
+    cacheLocation: "localStorage", // Use localStorage to persist login across tabs
+    storeAuthStateInCookie: false, // Set to true if cookies are needed for IE11 or Edge
   },
   system: {
     loggerOptions: {
@@ -29,11 +29,12 @@ export const msalConfig: Configuration = {
             break;
         }
       },
+      logLevel: LogLevel.Info, // Adjust log level as needed
       piiLoggingEnabled: false,
     },
   },
 };
 
 export const loginRequest = {
-  scopes: ["User.Read"],
+  scopes: ["User.Read"], // Define the scopes you need
 };

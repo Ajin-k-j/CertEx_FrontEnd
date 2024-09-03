@@ -7,18 +7,18 @@ import { ThreeDots } from "react-loader-spinner";
 const ReviewNomination: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
-  const navigate = useNavigate();
   const [nomination, setNomination] = useState<any>({
     employeeName: '',
     certificationName: '',
     plannedExamMonth: '',
     motivationDescription: ''
   });
-  const [recommendation, setRecommendation] = useState<string>('Neutral');
+  const [recommendation, setRecommendation] = useState<string>('');
   const [remarks, setRemarks] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [submissionSuccess, setSubmissionSuccess] = useState<boolean>(false);
+  const [errors, setErrors] = useState<string[]>([]);
 
   useEffect(() => {
     if (id) {
@@ -33,8 +33,26 @@ const ReviewNomination: React.FC = () => {
     }
   }, [id, location]);
 
+  const validateForm = () => {
+    const newErrors: string[] = [];
+
+    const wordCount = remarks.split(/\s+/).length;
+    if (wordCount < 10) {
+      newErrors.push('Remarks must be at least 10 words.');
+    }
+
+    if (!recommendation) {
+      newErrors.push('Please select a recommendation.');
+    }
+
+    setErrors(newErrors);
+    return newErrors.length === 0;
+  };
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    if (!validateForm()) return;
+
     setSubmitting(true);
 
     axios.post('https://localhost:7209/api/manager/submit', {
@@ -63,21 +81,15 @@ const ReviewNomination: React.FC = () => {
   if (submissionSuccess) return (
     <div style={successContainerStyle}>
       <div style={messageBoxStyle}>
-        <h2 style={headingStyle}>Review Submitted Successfully</h2>
-        <p style={messageStyle}>You can close this window now.</p>
-        <button
-          onClick={() => navigate('/')}
-          style={buttonStyle}
-        >
-          Go back to Home
-        </button>
+        <h2 style={headingStyle}>Recommendation Submitted Successfully</h2>
+        <h3 style={messageStyle}>You can close this window now.</h3>
       </div>
     </div>
   );
 
   return (
     <div style={containerStyle}>
-      <h2 style={headingStyle}>Review Nomination</h2>
+      <h2 style={headingStyle}>Review and Recommend Nomination</h2>
       <div style={infoStyle}>
         <p><strong>Employee:</strong> {nomination.employeeName}</p>
         <p><strong>Certification:</strong> {nomination.certificationName}</p>
@@ -89,22 +101,25 @@ const ReviewNomination: React.FC = () => {
       </div>
       <hr style={separatorStyle} />
       <form onSubmit={handleSubmit} style={formStyle}>
-        <div style={formGroupStyle}>
-          <label htmlFor='recommendation' style={labelStyle}>Recommendation:</label>
-          <select
-            id='recommendation'
-            name='recommendation'
-            value={recommendation}
-            onChange={(e) => setRecommendation(e.target.value)}
-            style={selectStyle}
-            required
+        
+        <div style={instructionsStyle}>
+          <p style={instructionsTextStyle}>Please choose a recommendation:</p>
+        </div>
+        <div style={buttonGroupStyle}>
+          <button
+            type='button'
+            onClick={() => setRecommendation('Recommended')}
+            style={{ ...buttonOptionStyle, ...(recommendation === 'Recommended' ? selectedButtonStyle : {}) }}
           >
-            <option value='Highly Recommended'>Highly Recommended</option>
-            <option value='Recommended'>Recommended</option>
-            <option value='Neutral'>Neutral</option>
-            <option value='Not Recommended'>Not Recommended</option>
-            <option value='Strongly Not Recommended'>Strongly Not Recommended</option>
-          </select>
+            Recommended
+          </button>
+          <button
+            type='button'
+            onClick={() => setRecommendation('Not Recommended')}
+            style={{ ...buttonOptionStyle, ...(recommendation === 'Not Recommended' ? selectedButtonStyle : {}) }}
+          >
+            Not Recommended
+          </button>
         </div>
         <div style={formGroupStyle}>
           <label htmlFor='remarks' style={labelStyle}>Remarks:</label>
@@ -119,6 +134,13 @@ const ReviewNomination: React.FC = () => {
             required
           ></textarea>
         </div>
+        {errors.length > 0 && (
+          <div style={errorStyle}>
+            {errors.map((error, index) => (
+              <p key={index} style={errorTextStyle}>{error}</p>
+            ))}
+          </div>
+        )}
         <button
           type='submit'
           style={buttonStyle}
@@ -133,9 +155,13 @@ const ReviewNomination: React.FC = () => {
 
 // Styling for the component
 const containerStyle: React.CSSProperties = {
-  padding: '20px',
+  marginTop: '10px', // Margin added to account for missing Navbar
+  paddingLeft: '30px',
+  paddingRight: '30px',
+  paddingBottom:'5px',
   maxWidth: '600px',
-  margin: 'auto',
+  marginLeft: 'auto',
+  marginRight: 'auto',
   border: '1px solid #ddd',
   borderRadius: '8px',
   boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
@@ -191,6 +217,37 @@ const buttonStyle: React.CSSProperties = {
   textAlign: 'center'
 };
 
+const buttonOptionStyle: React.CSSProperties = {
+  border: 'none',
+  padding: '10px 20px',
+  borderRadius: '4px',
+  fontSize: '16px',
+  cursor: 'pointer',
+  textAlign: 'center',
+  margin: '0 10px'
+};
+
+const selectedButtonStyle: React.CSSProperties = {
+  backgroundColor: '#007BFF',
+  color: '#fff'
+};
+
+const buttonGroupStyle: React.CSSProperties = {
+  marginBottom: '15px',
+  display: 'flex',
+  justifyContent: 'center'
+};
+
+const instructionsStyle: React.CSSProperties = {
+  textAlign: 'center',
+  marginBottom: '15px'
+};
+
+const instructionsTextStyle: React.CSSProperties = {
+  fontSize: '16px',
+  color: '#333'
+};
+
 const formStyle: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'column'
@@ -204,15 +261,6 @@ const labelStyle: React.CSSProperties = {
   fontWeight: 'bold',
   marginBottom: '5px',
   display: 'block'
-};
-
-const selectStyle: React.CSSProperties = {
-  display: 'block',
-  width: '100%',
-  padding: '8px',
-  border: '1px solid #ddd',
-  borderRadius: '4px',
-  boxSizing: 'border-box'
 };
 
 const textareaStyle: React.CSSProperties = {
@@ -239,6 +287,16 @@ const separatorStyle: React.CSSProperties = {
   border: 'none',
   borderTop: '1px solid #ddd',
   margin: '20px 0'
+};
+
+const errorStyle: React.CSSProperties = {
+  marginBottom: '15px',
+  color: '#ff4d4d',
+  textAlign: 'center'
+};
+
+const errorTextStyle: React.CSSProperties = {
+  fontSize: '14px'
 };
 
 export default ReviewNomination;

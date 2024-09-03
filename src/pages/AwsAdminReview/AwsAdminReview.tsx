@@ -16,6 +16,7 @@ const ReviewAwsCredentials: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [submissionSuccess, setSubmissionSuccess] = useState<boolean>(false);
+  const [errors, setErrors] = useState<string[]>([]);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -26,8 +27,36 @@ const ReviewAwsCredentials: React.FC = () => {
     setLoading(false);
   }, [location]);
 
+  const validateForm = () => {
+    const newErrors: string[] = [];
+
+    // Validate URL
+    const urlPattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+      '((([a-zA-Z0-9\\-\\.]+)\\.)+[a-zA-Z]{2,}|'+ // domain name
+      '((\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|'+ // OR ipv4
+      '\\[([a-fA-F0-9:\\.]+)\\]))'+ // OR ipv6
+      '(\\:\\d+)?'+ // port
+      '(\\/[-a-zA-Z0-9%_@~#=\\+\\(\\)\\,\\.;]*)*'+ // path
+      '(\\?[;&a-zA-Z0-9%_@~#=\\+\\(\\)\\,\\.;]*)?'+ // query string
+      '(\\#[-a-zA-Z0-9_]*)?$','i'); // fragment locator
+    if (!urlPattern.test(signupLink)) {
+      newErrors.push('Signup Link must be a valid URL.');
+    }
+
+    // Validate remarks
+    const wordCount = remarks.split(/\s+/).length;
+    if (wordCount < 10) {
+      newErrors.push('Remarks must be at least 10 words.');
+    }
+
+    setErrors(newErrors);
+    return newErrors.length === 0;
+  };
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    if (!validateForm()) return;
+
     setSubmitting(true);
 
     axios.post('https://localhost:7209/api/AwsAdmin/submit', {
@@ -57,13 +86,8 @@ const ReviewAwsCredentials: React.FC = () => {
     <div style={successContainerStyle}>
       <div style={messageBoxStyle}>
         <h2 style={headingStyle}>Submission Successful</h2>
-        <p style={messageStyle}>You can close this window now.</p>
-        <button
-          onClick={() => window.close()}
-          style={buttonStyle}
-        >
-          Close Window
-        </button>
+        <h3 style={messageStyle}>You can close this window now.</h3>
+        
       </div>
     </div>
   );
@@ -104,6 +128,13 @@ const ReviewAwsCredentials: React.FC = () => {
             required
           ></textarea>
         </div>
+        {errors.length > 0 && (
+          <div style={errorStyle}>
+            {errors.map((error, index) => (
+              <p key={index} style={errorTextStyle}>{error}</p>
+            ))}
+          </div>
+        )}
         <button
           type='submit'
           style={buttonStyle}
@@ -121,6 +152,7 @@ const containerStyle: React.CSSProperties = {
   padding: '20px',
   maxWidth: '600px',
   margin: 'auto',
+  marginTop: '30px', // Added margin at the top
   border: '1px solid #ddd',
   borderRadius: '8px',
   boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
@@ -217,6 +249,16 @@ const separatorStyle: React.CSSProperties = {
   border: 'none',
   borderTop: '1px solid #ddd',
   margin: '20px 0'
+};
+
+const errorStyle: React.CSSProperties = {
+  marginBottom: '15px',
+  color: '#ff4d4d',
+  textAlign: 'center'
+};
+
+const errorTextStyle: React.CSSProperties = {
+  fontSize: '14px'
 };
 
 export default ReviewAwsCredentials;
