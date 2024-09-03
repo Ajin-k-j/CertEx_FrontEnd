@@ -1,33 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid, GridColDef, GridEventListener, GridRowParams, GridRowSelectionModel } from '@mui/x-data-grid';
-import { Box, Modal, Typography, Paper, Select, MenuItem, FormControl, InputLabel, TextField, CircularProgress, Button, Accordion, AccordionSummary, AccordionDetails, IconButton, FilledTextFieldProps, OutlinedTextFieldProps, StandardTextFieldProps, TextFieldVariants } from '@mui/material';
+import { Box, Modal, Typography, Paper, Select, MenuItem, FormControl, InputLabel, TextField, CircularProgress, Button, Accordion, AccordionSummary, AccordionDetails, IconButton, FilledTextFieldProps, OutlinedTextFieldProps, StandardTextFieldProps, TextFieldVariants, Skeleton } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import CloseIcon from '@mui/icons-material/Close';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import axios from 'axios';
 import ExcelExport from '../ExportButton/ExportButton';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { parse } from 'date-fns';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { JSX } from 'react/jsx-runtime';
+import axios from 'axios';
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
-// Define the structure of your data rows
 interface RowData {
-  selected: unknown;
-  nomination_id: string;
+  nominationId: number;
+  employeeId: number;
   employeeName: string;
   email: string;
   department: string;
   provider: string;
   certificationName: string;
   criticality: string;
-  nominationDate: Date | null;
-  plannedMonthOfExam: string;
-  motivation: string;
-  departmentApproval: string;
-  lndApproval: string;
-  examDate: Date | null;
+  plannedExamMonth: string;
+  motivationDescription: string;
+  managerRecommendation: string;
+  managerRemarks: string;
+  isDepartmentApproved: boolean;
+  isLndApproved: boolean;
+  nominationDate: Date; ///
+  examDate: string | Date; 
   examStatus: string;
   uploadCertificateStatus: string;
   skillMatrixStatus: string;
@@ -39,23 +39,25 @@ interface RowData {
 
 // Helper function to parse date strings
 const parseDate = (dateString: string) => {
-  return parse(dateString, 'dd-MM-yyyy', new Date());
+  return parse(dateString, 'yyyy-MM-dd', new Date());
 };
 
 // Define columns for DataGrid with specific configurations
 const columns: GridColDef[] = [
-  { field: 'nomination_id', headerName: 'Nomination ID', width: 150 },
+  { field: 'nominationId', headerName: 'Nomination ID', width: 150 },
+  { field: 'employeeId', headerName: 'Employee ID', width: 150 },
   { field: 'employeeName', headerName: 'Employee Name', width: 150 },
   { field: 'email', headerName: 'Email', width: 200 },
   { field: 'department', headerName: 'Department', width: 150 },
   { field: 'provider', headerName: 'Provider', width: 150 },
   { field: 'certificationName', headerName: 'Certification Name', width: 200 },
   { field: 'criticality', headerName: 'Criticality', width: 100 },
-  { field: 'nominationDate', headerName: 'Nomination Date', width: 150, type: 'date' },
-  { field: 'plannedMonthOfExam', headerName: 'Planned Month of Exam', width: 200 },
-  { field: 'motivation', headerName: 'Motivation', width: 200 },
-  { field: 'departmentApproval', headerName: 'Department Approval', width: 200 },
-  { field: 'lndApproval', headerName: 'L&D Approval', width: 200 },
+  { field: 'plannedExamMonth', headerName: 'Planned Month of Exam', width: 200 },
+  { field: 'motivationDescription', headerName: 'Motivation Description', width: 200 },
+  { field: 'managerRecommendation', headerName: 'Manager Recommendation', width: 200 },
+  { field: 'managerRemarks', headerName: 'Manager Remarks', width: 200 },
+  { field: 'isDepartmentApproved', headerName: 'Department Approval', width: 200 },
+  { field: 'isLndApproved', headerName: 'L&D Approval', width: 200 },
   { field: 'examDate', headerName: 'Exam Date', width: 150, type: 'date' },
   { field: 'examStatus', headerName: 'Exam Status', width: 150 },
   { field: 'uploadCertificateStatus', headerName: 'Upload Certificate Status', width: 200 },
@@ -63,15 +65,16 @@ const columns: GridColDef[] = [
   { field: 'reimbursementStatus', headerName: 'Reimbursement Status', width: 200 },
   { field: 'nominationStatus', headerName: 'Nomination Status', width: 150 },
   { field: 'financialYear', headerName: 'Financial Year', width: 150 },
+  { field: 'costOfCertification', headerName: 'Cost of Certification (INR)', width: 150 },
 ];
 
 const LdNominationTable: React.FC = () => {
   const [rows, setRows] = useState<RowData[]>([]);
   const [filteredRows, setFilteredRows] = useState<RowData[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedProvider, setSelectedProvider] = useState(''); // Ensure initial value is valid
-  const [selectedCriticality, setSelectedCriticality] = useState(''); // Ensure initial value is valid
-  const [selectedFinancialYear, setSelectedFinancialYear] = useState(''); // Ensure initial value is valid
+  const [selectedProvider, setSelectedProvider] = useState('');
+  const [selectedCriticality, setSelectedCriticality] = useState('');
+  const [selectedFinancialYear, setSelectedFinancialYear] = useState('');
   const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(null);
   const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
   const [openModal, setOpenModal] = useState(false);
@@ -82,37 +85,34 @@ const LdNominationTable: React.FC = () => {
   const [accordionExpanded, setAccordionExpanded] = useState(false);
   const [providers, setProviders] = useState<string[]>([]);
   const [criticalities, setCriticalities] = useState<string[]>([]);
-  const [selectedDepartment, setSelectedDepartment] = useState(''); // Ensure initial value is valid
+  const [selectedDepartment, setSelectedDepartment] = useState('');
   const [departments, setDepartments] = useState<string[]>([]);
   const [selectionModel, setSelectionModel] = useState<GridRowSelectionModel>([]);
 
-  // function to add date in the filename of excel file
   const getCurrentDateString = () => {
     const date = new Date();
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based, so add 1
+    const month = String(date.getMonth() + 1).padStart(2, '0'); 
     const day = String(date.getDate()).padStart(2, '0');
   
     return `${year}-${month}-${day}`;
   };
 
-  // Fetch data from API or local file
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('../../../public/Data/LDNominationData.json');
+        const response = await axios.get('../../../public/Data/LDNominationData.json');//'https://localhost:7209/api/LDNomination' , '../../../public/Data/LDNominationData.json'
         const data = response.data;
 
         if (Array.isArray(data)) {
           const parsedData = data.map((row: RowData) => ({
             ...row,
-            nominationDate: typeof row.nominationDate === 'string' ? parseDate(row.nominationDate) : row.nominationDate,
+            nominationDate: typeof row.examDate === 'string' ? parseDate(row.examDate) : row.examDate,
             examDate: typeof row.examDate === 'string' ? parseDate(row.examDate) : row.examDate,
           }));
           setRows(parsedData);
           setFilteredRows(parsedData);
 
-          // Extract unique values for filters
           const uniqueFinancialYears = Array.from(new Set(parsedData.map((row: RowData) => row.financialYear)));
           setFinancialYears(uniqueFinancialYears);
 
@@ -122,7 +122,6 @@ const LdNominationTable: React.FC = () => {
           const uniqueCriticalities = Array.from(new Set(parsedData.map((row: RowData) => row.criticality)));
           setCriticalities(uniqueCriticalities);
 
-          // Extract unique departments
           const uniqueDepartments = Array.from(new Set(parsedData.map((row: RowData) => row.department)));
           setDepartments(uniqueDepartments);
 
@@ -132,7 +131,7 @@ const LdNominationTable: React.FC = () => {
 
         setLoading(false);
       } catch {
-        setError("Failed to load data");
+         setError("Failed to load data");
         setLoading(false);
       }
     };
@@ -140,7 +139,6 @@ const LdNominationTable: React.FC = () => {
     fetchData();
   }, []);
 
-  // Filter rows based on search term and selected filters
   useEffect(() => {
     let filtered = rows;
 
@@ -181,7 +179,6 @@ const LdNominationTable: React.FC = () => {
     setFilteredRows(filtered);
   }, [searchTerm, selectedProvider, selectedCriticality, selectedFinancialYear, selectedStartDate, selectedEndDate, selectedDepartment, rows]);
 
-  // Handle opening and closing the modal
   const handleOpenModal = (row: RowData) => {
     setSelectedRow(row);
     setOpenModal(true);
@@ -192,7 +189,6 @@ const LdNominationTable: React.FC = () => {
     setSelectedRow(null);
   };
 
-  // Clear date filters
   const handleClearDateFilters = () => {
     setSelectedStartDate(null);
     setSelectedEndDate(null);
@@ -203,29 +199,24 @@ const LdNominationTable: React.FC = () => {
   };
 
   const handleRowClick: GridEventListener<'rowClick'> = (params: GridRowParams, event) => {
-    // Type assertion to ensure `event.target` is an `HTMLElement`
     const target = event.target as HTMLElement;
   
-    // Check if the click was on a checkbox or other specific element
     if (target.closest('.MuiDataGrid-cellCheckbox')) {
-      event.stopPropagation(); // Prevents the modal from opening
+      event.stopPropagation();
     } else {
       handleOpenModal(params.row as RowData);
     }
   };
 
   const handleSendEmail = () => {
-    // Collect email addresses from the selected rows
-    const selectedRows = filteredRows.filter((row) => selectionModel.includes(row.nomination_id));
+    const selectedRows = filteredRows.filter((row) => selectionModel.includes(row.nominationId));
     const emailAddresses = selectedRows.map(row => row.email).join(',');
-    console.log("Email Addresses:",emailAddresses);
-    // Open mail client with all selected email addresses
+    console.log("Email Addresses:", emailAddresses);
     window.location.href = `mailto:${emailAddresses}`;
   };
 
-  const getRowId = (row: RowData) => row.nomination_id;
+  const getRowId = (row: RowData) => row.nominationId;
 
-  // Display loading spinner or error message
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
@@ -236,11 +227,12 @@ const LdNominationTable: React.FC = () => {
 
   if (error) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="100vh" p={2} sx={{ backgroundColor: "white" }}>
-        <Typography variant="h6" color="error">
-          {error}
-        </Typography>
-      </Box>
+      <Box display="flex" justifyContent="center" alignItems="center" height="50vh" p={2} sx={{ backgroundColor: "#f9f9f9", width: '96%', ml: 2 }}>
+      <Typography variant="h6" sx={{color: "#757575", display: "flex", alignItems: "center"}}>
+        <InfoOutlinedIcon sx={{ fontSize: "1.5rem", color: "#757575", mr: 1 }}/>
+        Failed to fetch data
+      </Typography>
+    </Box>
     );
   }
 
@@ -462,12 +454,11 @@ const LdNominationTable: React.FC = () => {
             <strong>Department:</strong> {selectedRow?.department} <br />
             <strong>Provider:</strong> {selectedRow?.provider} <br />
             <strong>Criticality:</strong> {selectedRow?.criticality} <br />
-            <strong>Nomination Date:</strong> {selectedRow?.nominationDate?.toDateString()} <br />
-            <strong>Planned Month of Exam:</strong> {selectedRow?.plannedMonthOfExam} <br />
-            <strong>Motivation:</strong> {selectedRow?.motivation} <br />
-            <strong>Department Approval:</strong> {selectedRow?.departmentApproval} <br />
-            <strong>L&D Approval:</strong> {selectedRow?.lndApproval} <br />
-            <strong>Exam Date:</strong> {selectedRow?.examDate?.toDateString()} <br />
+            <strong>Planned Month of Exam:</strong> {selectedRow?.plannedExamMonth} <br />
+            <strong>Motivation:</strong> {selectedRow?.motivationDescription} <br />
+            <strong>Department Approval:</strong> {selectedRow?.isDepartmentApproved ? 'Yes' : 'No'} <br />
+            <strong>L&D Approval:</strong> {selectedRow?.isLndApproved ? 'Yes' : 'No'} <br />
+            <strong>Exam Date:</strong> {selectedRow?.examDate ? new Date(selectedRow.examDate).toDateString() : 'N/A'} <br />
             <strong>Exam Status:</strong> {selectedRow?.examStatus} <br />
             <strong>Upload Certificate Status:</strong> {selectedRow?.uploadCertificateStatus} <br />
             <strong>Skill Matrix Status:</strong> {selectedRow?.skillMatrixStatus} <br />
