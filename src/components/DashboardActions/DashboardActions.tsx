@@ -55,7 +55,7 @@ const DashboardActions: React.FC<DashboardActionsProps> = ({  buttons }) => {
               textTransform: 'none',
               fontWeight: 'bold',
               lineHeight:'2.5vh',
-              width: { xs: '80%', sm: '30%', md: '34%' }, 
+              width: { xs: '80%', sm: '30%', md: '13vw' }, 
               height: { xs: '6vh', sm: '7vh', md: '6vh' },
               fontSize: { xs: '1.7vh', sm: '1.8vh', md: '1.8vh' }, 
               '&:hover': {
