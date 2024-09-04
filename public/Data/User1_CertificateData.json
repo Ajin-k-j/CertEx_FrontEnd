@@ -1,95 +1,57 @@
-{
-  "user_id": 1,
-  "certifications": [
-    {
-      "certificationId": 101,
-      "certificationName": "Google Cloud Professional Architect",
-      "providerName": "GCP",
-      "level": "Expert",
-      "category": "Cloud Computing",
-      "fromDate": "2022-02-15T00:00:00Z",
-      "expiryDate": "2024-02-15T00:00:00Z"
-    },
-    {
-      "certificationId": 102,
-      "certificationName": "AWS Certified Solutions Architect",
-      "providerName": "AWS",
-      "level": "Beginner",
-      "category": "Cloud Computing",
-      "fromDate": "2021-11-20T00:00:00Z",
-      "expiryDate": "2023-11-20T00:00:00Z"
-    },
-    {
-      "certificationId": 103,
-      "certificationName": "Azure Developer Associate",
-      "providerName": "Azure",
-      "level": "Intermediate",
-      "category": "Cloud Computing",
-      "fromDate": "2023-01-01T00:00:00Z",
-      "expiryDate": "2024-01-01T00:00:00Z"
-    },
-    {
-      "certificationId": 104,
-      "certificationName": "Google Cloud Data Engineer",
-      "providerName": "GCP",
-      "level": "Intermediate",
-      "category": "Data Engineering",
-      "fromDate": "2023-05-10T00:00:00Z",
-      "expiryDate": "2025-05-10T00:00:00Z"
-    },
-    {
-      "certificationId": 105,
-      "certificationName": "AWS Certified DevOps Engineer",
-      "providerName": "AWS",
-      "level": "Expert",
-      "category": "DevOps",
-      "fromDate": "2022-08-25T00:00:00Z",
-      "expiryDate": "2024-08-25T00:00:00Z"
-    },
-    {
-      "certificationId": 106,
-      "certificationName": "Azure Solutions Architect Expert",
-      "providerName": "Azure",
-      "level": "Expert",
-      "category": "Cloud Computing",
-      "fromDate": "2023-06-30T00:00:00Z",
-      "expiryDate": "2025-06-30T00:00:00Z"
-    },
-    {
-      "certificationId": 107,
-      "certificationName": "Google Cloud Network Engineer",
-      "providerName": "GCP",
-      "level": "Intermediate",
-      "category": "Networking",
-      "fromDate": "2022-03-20T00:00:00Z",
-      "expiryDate": "2024-03-20T00:00:00Z"
-    },
-    {
-      "certificationId": 108,
-      "certificationName": "AWS Certified Security Specialty",
-      "providerName": "AWS",
-      "level": "Expert",
-      "category": "Security",
-      "fromDate": "2021-09-10T00:00:00Z",
-      "expiryDate": "2023-09-10T00:00:00Z"
-    },
-    {
-      "certificationId": 109,
-      "certificationName": "Azure AI Engineer Associate",
-      "providerName": "Azure",
-      "level": "Intermediate",
-      "category": "Artificial Intelligence",
-      "fromDate": "2023-02-15T00:00:00Z",
-      "expiryDate": "2025-02-15T00:00:00Z"
-    },
-    {
-      "certificationId": 110,
-      "certificationName": "Google Cloud Machine Learning Engineer",
-      "providerName": "GCP",
-      "level": "Intermediate",
-      "category": "Machine Learning",
-      "fromDate": "2023-04-01T00:00:00Z",
-      "expiryDate": "2025-04-01T00:00:00Z"
-    }
-  ]
-}
+[
+  {
+    "employeeId": 2,
+    "certificationId": 2,
+    "certificationName": "Microsoft Certified: Azure Fundamentals",
+    "providerName": "Microsoft",
+    "level": "Beginner",
+    "category": "Cloud",
+    "fromDate": "2024-01-04T07:44:26.459Z",
+    "expiryDate": "2025-09-01T07:44:26.459Z",
+    "url": "www.google.com"
+  },
+  {
+    "employeeId": 2,
+    "certificationId": 3,
+    "certificationName": "Google Professional Data Engineer",
+    "providerName": "Google",
+    "level": "Expert",
+    "category": "Data Engineering",
+    "fromDate": "2024-05-15T08:30:00.000Z",
+    "expiryDate": "2026-05-15T08:30:00.000Z",
+    "url": "uploads/google_data_engineer_cert.jpg"
+  },
+  {
+    "employeeId": 2,
+    "certificationId": 2,
+    "certificationName": "Microsoft Certified: Azure Fundamentals",
+    "providerName": "Microsoft",
+    "level": "Beginner",
+    "category": "Cloud",
+    "fromDate": "2024-01-04T07:44:26.459Z",
+    "expiryDate": "2025-09-01T07:44:26.459Z",
+    "url": "uploads/azure_fundamentals_cert.jpg"
+  },
+  {
+    "employeeId": 2,
+    "certificationId": 1,
+    "certificationName": "AWS Certified Solutions Architect – Associate",
+    "providerName": "AWS",
+    "level": "Beginner",
+    "category": "Cloud",
+    "fromDate": "2023-11-10T09:00:00.000Z",
+    "expiryDate": "2026-11-10T09:00:00.000Z",
+    "url": "uploads/aws_solutions_architect_associate_cert.jpg"
+  },
+  {
+    "employeeId": 2,
+    "certificationId": 3,
+    "certificationName": "Google Professional Data Engineer",
+    "providerName": "Google",
+    "level": "Expert",
+    "category": "Data Engineering",
+    "fromDate": "2024-05-15T08:30:00.000Z",
+    "expiryDate": "2026-05-15T08:30:00.000Z",
+    "url": "uploads/google_data_engineer_cert.jpg"
+  }
+]

@@ -40,13 +40,18 @@ const UserCertificationsTable: React.FC = () => {
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
 
   const formatDate = (dateString: string) => {
+    // Check if dateString is a valid ISO 8601 date string
+    if (!dateString || isNaN(Date.parse(dateString))) {
+      return "Invalid Date";
+    }
+  
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   };
-
+  
   useEffect(() => {
     const loadCertifications = async () => {
       try {
@@ -64,9 +69,10 @@ const UserCertificationsTable: React.FC = () => {
         setLoading(false);
       }
     };
-
+  
     loadCertifications();
   }, []);
+  
 
   useEffect(() => {
     const lowercasedQuery = searchQuery.toLowerCase();
@@ -98,11 +104,10 @@ const UserCertificationsTable: React.FC = () => {
   };
 
   const handleViewCertificate = () => {
-    if (selectedRow) {
-      console.log(
-        "View certificate clicked for:",
-        selectedRow.certificationName
-      );
+    if (selectedRow && selectedRow.url) {
+      window.open(selectedRow.url, "_blank"); // Open the URL in a new tab
+    } else {
+      console.log("No URL available for this certificate");
     }
   };
 
@@ -285,25 +290,26 @@ const UserCertificationsTable: React.FC = () => {
             </Box>
           ) : (
             <Box sx={{ height: 300, width: "100%" }}>
-              <DataGrid
-                rows={filteredRows}
-                columns={columns}
-                rowHeight={40}
-                sx={{
-                  width: "100%",
-                  "& .MuiDataGrid-cell": {
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                    "&[title]": {
-                      pointerEvents: "none",
-                    },
-                  },
-                  "& .MuiDataGrid-cell:focus": {
-                    outline: "none",
-                  },
-                }}
-              />
+<DataGrid
+  rows={filteredRows}
+  columns={columns}
+  rowHeight={40}
+  sx={{
+    width: "100%",
+    "& .MuiDataGrid-cell": {
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      whiteSpace: "nowrap",
+      "&[title]": {
+        pointerEvents: "none",
+      },
+    },
+    "& .MuiDataGrid-cell:focus": {
+      outline: "none",
+    },
+  }}
+/>
+
             </Box>
           )}
         </Paper>
@@ -362,7 +368,11 @@ const UserCertificationsTable: React.FC = () => {
               <strong>Expiry Date:</strong> {selectedRow?.expiryDate}
               <br />
             </Typography>
-            <Button variant="contained" onClick={handleViewCertificate}>
+            <Button
+              variant="contained"
+              onClick={handleViewCertificate}
+              sx={{ mt: 2 }}
+            >
               View Certificate
             </Button>
           </Box>
@@ -373,3 +383,4 @@ const UserCertificationsTable: React.FC = () => {
 };
 
 export default UserCertificationsTable;
+

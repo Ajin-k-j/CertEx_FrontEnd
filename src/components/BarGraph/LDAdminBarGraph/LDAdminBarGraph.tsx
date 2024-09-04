@@ -126,7 +126,7 @@ const LndBarGraph: React.FC = () => {
     <Grid container justifyContent="left" sx={{ padding: 2 }}>
       <Box
         sx={{
-          width: { xs: "100%", md: "100%", lg: "44vw" },
+          width: { xs: "100%", md: "100%", lg: "46vw" },
           height: { xs: "50vh", md: "40vh", lg: "50vh" },
           padding: 2,
           borderRadius: "15px",
