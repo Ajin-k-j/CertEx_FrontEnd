@@ -64,9 +64,9 @@ const LDAdminDashboard = () => {
       <Grid item xs={12} md={4} lg={5.8}>
       <PendingNominationsTable
           fetchNominations={fetchPendingNominations}
-          itemsPerPage={7}
+          itemsPerPage={6}
           CardComponent={PendingNominationCard}
-          containerHeight="440px"
+          containerHeight="435px"
           containerWidth="580px"
         />
       </Grid>
