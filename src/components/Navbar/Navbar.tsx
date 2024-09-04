@@ -105,7 +105,7 @@ const Navbar: React.FC = () => {
   };
 
   if (!userRole) {
-    return null; // or a loading spinner
+    return null; 
   }
 
   return (
@@ -185,7 +185,7 @@ const Navbar: React.FC = () => {
                   padding: '14px 8px',
                   color: location.pathname.includes('department') ? 'blue' : 'inherit',
                   borderBottom: location.pathname.includes('department') ? '2px solid blue' : 'none',
-                  marginRight: 4, // Add more space here
+                  marginRight: 4,
                 }}
                 onClick={() => navigate("/department")}
               >
@@ -201,7 +201,7 @@ const Navbar: React.FC = () => {
                   padding: '14px 8px',
                   color: location.pathname.includes('ld-admin') ? 'blue' : 'inherit',
                   borderBottom: location.pathname.includes('ld-admin') ? '2px solid blue' : 'none',
-                  marginRight: 4, // Add more space here
+                  marginRight: 4,
                 }}
                 onClick={() => navigate("/ld-admin")}
               >
@@ -217,7 +217,7 @@ const Navbar: React.FC = () => {
                   padding: '14px 8px',
                   color: location.pathname.includes('aws-admin') ? 'blue' : 'inherit',
                   borderBottom: location.pathname.includes('aws-admin') ? '2px solid blue' : 'none',
-                  marginRight: 4, // Add more space here
+                  marginRight: 4,
                 }}
                 onClick={() => navigate("/aws-admin")}
               >
@@ -235,7 +235,7 @@ const Navbar: React.FC = () => {
             exclusive
             onChange={handleViewChange}
             aria-label="view toggle"
-            sx={{ marginRight: 4, marginLeft: 2 }} // Increase space here if needed
+            sx={{ marginRight: 4, marginLeft: 2 }}
           >
             <ToggleButton
               value="user"

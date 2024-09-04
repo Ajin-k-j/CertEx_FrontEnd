@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import PendingNominationsTable from "../../components/PendingActions/PendingActionsTable/PendingActionsTable";
 import { fetchPendingNominations } from '../../api/PendingActionTableAPI';
@@ -8,11 +7,11 @@ import PendingNominationCard from "../../components/PendingActions/PendingNomina
 import CertificationManagementPage from '../../components/AllCertificationsAdmin/AllCertificationsManagement';
 import LdNominationTable from '../../components/LdNominationTable/LdNominationTable';
 import { Grid } from "@mui/material";
-
-
+import LDCertificationCostTable from '../../components/LDCertificationCostTable/LDCertificationCostTable';  // Updated import
 
 const LDAdminDashboard = () => {
   const [openCertificationModal, setOpenCertificationModal] = useState(false);
+  const [openStatisticsDialog, setOpenStatisticsDialog] = useState(false);
 
   const ldButtons = [
     {
@@ -33,12 +32,16 @@ const LDAdminDashboard = () => {
     },
     {
       label: "Detailed Statistics",
-      onClick: () => console.log("Detailed Statistics"),
+      onClick: () => setOpenStatisticsDialog(true),
     },
   ];
 
   const handleCloseModal = () => {
     setOpenCertificationModal(false);
+  };
+
+  const handleCloseStatisticsDialog = () => {
+    setOpenStatisticsDialog(false);
   };
 
   return (
@@ -61,9 +64,9 @@ const LDAdminDashboard = () => {
       <Grid item xs={12} md={4} lg={5.8}>
       <PendingNominationsTable
           fetchNominations={fetchPendingNominations}
-          itemsPerPage={7}
+          itemsPerPage={6}
           CardComponent={PendingNominationCard}
-          containerHeight="440px"
+          containerHeight="435px"
           containerWidth="580px"
         />
       </Grid>
@@ -72,7 +75,7 @@ const LDAdminDashboard = () => {
       <Grid item xs={12}>
         <LdNominationTable />
       </Grid>
-    
+
       {/* Conditional Rendering of CertificationManagementPage Modal */}
       {openCertificationModal && (
         <Grid item xs={12}>
@@ -82,19 +85,11 @@ const LDAdminDashboard = () => {
           />
         </Grid>
       )}
+
+      {/* Pass dialog state to the LDCertificationCostTable */}
+      <LDCertificationCostTable open={openStatisticsDialog} onClose={handleCloseStatisticsDialog} />
     </Grid>
-    
-    
   );
 };
 
 export default LDAdminDashboard;
-
-
-
-
-
-
-
-
-
