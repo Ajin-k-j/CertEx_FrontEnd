@@ -83,26 +83,29 @@ const SimilarCertifications: React.FC = () => {
         // boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
       }}
     >
-      <Typography variant="h6" sx={{ fontSize: '1rem', textAlign: 'center' }}>
+      <Typography variant="h6" sx={{ fontSize: "1rem", textAlign: "center" }}>
         Recommended Certifications <span>({certifications.length})</span>
       </Typography>
 
       {certifications.length === 0 ? (
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            p: '1.6rem',
-            backgroundColor: '#f9f9f9',
-            borderRadius: '8px',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            p: "1.4rem",
+            backgroundColor: "#f9f9f9",
+            borderRadius: "8px",
           }}
         >
-          <InfoOutlinedIcon sx={{ fontSize: '2rem', color: '#757575' }} />
-          <Typography variant="body1" sx={{ mt: '.5rem', mb: '.2rem', textAlign: 'center' }}>
+          <InfoOutlinedIcon sx={{ fontSize: "2rem", color: "#757575" }} />
+          <Typography
+            variant="body1"
+            sx={{ mt: ".5rem", mb: ".2rem", textAlign: "center" }}
+          >
             No Recommendations for now
           </Typography>
-          <Typography variant="body2" sx={{ mb: '.5rem', textAlign: 'center' }}>
+          <Typography variant="body2" sx={{ mb: ".5rem", textAlign: "center" }}>
             Explore all available certifications
           </Typography>
           <Button
@@ -110,7 +113,7 @@ const SimilarCertifications: React.FC = () => {
             to="/"
             variant="contained"
             color="success" // Green color
-            sx={{ padding: '0.3rem 2rem', borderRadius: '8px' }}
+            sx={{ padding: "0.3rem 2rem", borderRadius: "8px" }}
           >
             Explore
           </Button>
@@ -143,7 +146,9 @@ const SimilarCertifications: React.FC = () => {
                   level={certifications[currentSlide].level || "Beginner"}
                   description=" " // No description to maintain the height limit
                   tags={certifications[currentSlide].tags || []}
-                  official_link={certifications[currentSlide].official_link || " "}
+                  official_link={
+                    certifications[currentSlide].official_link || " "
+                  }
                   onClick={() => handleCardClick(certifications[currentSlide])}
                 />
               )}
@@ -179,7 +184,9 @@ const SimilarCertifications: React.FC = () => {
               id={selectedCertification.id}
               certificationName={selectedCertification.certification_name}
               nomination_open_date={selectedCertification.nomination_open_date}
-              nomination_close_date={selectedCertification.nomination_close_date}
+              nomination_close_date={
+                selectedCertification.nomination_close_date
+              }
             />
           )}
         </>

@@ -4,16 +4,14 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { fetchCertificationData } from "../../api/BarGraphApi";
+import { fetchDU } from "../../api/FetchingDUApi"; // Import the fetchDU function
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { Box, Typography } from "@mui/material";
 import { fetchFinancialYears } from "../../api/FetchFinancialYearApi";
 import ReusableBarChart from "../BarGraph/ReusableBarChart/ReusableBarChart";
-import { fetchDU } from "../../api/FetchingDUApi";
-import { fetchProviders } from "../../api/FetchProviderApi";
 
 type CertificationData = {
   [key: string]: {
@@ -38,20 +36,19 @@ const months = [
   "Mar",
 ];
 
-const Certification: React.FC = () => {
+const AWSAdminBarGraph: React.FC = () => {
   const [certificationData, setCertificationData] = useState<CertificationData>(
     {}
   );
   const [year, setYear] = useState<string>("All");
   const [du, setDU] = useState<string>("All");
-  const [provider, setProvider] = useState<string>("All");
   const [data, setData] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
   const [yearOptions, setYearOptions] = useState<string[]>(["All"]);
-  const [duOptions, setDUOptions] = useState<string[]>(["All"]);
-  const [providerOptions, setProviderOptions] = useState<string[]>(["All"]);
   const [noData, setNoData] = useState<boolean>(false);
+  const [duOptions, setDUOptions] = useState<string[]>([]); // Ensure duOptions is initialized as an array
+  const provider = "AWS";
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
@@ -66,12 +63,8 @@ const Certification: React.FC = () => {
         );
         setYearOptions(["All", ...formattedYears]);
 
-        const [duData, providersData] = await Promise.all([
-          fetchDU(),
-          fetchProviders(),
-        ]);
+        const [duData] = await Promise.all([fetchDU()]);
         setDUOptions(["All", ...duData]);
-        setProviderOptions(["All", ...providersData]);
 
         const data = await fetchCertificationData();
         setCertificationData(data as CertificationData);
@@ -91,15 +84,14 @@ const Certification: React.FC = () => {
     if (loading || error) return;
 
     const yearData = certificationData[year];
-    // const yearData = filteredData[year] || filteredData['All'];
     if (!yearData || !yearData[du]) {
       setData([]);
       setNoData(true);
       return;
     }
+    const duData = yearData?.[du] || yearData["All"];
+    const providerData = duData?.[provider] || [];
 
-    const duData = yearData[du] || yearData["All"];
-    const providerData = duData[provider] || [];
     if (Array.isArray(providerData) && providerData.length > 0) {
       setData(providerData);
       setNoData(false);
@@ -107,7 +99,7 @@ const Certification: React.FC = () => {
       setData([]);
       setNoData(true);
     }
-  }, [certificationData, year, du, provider, loading, error]);
+  }, [certificationData, year, du, loading, error]);
 
   const dataset = data.map((value, index) => ({
     month: months[index] || `M${index + 1}`,
@@ -120,10 +112,6 @@ const Certification: React.FC = () => {
 
   const handleDUChange = (event: SelectChangeEvent<string>) => {
     setDU(event.target.value);
-  };
-
-  const handleProviderChange = (event: SelectChangeEvent<string>) => {
-    setProvider(event.target.value);
   };
 
   return (
@@ -173,26 +161,6 @@ const Certification: React.FC = () => {
             {duOptions.map((duOption) => (
               <MenuItem key={duOption} value={duOption}>
                 {duOption}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <FormControl sx={{ minWidth: isMobile ? 120 : 120 }}>
-          <InputLabel>Provider</InputLabel>
-          <Select
-            value={provider}
-            onChange={handleProviderChange}
-            label="Provider"
-            sx={{
-              height: isMobile ? "7vh" : "5vh",
-              fontSize: "2vh",
-              marginRight: isMobile ? 0 : "2vh",
-            }}
-          >
-            {providerOptions.map((providerOption) => (
-              <MenuItem key={providerOption} value={providerOption}>
-                {providerOption}
               </MenuItem>
             ))}
           </Select>
@@ -250,4 +218,4 @@ const Certification: React.FC = () => {
   );
 };
 
-export default Certification;
+export default AWSAdminBarGraph;

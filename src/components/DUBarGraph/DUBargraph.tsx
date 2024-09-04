@@ -4,16 +4,14 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { fetchCertificationData } from "../../api/BarGraphApi";
+import { fetchProviders } from "../../api/FetchProviderApi";
+import { Box, Typography } from "@mui/material";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { fetchFinancialYears } from "../../api/FetchFinancialYearApi";
 import ReusableBarChart from "../BarGraph/ReusableBarChart/ReusableBarChart";
-import { fetchDU } from "../../api/FetchingDUApi";
-import { fetchProviders } from "../../api/FetchProviderApi";
 
 type CertificationData = {
   [key: string]: {
@@ -38,20 +36,19 @@ const months = [
   "Mar",
 ];
 
-const Certification: React.FC = () => {
+const DUBarGraph: React.FC = () => {
   const [certificationData, setCertificationData] = useState<CertificationData>(
     {}
   );
   const [year, setYear] = useState<string>("All");
-  const [du, setDU] = useState<string>("All");
   const [provider, setProvider] = useState<string>("All");
+  const [providerOptions, setProviderOptions] = useState<string[]>([]);
   const [data, setData] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [noData, setNoData] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [yearOptions, setYearOptions] = useState<string[]>(["All"]);
-  const [duOptions, setDUOptions] = useState<string[]>(["All"]);
-  const [providerOptions, setProviderOptions] = useState<string[]>(["All"]);
-  const [noData, setNoData] = useState<boolean>(false);
+  const du = "DU1";
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
@@ -66,16 +63,13 @@ const Certification: React.FC = () => {
         );
         setYearOptions(["All", ...formattedYears]);
 
-        const [duData, providersData] = await Promise.all([
-          fetchDU(),
-          fetchProviders(),
-        ]);
-        setDUOptions(["All", ...duData]);
-        setProviderOptions(["All", ...providersData]);
+        const [providerData] = await Promise.all([fetchProviders()]);
+        if (Array.isArray(providerData)) {
+          setProviderOptions(["All", ...providerData]);
+        }
 
         const data = await fetchCertificationData();
         setCertificationData(data as CertificationData);
-        setNoData(Object.keys(data).length === 0);
       } catch (err) {
         console.log(err);
         setError("Failed to fetch dropdown data.");
@@ -91,15 +85,14 @@ const Certification: React.FC = () => {
     if (loading || error) return;
 
     const yearData = certificationData[year];
-    // const yearData = filteredData[year] || filteredData['All'];
     if (!yearData || !yearData[du]) {
       setData([]);
       setNoData(true);
       return;
     }
 
-    const duData = yearData[du] || yearData["All"];
-    const providerData = duData[provider] || [];
+    const duData = yearData[du];
+    const providerData = duData?.[provider];
     if (Array.isArray(providerData) && providerData.length > 0) {
       setData(providerData);
       setNoData(false);
@@ -107,7 +100,7 @@ const Certification: React.FC = () => {
       setData([]);
       setNoData(true);
     }
-  }, [certificationData, year, du, provider, loading, error]);
+  }, [certificationData, year, provider, loading, error]);
 
   const dataset = data.map((value, index) => ({
     month: months[index] || `M${index + 1}`,
@@ -115,11 +108,17 @@ const Certification: React.FC = () => {
   }));
 
   const handleYearChange = (event: SelectChangeEvent<string>) => {
-    setYear(event.target.value);
-  };
+    const selectedYear = event.target.value;
+    setYear(selectedYear);
 
-  const handleDUChange = (event: SelectChangeEvent<string>) => {
-    setDU(event.target.value);
+    if (
+      !certificationData[selectedYear] ||
+      !certificationData[selectedYear][du]
+    ) {
+      setNoData(true);
+    } else {
+      setNoData(false);
+    }
   };
 
   const handleProviderChange = (event: SelectChangeEvent<string>) => {
@@ -141,63 +140,53 @@ const Certification: React.FC = () => {
         justifyContent: "flex-end",
       }}
     >
-      <Stack
-        direction={isMobile ? "column" : "row"}
-        spacing={2}
-        justifyContent="right"
-      >
-        <FormControl sx={{ minWidth: isMobile ? 120 : 120 }}>
-          <InputLabel>Financial Year</InputLabel>
-          <Select
-            value={year}
-            onChange={handleYearChange}
-            label="Financial Year"
-            sx={{ height: isMobile ? "7vh" : "5vh", fontSize: "2vh" }}
-          >
-            {yearOptions.map((yearOption) => (
-              <MenuItem key={yearOption} value={yearOption}>
-                {yearOption}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+      {!loading && (
+        <Stack
+          direction={isMobile ? "column" : "row"}
+          spacing={2}
+          justifyContent="right"
+        >
+          <FormControl sx={{ minWidth: isMobile ? 120 : 120 }}>
+            <InputLabel>Financial Year</InputLabel>
+            <Select
+              value={year}
+              onChange={handleYearChange}
+              label="Year"
+              sx={{ height: isMobile ? "7vh" : "5vh", fontSize: "2vh" }}
+            >
+              {yearOptions.map((yearOption) => (
+                <MenuItem key={yearOption} value={yearOption}>
+                  {yearOption}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-        <FormControl sx={{ minWidth: isMobile ? 120 : 120 }}>
-          <InputLabel>DU</InputLabel>
-          <Select
-            value={du}
-            onChange={handleDUChange}
-            label="DU"
-            sx={{ height: isMobile ? "7vh" : "5vh", fontSize: "2vh" }}
-          >
-            {duOptions.map((duOption) => (
-              <MenuItem key={duOption} value={duOption}>
-                {duOption}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <FormControl sx={{ minWidth: isMobile ? 120 : 120 }}>
-          <InputLabel>Provider</InputLabel>
-          <Select
-            value={provider}
-            onChange={handleProviderChange}
-            label="Provider"
-            sx={{
-              height: isMobile ? "7vh" : "5vh",
-              fontSize: "2vh",
-              marginRight: isMobile ? 0 : "2vh",
-            }}
-          >
-            {providerOptions.map((providerOption) => (
-              <MenuItem key={providerOption} value={providerOption}>
-                {providerOption}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Stack>
+          <FormControl sx={{ minWidth: isMobile ? 120 : 120 }}>
+            <InputLabel>Provider</InputLabel>
+            <Select
+              value={provider}
+              onChange={handleProviderChange}
+              label="Provider"
+              sx={{
+                height: isMobile ? "7vh" : "5vh",
+                fontSize: "2vh",
+                marginRight: isMobile ? 0 : "2vh",
+              }}
+            >
+              {providerOptions.length > 0 ? (
+                providerOptions.map((providerOption) => (
+                  <MenuItem key={providerOption} value={providerOption}>
+                    {providerOption}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>No Providers available</MenuItem>
+              )}
+            </Select>
+          </FormControl>
+        </Stack>
+      )}
 
       {loading ? (
         <div>Loading...</div>
@@ -250,4 +239,4 @@ const Certification: React.FC = () => {
   );
 };
 
-export default Certification;
+export default DUBarGraph;

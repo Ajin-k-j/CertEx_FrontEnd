@@ -36,4 +36,4 @@ const AwsAdminDashboard = () => {
   )
 }
 
-export default AwsAdminDashboard
+export default AwsAdminDashboard;

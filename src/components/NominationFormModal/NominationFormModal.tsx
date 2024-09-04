@@ -18,8 +18,8 @@ interface NominationFormModalProps {
   onClose: () => void;
   id: number;
   certificationName: string;
-  nominationOpenDate: string; 
-  nominationCloseDate: string; 
+  nominationOpenDate: string;
+  nominationCloseDate: string;
   nominationStatus: string;
 }
 
@@ -48,7 +48,7 @@ const NominationFormModal: React.FC<NominationFormModalProps> = ({
   const handleSubmit = async (values: typeof initialValues) => {
     try {
       setIsSubmitting(true); // Set submitting state to true
-      const getEmployeeId = () => 3; // Replace with actual logic to get employee ID
+      const getEmployeeId = () => 15; // Replace with actual logic to get employee ID
 
       const newNomination: NominationData = {
         certificationId: id,
@@ -65,7 +65,8 @@ const NominationFormModal: React.FC<NominationFormModalProps> = ({
       onClose();
     } catch (error: unknown) {
       // Handle error and show toast message
-      const errorMessage = error instanceof Error ? error.message : "Failed to submit nomination.";
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to submit nomination.";
       showToast(errorMessage, "error");
     } finally {
       setIsSubmitting(false); // Reset submitting state
@@ -78,9 +79,7 @@ const NominationFormModal: React.FC<NominationFormModalProps> = ({
     .toISOString()
     .slice(0, 7);
 
-  const maxDate = new Date(nominationCloseDate)
-    .toISOString()
-    .slice(0, 7);
+  const maxDate = new Date(nominationCloseDate).toISOString().slice(0, 7);
 
   const isNominationOpen = nominationStatus === "Accepting";
   const isNominationClosed = nominationStatus === "Not Accepting";
@@ -109,7 +108,8 @@ const NominationFormModal: React.FC<NominationFormModalProps> = ({
       </DialogTitle>
       <DialogContent>
         <Typography variant="subtitle1" gutterBottom>
-          Please fill in the following details to nominate yourself for this certification.
+          Please fill in the following details to nominate yourself for this
+          certification.
         </Typography>
         <Formik
           initialValues={initialValues}
@@ -126,12 +126,12 @@ const NominationFormModal: React.FC<NominationFormModalProps> = ({
                 fullWidth
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
-                InputProps={{ 
+                InputProps={{
                   inputProps: {
                     min: isNominationOpen || isAlwaysAccepting ? minDate : "",
                     max: isNominationOpen ? maxDate : "",
                     disabled: isNominationClosed,
-                  } 
+                  },
                 }}
                 value={values.plannedExamMonth}
                 onChange={handleChange}
@@ -140,13 +140,13 @@ const NominationFormModal: React.FC<NominationFormModalProps> = ({
                 disabled={isNominationClosed}
               />
               <ErrorMessage name="plannedExamMonth">
-                {msg => <Typography color="error">{msg}</Typography>}
+                {(msg) => <Typography color="error">{msg}</Typography>}
               </ErrorMessage>
 
               <Field
                 as={TextField}
                 name="motivation"
-                label="What motivates you to take this certification?"
+                label="Justification for Certification Choice"
                 type="text"
                 fullWidth
                 variant="outlined"
@@ -159,7 +159,7 @@ const NominationFormModal: React.FC<NominationFormModalProps> = ({
                 margin="dense"
               />
               <ErrorMessage name="motivation">
-                {msg => <Typography color="error">{msg}</Typography>}
+                {(msg) => <Typography color="error">{msg}</Typography>}
               </ErrorMessage>
 
               {isNominationClosed && (
@@ -170,10 +170,10 @@ const NominationFormModal: React.FC<NominationFormModalProps> = ({
 
               <DialogActions>
                 <Button onClick={onClose}>Cancel</Button>
-                <Button 
-                  type="submit" 
-                  color="primary" 
-                  variant="contained" 
+                <Button
+                  type="submit"
+                  color="primary"
+                  variant="contained"
                   disabled={isNominationClosed || isSubmitting}
                 >
                   {isSubmitting ? "Submitting..." : "Submit"}

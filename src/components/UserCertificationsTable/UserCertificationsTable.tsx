@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  DataGrid,
-  GridColDef,
-} from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import {
   TextField,
   Box,

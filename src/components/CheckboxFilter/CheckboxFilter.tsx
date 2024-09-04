@@ -1,5 +1,12 @@
 import React, { useState, ChangeEvent } from "react";
-import { Checkbox, FormControlLabel, TextField, FormGroup, Box, Typography } from "@mui/material";
+import {
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  FormGroup,
+  Box,
+  Typography,
+} from "@mui/material";
 
 interface CheckboxFilterProps {
   items: string[];
@@ -17,12 +24,12 @@ const CheckboxFilter: React.FC<CheckboxFilterProps> = ({
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleChange = (item: string) => {
-    setSelectedItems(prev =>
-      prev.includes(item) ? prev.filter(i => i !== item) : [...prev, item]
+    setSelectedItems((prev) =>
+      prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
     );
   };
 
-  const filteredItems = items.filter(item =>
+  const filteredItems = items.filter((item) =>
     item.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -30,7 +37,9 @@ const CheckboxFilter: React.FC<CheckboxFilterProps> = ({
     <div>
       <TextField
         value={searchTerm}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+          setSearchTerm(e.target.value)
+        }
         placeholder={placeholder}
         variant="outlined"
         size="small" // Reduce height
@@ -64,7 +73,7 @@ const CheckboxFilter: React.FC<CheckboxFilterProps> = ({
           </Typography>
         ) : (
           <FormGroup>
-            {filteredItems.map(item => (
+            {filteredItems.map((item) => (
               <FormControlLabel
                 key={item}
                 control={
@@ -72,7 +81,7 @@ const CheckboxFilter: React.FC<CheckboxFilterProps> = ({
                     checked={selectedItems.includes(item)}
                     onChange={() => handleChange(item)}
                     sx={{
-                      '& .MuiSvgIcon-root': { fontSize: 20 }, // Reduce checkbox size
+                      "& .MuiSvgIcon-root": { fontSize: 20 }, // Reduce checkbox size
                     }}
                   />
                 }

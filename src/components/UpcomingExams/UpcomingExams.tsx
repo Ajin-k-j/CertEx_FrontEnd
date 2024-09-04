@@ -1,11 +1,18 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Box, Card, CardContent, Typography, IconButton, Button } from '@mui/material';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { styled } from '@mui/system';
-import { UpcomingExam } from '../../types/UpcomingExams.types';
-import { fetchUpcomingExams } from '../../api/UpcomingExamsApi';
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  IconButton,
+  Button,
+} from "@mui/material";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { styled } from "@mui/system";
+import { UpcomingExam } from "../../types/UpcomingExams.types";
+import { fetchUpcomingExams } from "../../api/UpcomingExamsApi";
 import { Link } from "react-router-dom";
 
 // Function to calculate days until the exam
@@ -20,20 +27,22 @@ const calculateDaysUntilExam = (examDate: string) => {
 };
 
 // Style the card with a dynamic border color based on the level
-const LevelCard = styled(Card)<{ level: 'Beginner' | 'Intermediate' | 'Expert' }>(({ level }) => ({
+const LevelCard = styled(Card)<{
+  level: "Beginner" | "Intermediate" | "Expert";
+}>(({ level }) => ({
   borderTop: `4px solid ${
-    level === 'Beginner' ? 'green' : level === 'Intermediate' ? 'blue' : 'red'
+    level === "Beginner" ? "green" : level === "Intermediate" ? "blue" : "red"
   }`,
-  backgroundColor: '#fff',
+  backgroundColor: "#fff",
   minHeight: 150,
   maxWidth: 300,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
-  padding: '5px',
-  borderRadius: '8px',
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+  padding: "5px",
+  borderRadius: "8px",
 }));
 
 const UpcomingExams: React.FC = () => {
@@ -46,7 +55,7 @@ const UpcomingExams: React.FC = () => {
         const data = await fetchUpcomingExams();
         setExams(data);
       } catch (error) {
-        console.error('Failed to fetch exams:', error);
+        console.error("Failed to fetch exams:", error);
       }
     };
 
@@ -77,35 +86,43 @@ const UpcomingExams: React.FC = () => {
   return (
     <Box
       sx={{
-        maxWidth: 298,
+        maxWidth: 300,
         height: 215,
-        m: '2vh',
+        m: "2vh",
         backgroundColor: "white",
         padding: "10px",
         paddingBottom: "4vh",
         borderRadius: "8px",
       }}
     >
-      <Typography variant="h6" component="h2" gutterBottom sx={{ textAlign: "center", fontSize: '1rem', marginBottom:"0" }}>
+      <Typography
+        variant="h6"
+        component="h2"
+        gutterBottom
+        sx={{ textAlign: "center", fontSize: "1rem", marginBottom: "0" }}
+      >
         Upcoming Exams <span>({exams.length})</span>
       </Typography>
       {exams.length === 0 ? (
         <Box
           sx={{
             maxWidth: 300,
-            backgroundColor: '#f9f9f9',
-            padding: '1.6rem',
-            borderRadius: '8px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            backgroundColor: "#f9f9f9",
+            padding: "1.6rem",
+            borderRadius: "8px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <InfoOutlinedIcon sx={{ fontSize: '2rem', color: '#757575' }} />
-          <Typography variant="body1" sx={{ mt: '.5rem', mb: '.2rem', textAlign: 'center' }}>
+          <InfoOutlinedIcon sx={{ fontSize: "2rem", color: "#757575" }} />
+          <Typography
+            variant="body1"
+            sx={{ mt: ".5rem", mb: ".2rem", textAlign: "center" }}
+          >
             No upcoming exams
           </Typography>
-          <Typography variant="body2" sx={{ mb: '.5rem', textAlign: 'center' }}>
+          <Typography variant="body2" sx={{ mb: ".5rem", textAlign: "center" }}>
             Explore all available certifications
           </Typography>
           <Button
@@ -113,36 +130,53 @@ const UpcomingExams: React.FC = () => {
             to="/"
             variant="contained"
             color="success" // Green color
-            sx={{ padding: '0.3rem 2rem', borderRadius: '8px' }}
+            sx={{ padding: "0.3rem 2rem", borderRadius: "8px" }}
           >
             Explore
           </Button>
         </Box>
       ) : (
-        <Box sx={{ display: 'flex', alignItems: 'center', marginTop:".4rem"}}>
+        <Box sx={{ display: "flex", alignItems: "center", marginTop: ".4rem" }}>
           <IconButton onClick={handlePrevious}>
             <ArrowBackIosIcon />
           </IconButton>
           <LevelCard level={exams[currentIndex].level} sx={{ flex: 1 }}>
-            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-              <Typography variant="h6" component="h3" sx={{ fontWeight: 'bold', fontSize: '1rem', mb: 1 }}>
+            <CardContent
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                textAlign: "center",
+              }}
+            >
+              <Typography
+                variant="h6"
+                component="h3"
+                sx={{ fontWeight: "bold", fontSize: "1rem", mb: 1 }}
+              >
                 {exams[currentIndex].title}
               </Typography>
               <Typography
                 variant="body2"
                 sx={{
-                  color: 'text.secondary',
-                  fontWeight: 'bold',
+                  color: "text.secondary",
+                  fontWeight: "bold",
                   mb: 1,
-                  border: '1px solid',
-                  borderColor: calculateDaysUntilExam(exams[currentIndex].date) === 'Today' ? 'green' : 'text.secondary',
-                  borderRadius: '4px',
-                  padding: '4px',
+                  border: "1px solid",
+                  borderColor:
+                    calculateDaysUntilExam(exams[currentIndex].date) === "Today"
+                      ? "green"
+                      : "text.secondary",
+                  borderRadius: "4px",
+                  padding: "4px",
                 }}
               >
                 {calculateDaysUntilExam(exams[currentIndex].date)}
               </Typography>
-              <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+              <Typography
+                variant="body2"
+                sx={{ fontWeight: "bold", color: "#1976d2" }}
+              >
                 {exams[currentIndex].date}
               </Typography>
             </CardContent>

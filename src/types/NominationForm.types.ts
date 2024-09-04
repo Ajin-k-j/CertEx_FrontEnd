@@ -3,6 +3,6 @@ export interface NominationData {
   plannedExamMonth: string;
   motivationDescription: string;
   employeeId: number;
-  createdBy: string,
-  updatedBy: string
+  createdBy: string;
+  updatedBy: string;
 }

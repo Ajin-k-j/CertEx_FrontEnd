@@ -1,5 +1,4 @@
 import React from "react";
-import { Box } from "@mui/material";
 import { Grid } from "@mui/material";
 import SimilarCertifications from "../../components/SimilarCertifications/SimilarCertifications";
 import UpcomingExams from "../../components/UpcomingExams/UpcomingExams";
@@ -24,7 +23,7 @@ const EmployeeDashboard: React.FC = () => {
 
 <Grid container spacing={1} sx={{ padding: ".1rem" }}>
   {/* Left Column: UpcomingExams, SimilarCertifications, DashboardActions */}
-  <Grid item xs={12} md={6} lg={6}>
+  <Grid item xs={12} md={6} lg={6.2}>
     <Grid container spacing={1} direction="column">
       <Grid item>
         <Grid container spacing={0}>

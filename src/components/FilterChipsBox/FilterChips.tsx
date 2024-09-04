@@ -1,10 +1,13 @@
 import React from "react";
 import Chip from "@mui/material/Chip";
 import styles from "./FilterChips.module.css";
-import { CertificationLevel, SortOption } from "../../types/AllCertifications.types";
+import {
+  CertificationLevel,
+  SortOption,
+} from "../../types/AllCertifications.types";
 interface FilterChipsProps {
   searchQuery: string;
-  selectedLevel:CertificationLevel | "all" ;
+  selectedLevel: CertificationLevel | "all";
   sortOption: SortOption;
   selectedProviders: string[];
   selectedCategories: string[];

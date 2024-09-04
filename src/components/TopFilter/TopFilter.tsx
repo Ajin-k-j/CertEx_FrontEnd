@@ -1,7 +1,18 @@
 import React from "react";
-import { TextField, MenuItem, Select, FormControl, Box, InputAdornment, SelectChangeEvent } from "@mui/material";
-import SearchIcon from '@mui/icons-material/Search';
-import { SortOption, CertificationLevel } from "../../types/AllCertifications.types";
+import {
+  TextField,
+  MenuItem,
+  Select,
+  FormControl,
+  Box,
+  InputAdornment,
+  SelectChangeEvent,
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import {
+  SortOption,
+  CertificationLevel,
+} from "../../types/AllCertifications.types";
 
 interface TopFilterProps {
   searchQuery: string;
@@ -20,7 +31,7 @@ const TopFilter: React.FC<TopFilterProps> = ({
   setSelectedLevel,
   sortOption,
   setSortOption,
-  inputHeight = '2rem', // Default height if none provided
+  inputHeight = "2rem", // Default height if none provided
 }) => {
   // Handle change for the level dropdown
   const handleLevelChange = (event: SelectChangeEvent<CertificationLevel>) => {
@@ -38,32 +49,32 @@ const TopFilter: React.FC<TopFilterProps> = ({
       flexDirection="row"
       alignItems="center"
       gap={2} // Adjust gap between filters as needed
-      sx={{ 
-        marginBottom: 1, 
-        width: '100%', 
-        flexWrap: 'wrap', 
-        '@media (max-width:600px)': {
-          flexDirection: 'column', // Stack items vertically on small screens
-        }
+      sx={{
+        marginBottom: 1,
+        width: "100%",
+        flexWrap: "wrap",
+        "@media (max-width:600px)": {
+          flexDirection: "column", // Stack items vertically on small screens
+        },
       }}
     >
       <TextField
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         size="small"
-        sx={{ 
+        sx={{
           backgroundColor: "#ffffff", // Set background color to white
           borderRadius: 1, // Add border radius
           "& .MuiOutlinedInput-root": {
             "& fieldset": {
-              border: 'none', // Remove the outline
+              border: "none", // Remove the outline
             },
           },
           height: inputHeight, // Set height property
           flex: 1, // Allow to grow
-          maxWidth: '400px', // Adjust maximum width for larger screens
-          width: '100%', // Full width on small screens
-          justifyContent:"center",
+          maxWidth: "400px", // Adjust maximum width for larger screens
+          width: "100%", // Full width on small screens
+          justifyContent: "center",
         }}
         placeholder="Search for certifications"
         InputProps={{
@@ -74,29 +85,38 @@ const TopFilter: React.FC<TopFilterProps> = ({
           ),
         }}
       />
-      <Box 
+      <Box
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
         alignItems="center"
         gap={1}
       >
-        <Box display="flex" flexDirection="row" alignItems="center" gap={1.5} sx={{ 
-          '@media (max-width:600px)': {
-            flexDirection: 'row',
-          }
-        }}>
-          <span style={{ fontSize: '0.875rem' }}>Level</span>
-          <FormControl size="small" sx={{ width: '130px', backgroundColor: "#ffffff" }}>
+        <Box
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          gap={1.5}
+          sx={{
+            "@media (max-width:600px)": {
+              flexDirection: "row",
+            },
+          }}
+        >
+          <span style={{ fontSize: "0.875rem" }}>Level</span>
+          <FormControl
+            size="small"
+            sx={{ width: "130px", backgroundColor: "#ffffff" }}
+          >
             <Select
               value={selectedLevel}
               onChange={handleLevelChange}
-              sx={{ 
+              sx={{
                 borderRadius: 1, // Add border radius
                 height: inputHeight, // Set height property
                 "& .MuiOutlinedInput-notchedOutline": { border: 0 },
-                fontSize: '0.85rem', // Smaller font size for dropdown
-                justifyContent:"center",
+                fontSize: "0.85rem", // Smaller font size for dropdown
+                justifyContent: "center",
               }}
             >
               <MenuItem value="all">All</MenuItem>
@@ -106,21 +126,30 @@ const TopFilter: React.FC<TopFilterProps> = ({
             </Select>
           </FormControl>
         </Box>
-        <Box display="flex" flexDirection="row" alignItems="center" gap={1.5} sx={{ 
-          '@media (max-width:600px)': {
-            flexDirection: 'row',
-          }
-        }}>
-          <span style={{ fontSize: '0.875rem' }}>Sort By</span>
-          <FormControl size="small" sx={{ width: '130px', backgroundColor: "#ffffff" }}>
+        <Box
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          gap={1.5}
+          sx={{
+            "@media (max-width:600px)": {
+              flexDirection: "row",
+            },
+          }}
+        >
+          <span style={{ fontSize: "0.875rem" }}>Sort By</span>
+          <FormControl
+            size="small"
+            sx={{ width: "130px", backgroundColor: "#ffffff" }}
+          >
             <Select
               value={sortOption}
               onChange={handleSortChange}
-              sx={{ 
+              sx={{
                 borderRadius: 1, // Add border radius
                 height: inputHeight, // Set height property
                 "& .MuiOutlinedInput-notchedOutline": { border: 0 },
-                fontSize: '0.85rem' // Smaller font size for dropdown
+                fontSize: "0.85rem", // Smaller font size for dropdown
               }}
             >
               <MenuItem value="latest">Latest</MenuItem>

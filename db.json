@@ -1,0 +1,1941 @@
+{
+  "certifications": [
+    {
+      "certification_name": "AWS Certified Solutions Architect – Associate by ajin",
+      "description": "Learn the essentials of building secure and reliable applications on the AWS platform.",
+      "critical": "High",
+      "official_link": "https://aws.amazon.com/certification/certified-solutions-architect-associate/",
+      "provider": "Google",
+      "tags": [
+        "IBM",
+        "Google"
+      ],
+      "nomination_status": "Accepting",
+      "nomination_open_date": "2024-09-03T18:30:00.000Z",
+      "nomination_close_date": "2024-09-10T18:30:00.000Z",
+      "id": "1"
+    },
+    {
+      "id": "2",
+      "provider": "Microsoft-high",
+      "certification_name": "Microsoft Certified: Azure Fundamentals",
+      "level": "Beginner",
+      "description": "Gain foundational knowledge of cloud services and how those services are provided with Microsoft Azure.",
+      "tags": [
+        "Azure",
+        "cloud",
+        "Blockchain",
+        "fundamentals"
+      ],
+      "official_link": "https://learn.microsoft.com/en-us/certifications/azure-fundamentals/",
+      "critical": "medium",
+      "views": 350,
+      "nomination_status": "Not Accepting",
+      "nomination_open_date": "2024-06-30",
+      "nomination_close_date": "2025-06-30"
+    },
+    {
+      "id": "3",
+      "provider": "Google",
+      "certification_name": "Google Professional Data Engineer",
+      "level": "Expert",
+      "description": "Design, build, and manage scalable data processing systems on the Google Cloud Platform.",
+      "tags": [
+        "data",
+        "Google Cloud",
+        "Blockchain",
+        "engineering"
+      ],
+      "official_link": "https://cloud.google.com/certification/data-engineer",
+      "critical": "low",
+      "views": 50,
+      "nomination_status": "Always Accepting",
+      "nomination_open_date": "2024-06-30",
+      "nomination_close_date": "2025-06-30"
+    },
+    {
+      "certification_name": "AWS Certified Solutions Architect – Associate",
+      "description": "Learn the essentials of building secure and reliable applications on the AWS platform.",
+      "critical": "Medium",
+      "official_link": "https://aws.amazon.com/certification/certified-solutions-architect-associate/",
+      "provider": "AWS",
+      "tags": [
+        "AWS"
+      ],
+      "nomination_status": "Not Accepting",
+      "nomination_open_date": "2024-06-29T18:30:00.000Z",
+      "nomination_close_date": "2025-06-29T18:30:00.000Z",
+      "id": "4"
+    },
+    {
+      "id": "5",
+      "provider": "Microsoft",
+      "certification_name": "Microsoft Certified: Azure Fundamentals",
+      "level": "Beginner",
+      "description": "Gain foundational knowledge of cloud services and how those services are provided with Microsoft Azure.",
+      "tags": [
+        "Azure",
+        "cloud",
+        "fundamentals"
+      ],
+      "official_link": "https://learn.microsoft.com/en-us/certifications/azure-fundamentals/",
+      "critical": "medium",
+      "views": 100,
+      "nomination_open_date": "2024-06-30",
+      "nomination_close_date": "2025-06-30"
+    },
+    {
+      "id": "6",
+      "provider": "Google",
+      "certification_name": "Google Professional Data Engineer",
+      "level": "Expert",
+      "description": "Design, build, and manage scalable data processing systems on the Google Cloud Platform.",
+      "tags": [
+        "data",
+        "Google Cloud",
+        "engineering"
+      ],
+      "official_link": "https://cloud.google.com/certification/data-engineer",
+      "critical": "low",
+      "views": 100,
+      "nomination_open_date": "2024-06-30",
+      "nomination_close_date": "2025-06-30"
+    },
+    {
+      "id": "7",
+      "provider": "Google",
+      "certification_name": "Google Professional Data Engineer",
+      "level": "Expert",
+      "description": "Design, build, and manage scalable data processing systems on the Google Cloud Platform.",
+      "tags": [
+        "data",
+        "Google Cloud",
+        "engineering"
+      ],
+      "official_link": "https://cloud.google.com/certification/data-engineer",
+      "critical": "low",
+      "views": 100,
+      "nomination_open_date": "2024-06-30",
+      "nomination_close_date": "2025-06-30"
+    },
+    {
+      "id": "8",
+      "provider": "AWS",
+      "certification_name": "AWS Certified Solutions Architect – Associate",
+      "level": "Intermediate",
+      "description": "Learn the essentials of building secure and reliable applications on the AWS platform.",
+      "tags": [
+        "cloud",
+        "AWS",
+        "architecture"
+      ],
+      "official_link": "https://aws.amazon.com/certification/certified-solutions-architect-associate/",
+      "critical": "high",
+      "views": 100,
+      "nomination_open_date": "2024-06-30",
+      "nomination_close_date": "2025-06-30"
+    },
+    {
+      "id": "9",
+      "provider": "Microsoft",
+      "certification_name": "Microsoft Certified: Azure Fundamentals",
+      "level": "Beginner",
+      "description": "Gain foundational knowledge of cloud services and how those services are provided with Microsoft Azure.",
+      "tags": [
+        "Azure",
+        "cloud",
+        "fundamentals"
+      ],
+      "official_link": "https://learn.microsoft.com/en-us/certifications/azure-fundamentals/",
+      "critical": "medium",
+      "views": 100,
+      "nomination_open_date": "2024-06-30",
+      "nomination_close_date": "2025-06-30"
+    },
+    {
+      "id": "10",
+      "provider": "IBM",
+      "certification_name": "Google Professional Data Engineer",
+      "level": "Expert",
+      "description": "Design, build, and manage scalable data processing systems on the Google Cloud Platform.",
+      "tags": [
+        "data",
+        "Google Cloud",
+        "engineering"
+      ],
+      "official_link": "https://cloud.google.com/certification/data-engineer",
+      "critical": "low",
+      "views": 100,
+      "nomination_open_date": "2024-06-30",
+      "nomination_close_date": "2025-06-30"
+    },
+    {
+      "id": "699c",
+      "certification_name": "sample certificatioj",
+      "description": "asdcvsadv",
+      "critical": "Medium",
+      "official_link": "asdsadv",
+      "provider": "Google",
+      "tags": [
+        "Oracle"
+      ],
+      "nomination_status": "Not Accepting",
+      "nomination_open_date": null,
+      "nomination_close_date": null
+    }
+  ],
+  "nominations": [
+    {
+      "id": "ee63",
+      "certification_id": 2,
+      "planned_exam_month": "2024-09",
+      "motivation_description": "I just wanna do this",
+      "employee_id": 123,
+      "department_approval": "pending",
+      "l_and_d_approval": "pending",
+      "exam_date": null,
+      "exam_status": "pending",
+      "upload_certificate_status": "not uploaded",
+      "skill_matrix_status": "not updated",
+      "reimbursement_status": "not complete",
+      "nomination_status": "pending"
+    },
+    {
+      "id": "66ef",
+      "certification_id": 3,
+      "planned_exam_month": "2025-01",
+      "motivation_description": "Financial year based nominations",
+      "employee_id": 123
+    },
+    {
+      "id": "a128",
+      "certification_id": 3,
+      "planned_exam_month": "2024-09",
+      "motivation_description": "asdefsab",
+      "employee_id": 123
+    },
+    {
+      "id": "63e2",
+      "certification_id": 1,
+      "planned_exam_month": "2025-02",
+      "motivation_description": "gfxfmsmfxs",
+      "employee_id": 123,
+      "department_approval": "pending",
+      "l_and_d_approval": "pending",
+      "exam_date": null,
+      "exam_status": "pending",
+      "upload_certificate_status": "not uploaded",
+      "skill_matrix_status": "not updated",
+      "reimbursement_status": "not complete",
+      "nomination_status": "pending"
+    },
+    {
+      "id": "7430",
+      "certification_id": 9,
+      "planned_exam_month": "2025-07",
+      "motivation_description": "Azure is my favorite.",
+      "employee_id": 123
+    },
+    {
+      "id": "2cb4",
+      "certification_id": 10,
+      "planned_exam_month": "2024-11",
+      "motivation_description": "aasdasfv",
+      "employee_id": 123
+    },
+    {
+      "id": "e004",
+      "certification_id": 10,
+      "planned_exam_month": "2025-07",
+      "motivation_description": "fgmdxfxm",
+      "employee_id": 123
+    },
+    {
+      "id": "d904",
+      "certification_id": 10,
+      "planned_exam_month": "2025-07",
+      "motivation_description": "Certification",
+      "employee_id": 123,
+      "department_approval": "pending",
+      "l_and_d_approval": "pending",
+      "exam_date": null,
+      "exam_status": "pending",
+      "upload_certificate_status": "not uploaded",
+      "skill_matrix_status": "not updated",
+      "reimbursement_status": "not complete",
+      "nomination_status": "pending"
+    },
+    {
+      "id": "78ab",
+      "certification_id": 9,
+      "planned_exam_month": "2025-06",
+      "motivation_description": "Certifcation",
+      "employee_id": 123
+    },
+    {
+      "id": "393f",
+      "certification_id": 10,
+      "planned_exam_month": "2024-11",
+      "motivation_description": "as",
+      "employee_id": 123
+    },
+    {
+      "id": "b764",
+      "certification_id": 10,
+      "planned_exam_month": "2024-12",
+      "motivation_description": "jhv,hc",
+      "employee_id": 123
+    },
+    {
+      "id": "d624",
+      "certification_id": 10,
+      "planned_exam_month": "2024-12",
+      "motivation_description": "dvASDV",
+      "employee_id": 123
+    },
+    {
+      "id": "321d",
+      "certification_id": 2,
+      "planned_exam_month": "2024-11",
+      "motivation_description": "gccmg",
+      "employee_id": 123
+    },
+    {
+      "id": "44a5",
+      "certification_id": 10,
+      "planned_exam_month": "2024-11",
+      "motivation_description": "bncvb",
+      "employee_id": 123
+    }
+  ],
+  "financial_years": [
+    {
+      "id": "1",
+      "from_date": "2024",
+      "to_date": "2025"
+    },
+    {
+      "id": "2",
+      "from_date": "2023",
+      "to_date": "2024"
+    },
+    {
+      "id": "3",
+      "from_date": "2022",
+      "to_date": "2023"
+    },
+    {
+      "id": "4",
+      "from_date": "2021",
+      "to_date": "2022"
+    },
+    {
+      "id": "5",
+      "from_date": "2020",
+      "to_date": "2021"
+    }
+  ],
+  "exams": [
+    {
+      "title": "AWS Certified Solutions Architect – Associate",
+      "description": "Dive deep into the world of cybersecurity with our comprehensive course designed for beginners and professionals alike",
+      "date": "12/09/2024",
+      "level": "Beginner",
+      "id": "70e6"
+    },
+    {
+      "title": "AWS Certified Solutions Architect – Associate",
+      "description": "Explore data analysis, machine learning, and predictive analytics in our intermediate course.",
+      "date": "09/08/2024",
+      "level": "Intermediate",
+      "id": "609e"
+    },
+    {
+      "title": "AWS Certified Solutions Architect – Associate",
+      "description": "Master the skills needed to design and deploy complex cloud solutions.",
+      "date": "09/05/2024",
+      "level": "Expert",
+      "id": "b18c"
+    }
+  ],
+  "similar": [
+    {
+      "id": "2",
+      "provider": "Microsoft-high",
+      "certification_name": "Microsoft Certified: Azure Fundamentals",
+      "level": "Beginner",
+      "description": "Gain foundational knowledge of cloud services and how those services are provided with Microsoft Azure.",
+      "tags": [
+        "Azure",
+        "cloud",
+        "fundamentals"
+      ],
+      "official_link": "https://learn.microsoft.com/en-us/certifications/azure-fundamentals/",
+      "critical": "medium",
+      "views": 350,
+      "nomination_open_date": "2024-06-30",
+      "nomination_close_date": "2025-06-30"
+    },
+    {
+      "id": "3",
+      "provider": "Google",
+      "certification_name": "Google Professional Data Engineer",
+      "level": "Expert",
+      "description": "Design, build, and manage scalable data processing systems on the Google Cloud Platform.",
+      "tags": [
+        "data",
+        "Google Cloud",
+        "engineering"
+      ],
+      "official_link": "https://cloud.google.com/certification/data-engineer",
+      "critical": "low",
+      "views": 50,
+      "nomination_open_date": "2024-06-30",
+      "nomination_close_date": "2025-06-30"
+    },
+    {
+      "id": "4",
+      "provider": "AWS",
+      "certification_name": "AWS Certified Solutions Architect – Associate",
+      "level": "Intermediate",
+      "description": "Learn the essentials of building secure and reliable applications on the AWS platform.",
+      "tags": [
+        "cloud",
+        "AWS",
+        "architecture"
+      ],
+      "official_link": "https://aws.amazon.com/certification/certified-solutions-architect-associate/",
+      "critical": "high",
+      "views": 100,
+      "nomination_open_date": "2024-06-30",
+      "nomination_close_date": "2025-06-30"
+    }
+  ],
+  "pendingActions": [
+    {
+      "id": "1",
+      "title": "AWS Fundamental Certification Exam",
+      "candidateName": "Basil Pathrose",
+      "department": "DU5",
+      "provider": "Microsoft",
+      "criticality": "Not Critical",
+      "status": "Pending"
+    },
+    {
+      "id": "2",
+      "title": "AWS Fundamental Certification Exam",
+      "candidateName": "Basil Pathrose",
+      "department": "DU5",
+      "provider": "AWS",
+      "criticality": "Good to Have",
+      "status": "Pending"
+    },
+    {
+      "id": "3",
+      "title": "AWS Fundamental Certification Exam",
+      "candidateName": "Basil Pathrose",
+      "department": "DU5",
+      "provider": "AWS",
+      "criticality": "Not Critical",
+      "status": "Pending"
+    },
+    {
+      "id": "4",
+      "title": "AWS Fundamental Certification Exam",
+      "candidateName": "Basil Pathrose",
+      "department": "DU5",
+      "provider": "AWS",
+      "criticality": "Not Critical",
+      "status": "Pending"
+    },
+    {
+      "id": "5",
+      "title": "AWS Fundamental Certification Exam",
+      "candidateName": "Basil Pathrose",
+      "department": "DU5",
+      "provider": "AWS",
+      "criticality": "Not Critical",
+      "status": "Pending"
+    },
+    {
+      "id": "1",
+      "title": "AWS Fundamental Certification Exam",
+      "candidateName": "Basil Pathrose",
+      "department": "DU5",
+      "provider": "Microsoft",
+      "criticality": "Not Critical",
+      "status": "Pending"
+    },
+    {
+      "id": "2",
+      "title": "AWS Fundamental Certification Exam",
+      "candidateName": "Basil Pathrose",
+      "department": "DU5",
+      "provider": "AWS",
+      "criticality": "Good to Have",
+      "status": "Pending"
+    },
+    {
+      "id": "3",
+      "title": "AWS Fundamental Certification Exam",
+      "candidateName": "Basil Pathrose",
+      "department": "DU5",
+      "provider": "AWS",
+      "criticality": "Not Critical",
+      "status": "Pending"
+    },
+    {
+      "id": "4",
+      "title": "AWS Fundamental Certification Exam",
+      "candidateName": "Basil Pathrose",
+      "department": "DU5",
+      "provider": "AWS",
+      "criticality": "Not Critical",
+      "status": "Pending"
+    },
+    {
+      "id": "5",
+      "title": "AWS Fundamental Certification Exam",
+      "candidateName": "Basil Pathrose",
+      "department": "DU5",
+      "provider": "AWS",
+      "criticality": "Not Critical",
+      "status": "Pending"
+    }
+  ],
+  "certificationData": [
+    {
+      "All": {
+        "All": {
+          "All": [
+            120,
+            100,
+            240,
+            100,
+            160,
+            90,
+            240,
+            110,
+            220,
+            140,
+            190,
+            230
+          ],
+          "AWS": [
+            40,
+            20,
+            30,
+            10,
+            100,
+            60,
+            40,
+            46,
+            90,
+            20,
+            110,
+            26
+          ],
+          "Azure": [
+            50,
+            38,
+            10,
+            20,
+            28,
+            15,
+            45,
+            8,
+            29,
+            5,
+            11,
+            55
+          ],
+          "GCP": [
+            42,
+            22,
+            12,
+            41,
+            81,
+            62,
+            12,
+            52,
+            92,
+            89,
+            11,
+            90
+          ]
+        },
+        "DU1": {
+          "All": [
+            100,
+            90,
+            40,
+            90,
+            120,
+            134,
+            110,
+            159,
+            182,
+            112,
+            109,
+            190
+          ],
+          "AWS": [
+            30,
+            30,
+            12,
+            50,
+            25,
+            58,
+            48,
+            15,
+            88,
+            98,
+            19,
+            82
+          ],
+          "Azure": [
+            45,
+            20,
+            27,
+            71,
+            47,
+            50,
+            17,
+            77,
+            43,
+            87,
+            87,
+            68
+          ],
+          "GCP": [
+            25,
+            40,
+            1,
+            13,
+            26,
+            59,
+            30,
+            31,
+            27,
+            49,
+            10,
+            40
+          ]
+        },
+        "DU2": {
+          "All": [
+            60,
+            70,
+            80,
+            90,
+            100,
+            110,
+            120,
+            130,
+            140,
+            150,
+            160,
+            170
+          ],
+          "AWS": [
+            6,
+            16,
+            26,
+            36,
+            46,
+            56,
+            66,
+            76,
+            86,
+            96,
+            106,
+            116
+          ],
+          "Azure": [
+            5,
+            15,
+            25,
+            35,
+            45,
+            55,
+            65,
+            75,
+            85,
+            95,
+            105,
+            115
+          ],
+          "GCP": [
+            4,
+            14,
+            24,
+            34,
+            44,
+            54,
+            64,
+            74,
+            84,
+            94,
+            104,
+            114
+          ]
+        },
+        "DU3": {
+          "All": [
+            100,
+            90,
+            40,
+            90,
+            120,
+            134,
+            110,
+            159,
+            182,
+            112,
+            109,
+            190
+          ],
+          "AWS": [
+            30,
+            30,
+            12,
+            50,
+            25,
+            58,
+            48,
+            15,
+            88,
+            98,
+            19,
+            82
+          ],
+          "Azure": [
+            45,
+            20,
+            27,
+            71,
+            47,
+            50,
+            17,
+            77,
+            43,
+            87,
+            87,
+            68
+          ],
+          "GCP": [
+            25,
+            40,
+            1,
+            13,
+            26,
+            59,
+            30,
+            31,
+            27,
+            49,
+            10,
+            40
+          ]
+        },
+        "DU4": {
+          "All": [
+            100,
+            90,
+            40,
+            90,
+            120,
+            134,
+            110,
+            159,
+            182,
+            112,
+            109,
+            190
+          ],
+          "AWS": [
+            30,
+            30,
+            12,
+            50,
+            25,
+            58,
+            48,
+            15,
+            88,
+            98,
+            19,
+            82
+          ],
+          "Azure": [
+            45,
+            20,
+            27,
+            71,
+            47,
+            50,
+            17,
+            77,
+            43,
+            87,
+            87,
+            68
+          ],
+          "GCP": [
+            25,
+            40,
+            1,
+            13,
+            26,
+            59,
+            30,
+            31,
+            27,
+            49,
+            10,
+            40
+          ]
+        }
+      },
+      "2024-2025": {
+        "All": {
+          "All": [
+            30,
+            20,
+            50,
+            24,
+            11
+          ],
+          "AWS": [
+            16,
+            16,
+            21,
+            4,
+            5
+          ],
+          "Azure": [
+            35,
+            35,
+            31,
+            25,
+            2
+          ],
+          "GCP": [
+            4,
+            14,
+            42,
+            22,
+            4
+          ]
+        },
+        "DU1": {
+          "All": [
+            10,
+            40,
+            90,
+            40,
+            4
+          ],
+          "AWS": [
+            21,
+            76,
+            38,
+            67,
+            2
+          ],
+          "Azure": [
+            41,
+            45,
+            26,
+            20,
+            1
+          ],
+          "GCP": [
+            39,
+            47,
+            24,
+            34,
+            1
+          ]
+        },
+        "DU2": {
+          "All": [
+            55,
+            67,
+            10,
+            50,
+            5
+          ],
+          "AWS": [
+            42,
+            24,
+            26,
+            14,
+            3
+          ],
+          "Azure": [
+            41,
+            12,
+            53,
+            22,
+            1
+          ],
+          "GCP": [
+            25,
+            24,
+            24,
+            24,
+            1
+          ]
+        },
+        "DU3": {
+          "All": [
+            100,
+            25,
+            80,
+            70,
+            1
+          ],
+          "AWS": [
+            57,
+            15,
+            5,
+            46,
+            1
+          ],
+          "Azure": [
+            53,
+            44,
+            25,
+            16,
+            0
+          ],
+          "GCP": [
+            23,
+            39,
+            42,
+            23,
+            0
+          ]
+        },
+        "DU4": {
+          "All": [
+            70,
+            80,
+            60,
+            40,
+            1
+          ],
+          "AWS": [
+            24,
+            33,
+            23,
+            35,
+            1
+          ],
+          "Azure": [
+            38,
+            14,
+            29,
+            20,
+            0
+          ],
+          "GCP": [
+            31,
+            41,
+            21,
+            29,
+            0
+          ]
+        }
+      },
+      "2023-2024": {
+        "All": {
+          "All": [
+            60,
+            30,
+            10,
+            14,
+            60,
+            79,
+            81,
+            40,
+            42,
+            110,
+            92,
+            92
+          ],
+          "AWS": [
+            6,
+            26,
+            21,
+            4,
+            12,
+            22,
+            30,
+            13,
+            13,
+            6,
+            10,
+            56
+          ],
+          "Azure": [
+            45,
+            15,
+            21,
+            15,
+            20,
+            20,
+            31,
+            25,
+            14,
+            25,
+            31,
+            25
+          ],
+          "GCP": [
+            4,
+            14,
+            12,
+            12,
+            41,
+            54,
+            24,
+            31,
+            24,
+            94,
+            14,
+            31
+          ]
+        },
+        "DU1": {
+          "All": [
+            50,
+            20,
+            110,
+            100,
+            60,
+            40,
+            21,
+            45,
+            22,
+            90,
+            42,
+            50
+          ],
+          "AWS": [
+            21,
+            56,
+            38,
+            57,
+            42,
+            59,
+            29,
+            54,
+            27,
+            22,
+            35,
+            18
+          ],
+          "Azure": [
+            31,
+            45,
+            26,
+            50,
+            23,
+            11,
+            19,
+            17,
+            32,
+            51,
+            16,
+            24
+          ],
+          "GCP": [
+            39,
+            47,
+            44,
+            54,
+            57,
+            58,
+            48,
+            59,
+            32,
+            19,
+            43,
+            17
+          ]
+        },
+        "DU2": {
+          "All": [
+            55,
+            60,
+            100,
+            50,
+            40,
+            47,
+            21,
+            45,
+            22,
+            40,
+            41,
+            62
+          ],
+          "AWS": [
+            42,
+            14,
+            16,
+            14,
+            38,
+            28,
+            22,
+            24,
+            28,
+            35,
+            39,
+            42
+          ],
+          "Azure": [
+            11,
+            15,
+            13,
+            22,
+            12,
+            10,
+            10,
+            10,
+            11,
+            15,
+            10,
+            12
+          ],
+          "GCP": [
+            25,
+            24,
+            24,
+            24,
+            29,
+            21,
+            20,
+            20,
+            25,
+            17,
+            24,
+            17
+          ]
+        },
+        "DU3": {
+          "All": [
+            90,
+            25,
+            70,
+            90,
+            60,
+            25,
+            21,
+            45,
+            82,
+            90,
+            62,
+            90
+          ],
+          "AWS": [
+            57,
+            25,
+            35,
+            56,
+            31,
+            46,
+            16,
+            36,
+            66,
+            16,
+            36,
+            19
+          ],
+          "Azure": [
+            53,
+            21,
+            12,
+            10,
+            19,
+            16,
+            12,
+            11,
+            12,
+            21,
+            12,
+            12
+          ],
+          "GCP": [
+            23,
+            19,
+            32,
+            23,
+            31,
+            29,
+            17,
+            35,
+            21,
+            12,
+            16,
+            20
+          ]
+        },
+        "DU4": {
+          "All": [
+            50,
+            50,
+            70,
+            30,
+            65,
+            41,
+            51,
+            25,
+            41,
+            29,
+            25,
+            26
+          ],
+          "AWS": [
+            24,
+            22,
+            33,
+            23,
+            23,
+            27,
+            27,
+            22,
+            17,
+            22,
+            23,
+            24
+          ],
+          "Azure": [
+            38,
+            14,
+            19,
+            10,
+            20,
+            12,
+            12,
+            14,
+            23,
+            20,
+            13,
+            10
+          ],
+          "GCP": [
+            31,
+            21,
+            29,
+            19,
+            29,
+            27,
+            20,
+            21,
+            18,
+            17,
+            14,
+            22
+          ]
+        }
+      },
+      "2022-2023": {
+        "All": {
+          "All": [
+            100,
+            120,
+            150,
+            180,
+            200,
+            250,
+            280,
+            100,
+            150,
+            200,
+            180,
+            250
+          ],
+          "AWS": [
+            10,
+            30,
+            40,
+            50,
+            60,
+            80,
+            90,
+            10,
+            30,
+            60,
+            50,
+            80
+          ],
+          "Azure": [
+            40,
+            40,
+            60,
+            60,
+            60,
+            80,
+            90,
+            40,
+            50,
+            70,
+            60,
+            80
+          ],
+          "GCP": [
+            50,
+            50,
+            50,
+            70,
+            80,
+            90,
+            100,
+            50,
+            70,
+            70,
+            70,
+            90
+          ]
+        },
+        "DU1": {
+          "All": [
+            53,
+            10,
+            80,
+            100,
+            65,
+            42,
+            91,
+            85,
+            62,
+            100,
+            42,
+            70
+          ],
+          "AWS": [
+            23,
+            22,
+            13,
+            44,
+            28,
+            21,
+            10,
+            21,
+            20,
+            14,
+            30,
+            10
+          ],
+          "Azure": [
+            38,
+            14,
+            29,
+            20,
+            32,
+            10,
+            34,
+            30,
+            30,
+            17,
+            10,
+            42
+          ],
+          "GCP": [
+            29,
+            45,
+            32,
+            29,
+            23,
+            10,
+            33,
+            32,
+            19,
+            21,
+            33,
+            40
+          ]
+        },
+        "DU2": {
+          "All": [
+            48,
+            30,
+            90,
+            50,
+            65,
+            41,
+            51,
+            55,
+            90,
+            70,
+            42,
+            50
+          ],
+          "AWS": [
+            20,
+            40,
+            29,
+            32,
+            20,
+            12,
+            30,
+            31,
+            20,
+            14,
+            10,
+            20
+          ],
+          "Azure": [
+            38,
+            14,
+            29,
+            32,
+            12,
+            14,
+            24,
+            47,
+            20,
+            40,
+            14,
+            12
+          ],
+          "GCP": [
+            20,
+            40,
+            20,
+            32,
+            19,
+            19,
+            27,
+            20,
+            37,
+            19,
+            15,
+            31
+          ]
+        },
+        "DU3": {
+          "All": [
+            43,
+            22,
+            12,
+            10,
+            65,
+            71,
+            61,
+            45,
+            50,
+            70,
+            42,
+            50
+          ],
+          "AWS": [
+            24,
+            42,
+            13,
+            32,
+            18,
+            22,
+            10,
+            31,
+            19,
+            20,
+            10,
+            31
+          ],
+          "Azure": [
+            38,
+            24,
+            29,
+            22,
+            20,
+            19,
+            24,
+            47,
+            23,
+            19,
+            13,
+            12
+          ],
+          "GCP": [
+            29,
+            49,
+            19,
+            39,
+            13,
+            10,
+            27,
+            19,
+            37,
+            27,
+            15,
+            31
+          ]
+        },
+        "DU4": {
+          "All": [
+            53,
+            40,
+            20,
+            100,
+            65,
+            41,
+            81,
+            45,
+            20,
+            70,
+            42,
+            50
+          ],
+          "AWS": [
+            24,
+            33,
+            13,
+            32,
+            28,
+            32,
+            10,
+            21,
+            10,
+            20,
+            13,
+            31
+          ],
+          "Azure": [
+            38,
+            24,
+            29,
+            32,
+            14,
+            10,
+            34,
+            27,
+            31,
+            14,
+            12,
+            12
+          ],
+          "GCP": [
+            29,
+            40,
+            31,
+            39,
+            19,
+            19,
+            27,
+            30,
+            37,
+            17,
+            15,
+            21
+          ]
+        }
+      },
+      "2021-2022": {
+        "All": {
+          "All": [
+            60,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            80,
+            90,
+            100,
+            110,
+            120
+          ],
+          "AWS": [
+            16,
+            26,
+            36,
+            46,
+            56,
+            66,
+            76,
+            86,
+            96,
+            106,
+            116,
+            126
+          ],
+          "Azure": [
+            14,
+            24,
+            34,
+            44,
+            54,
+            64,
+            74,
+            84,
+            94,
+            104,
+            114,
+            124
+          ],
+          "GCP": [
+            12,
+            22,
+            32,
+            42,
+            52,
+            62,
+            72,
+            82,
+            92,
+            102,
+            112,
+            122
+          ]
+        },
+        "DU1": {
+          "All": [
+            50,
+            40,
+            20,
+            10,
+            60,
+            40,
+            30,
+            20,
+            10,
+            30,
+            40,
+            20
+          ],
+          "AWS": [
+            14,
+            24,
+            14,
+            24,
+            34,
+            44,
+            54,
+            64,
+            74,
+            84,
+            94,
+            104
+          ],
+          "Azure": [
+            10,
+            30,
+            10,
+            30,
+            10,
+            30,
+            10,
+            30,
+            10,
+            30,
+            10,
+            30
+          ],
+          "GCP": [
+            15,
+            25,
+            15,
+            25,
+            15,
+            25,
+            15,
+            25,
+            15,
+            25,
+            15,
+            25
+          ]
+        },
+        "DU2": {
+          "All": [
+            60,
+            70,
+            80,
+            90,
+            100,
+            110,
+            120,
+            130,
+            140,
+            150,
+            160,
+            170
+          ],
+          "AWS": [
+            16,
+            26,
+            36,
+            46,
+            56,
+            66,
+            76,
+            86,
+            96,
+            106,
+            116,
+            126
+          ],
+          "Azure": [
+            14,
+            24,
+            34,
+            44,
+            54,
+            64,
+            74,
+            84,
+            94,
+            104,
+            114,
+            124
+          ],
+          "GCP": [
+            12,
+            22,
+            32,
+            42,
+            52,
+            62,
+            72,
+            82,
+            92,
+            102,
+            112,
+            122
+          ]
+        },
+        "DU3": {
+          "All": [
+            50,
+            40,
+            20,
+            10,
+            60,
+            40,
+            30,
+            20,
+            10,
+            30,
+            40,
+            20
+          ],
+          "AWS": [
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            80,
+            90,
+            100,
+            110,
+            120
+          ],
+          "Azure": [
+            5,
+            15,
+            25,
+            35,
+            45,
+            55,
+            65,
+            75,
+            85,
+            95,
+            105,
+            115
+          ],
+          "GCP": [
+            4,
+            14,
+            24,
+            34,
+            44,
+            54,
+            64,
+            74,
+            84,
+            94,
+            104,
+            114
+          ]
+        },
+        "DU4": {
+          "All": [
+            50,
+            40,
+            20,
+            10,
+            60,
+            40,
+            30,
+            20,
+            10,
+            30,
+            40,
+            20
+          ],
+          "AWS": [
+            10,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            80,
+            90,
+            100,
+            110,
+            120
+          ],
+          "Azure": [
+            5,
+            15,
+            25,
+            35,
+            45,
+            55,
+            65,
+            75,
+            85,
+            95,
+            105,
+            115
+          ],
+          "GCP": [
+            4,
+            14,
+            24,
+            34,
+            44,
+            54,
+            64,
+            74,
+            84,
+            94,
+            104,
+            114
+          ]
+        }
+      },
+      "id": "72f3"
+    }
+  ],
+  "dus": [
+    {
+      "id": "1",
+      "name": "DU1"
+    },
+    {
+      "id": "2",
+      "name": "DU2"
+    },
+    {
+      "id": "3",
+      "name": "DU3"
+    },
+    {
+      "id": "4",
+      "name": "DU4"
+    },
+    {
+      "id": "5",
+      "name": "DU5"
+    }
+  ],
+  "providers": [
+    {
+      "id": "1",
+      "name": "AWS"
+    },
+    {
+      "id": "2",
+      "name": "Azure"
+    },
+    {
+      "id": "3",
+      "name": "Google"
+    },
+    {
+      "id": "4",
+      "name": "IBM"
+    },
+    {
+      "id": "5",
+      "name": "Oracle"
+    },
+    {
+      "id": "f76c",
+      "name": "none"
+    },
+    {
+      "id": "29fd",
+      "name": "tew"
+    },
+    {
+      "id": "f0df",
+      "name": "new"
+    },
+    {
+      "id": "2441",
+      "name": "ghjcjf"
+    }
+  ],
+  "categories": [
+    {
+      "id": "1",
+      "name": "Cloud Computing"
+    },
+    {
+      "id": "2",
+      "name": "Data"
+    },
+    {
+      "id": "3",
+      "name": "Cybersecurity"
+    },
+    {
+      "id": "4",
+      "name": "DevOps"
+    },
+    {
+      "id": "5",
+      "name": "Artificial Intelligence"
+    },
+    {
+      "id": "6",
+      "name": "Software Development"
+    },
+    {
+      "id": "7",
+      "name": "Networking"
+    },
+    {
+      "id": "8",
+      "name": "Machine Learning"
+    },
+    {
+      "id": "9",
+      "name": "Big Data"
+    },
+    {
+      "id": "10",
+      "name": "Blockchain"
+    },
+    {
+      "id": "b984",
+      "name": "ajin"
+    },
+    {
+      "id": "1d2f",
+      "name": "new"
+    }
+  ]
+}

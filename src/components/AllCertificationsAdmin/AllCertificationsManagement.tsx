@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Button,
   IconButton,
@@ -15,12 +15,12 @@ import {
   Dialog,
   AppBar,
   Toolbar,
-} from '@mui/material';
-import { DataGrid, GridColDef, GridRowSelectionModel } from '@mui/x-data-grid';
-import CloseIcon from '@mui/icons-material/Close';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import CertificationFormModal from './CertificationFormModal';
+} from "@mui/material";
+import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
+import CloseIcon from "@mui/icons-material/Close";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import CertificationFormModal from "./CertificationFormModal";
 import { fetchCertificationsjson } from "../../api/AllCertificationsApi";
 
 // Simulated API calls
@@ -47,15 +47,20 @@ interface Certification {
   tags: string[]; // Tags as string array
 }
 
-const CertificationManagementPage: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClose }) => {
+const CertificationManagementPage: React.FC<{
+  open: boolean;
+  onClose: () => void;
+}> = ({ open, onClose }) => {
   const [certifications, setCertifications] = useState<Certification[]>([]);
-  const [selectionModel, setSelectionModel] = useState<GridRowSelectionModel>([]);
-  const [nominationStatus, setNominationStatus] = useState<string>('');
-  const [nominationOpenDate, setNominationOpenDate] = useState<string>('');
-  const [nominationCloseDate, setNominationCloseDate] = useState<string>('');
+  const [selectionModel, setSelectionModel] = useState<GridRowSelectionModel>(
+    []
+  );
+  const [nominationStatus, setNominationStatus] = useState<string>("");
+  const [nominationOpenDate, setNominationOpenDate] = useState<string>("");
+  const [nominationCloseDate, setNominationCloseDate] = useState<string>("");
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [editData, setEditData] = useState<Certification | null>(null);
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
     const getCertifications = async () => {
@@ -63,7 +68,7 @@ const CertificationManagementPage: React.FC<{ open: boolean; onClose: () => void
         const data = await fetchCertificationsjson();
         setCertifications(data);
       } catch (error) {
-        console.error('Failed to fetch certifications', error);
+        console.error("Failed to fetch certifications", error);
       }
     };
     getCertifications();
@@ -71,27 +76,33 @@ const CertificationManagementPage: React.FC<{ open: boolean; onClose: () => void
 
   const handleBulkDelete = async () => {
     try {
-      await Promise.all(selectionModel.map(id => deleteCertification(id as number)));
-      setCertifications(certifications.filter(cert => !selectionModel.includes(cert.id)));
+      await Promise.all(
+        selectionModel.map((id) => deleteCertification(id as number))
+      );
+      setCertifications(
+        certifications.filter((cert) => !selectionModel.includes(cert.id))
+      );
       setSelectionModel([]);
     } catch (error) {
-      console.error('Failed to delete certifications', error);
+      console.error("Failed to delete certifications", error);
     }
   };
 
   const handleBulkEdit = async () => {
     try {
-      const updates = selectionModel.map(id => {
-        const cert = certifications.find(c => c.id === id);
+      const updates = selectionModel.map((id) => {
+        const cert = certifications.find((c) => c.id === id);
         if (!cert) return Promise.resolve(); // Skip if certification not found
 
         const updateValues: any = {
           nomination_status: nominationStatus,
         };
 
-        if (nominationStatus === 'Accepting') {
-          updateValues.nomination_open_date = nominationOpenDate || cert.nomination_open_date;
-          updateValues.nomination_close_date = nominationCloseDate || cert.nomination_close_date;
+        if (nominationStatus === "Accepting") {
+          updateValues.nomination_open_date =
+            nominationOpenDate || cert.nomination_open_date;
+          updateValues.nomination_close_date =
+            nominationCloseDate || cert.nomination_close_date;
         }
 
         return updateCertification(id as number, updateValues);
@@ -99,13 +110,19 @@ const CertificationManagementPage: React.FC<{ open: boolean; onClose: () => void
 
       await Promise.all(updates);
 
-      const updatedCertifications = certifications.map(cert => {
+      const updatedCertifications = certifications.map((cert) => {
         if (selectionModel.includes(cert.id)) {
           return {
             ...cert,
             nomination_status: nominationStatus || cert.nomination_status,
-            nomination_open_date: nominationStatus === 'Accepting' ? nominationOpenDate || cert.nomination_open_date : cert.nomination_open_date,
-            nomination_close_date: nominationStatus === 'Accepting' ? nominationCloseDate || cert.nomination_close_date : cert.nomination_close_date,
+            nomination_open_date:
+              nominationStatus === "Accepting"
+                ? nominationOpenDate || cert.nomination_open_date
+                : cert.nomination_open_date,
+            nomination_close_date:
+              nominationStatus === "Accepting"
+                ? nominationCloseDate || cert.nomination_close_date
+                : cert.nomination_close_date,
           };
         }
         return cert;
@@ -114,20 +131,20 @@ const CertificationManagementPage: React.FC<{ open: boolean; onClose: () => void
       setCertifications(updatedCertifications);
       setSelectionModel([]);
       // Clear the fields
-      setNominationStatus('');
-      setNominationOpenDate('');
-      setNominationCloseDate('');
+      setNominationStatus("");
+      setNominationOpenDate("");
+      setNominationCloseDate("");
     } catch (error) {
-      console.error('Failed to update certifications', error);
+      console.error("Failed to update certifications", error);
     }
   };
 
   const handleDelete = async (id: number) => {
     try {
       await deleteCertification(id);
-      setCertifications(certifications.filter(cert => cert.id !== id));
+      setCertifications(certifications.filter((cert) => cert.id !== id));
     } catch (error) {
-      console.error('Failed to delete certification', error);
+      console.error("Failed to delete certification", error);
     }
   };
 
@@ -144,7 +161,9 @@ const CertificationManagementPage: React.FC<{ open: boolean; onClose: () => void
     setNominationOpenDate(event.target.value);
   };
 
-  const handleCloseDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCloseDateChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setNominationCloseDate(event.target.value);
   };
 
@@ -168,45 +187,64 @@ const CertificationManagementPage: React.FC<{ open: boolean; onClose: () => void
     setSearchTerm(event.target.value);
   };
 
-  const filteredCertifications = certifications.filter(cert =>
-    cert.certification_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    cert.provider.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    cert.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    cert.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredCertifications = certifications.filter(
+    (cert) =>
+      cert.certification_name
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      cert.provider.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      cert.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      cert.tags.some((tag) =>
+        tag.toLowerCase().includes(searchTerm.toLowerCase())
+      )
   );
 
   const columns: GridColDef[] = [
-    { field: 'certification_name', headerName: 'Certification Name', flex: 1 },
-    { field: 'provider', headerName: 'Provider', flex: 1 },
-    { field: 'level', headerName: 'Level', flex: 1 },
+    { field: "certification_name", headerName: "Certification Name", flex: 1 },
+    { field: "provider", headerName: "Provider", flex: 1 },
+    { field: "level", headerName: "Level", flex: 1 },
     {
-      field: 'tags',
-      headerName: 'Tags',
+      field: "tags",
+      headerName: "Tags",
       flex: 1,
       renderCell: (params) => (
-        <Box sx={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-          <Tooltip title={params.value.join(', ')} arrow>
+        <Box sx={{ display: "flex", alignItems: "center", height: "100%" }}>
+          <Tooltip title={params.value.join(", ")} arrow>
             <Typography variant="body2" color="textPrimary">
-              {params.value.join(', ')}
+              {params.value.join(", ")}
             </Typography>
           </Tooltip>
         </Box>
       ),
     },
-    { field: 'critical', headerName: 'Criticality', flex: 1 },
-    { field: 'nomination_status', headerName: 'Nomination Status', flex: 1 },
-    { field: 'nomination_open_date', headerName: 'Nomination Open Date', flex: 1 },
-    { field: 'nomination_close_date', headerName: 'Nomination Close Date', flex: 1 },
+    { field: "critical", headerName: "Criticality", flex: 1 },
+    { field: "nomination_status", headerName: "Nomination Status", flex: 1 },
     {
-      field: 'actions',
-      headerName: 'Actions',
+      field: "nomination_open_date",
+      headerName: "Nomination Open Date",
+      flex: 1,
+    },
+    {
+      field: "nomination_close_date",
+      headerName: "Nomination Close Date",
+      flex: 1,
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
       flex: 1,
       renderCell: (params) => (
         <Stack direction="row" spacing={1}>
-          <IconButton color="primary" onClick={() => handleEdit(params.row as Certification)}>
+          <IconButton
+            color="primary"
+            onClick={() => handleEdit(params.row as Certification)}
+          >
             <EditIcon />
           </IconButton>
-          <IconButton color="secondary" onClick={() => handleDelete(params.row.id)}>
+          <IconButton
+            color="secondary"
+            onClick={() => handleDelete(params.row.id)}
+          >
             <DeleteIcon />
           </IconButton>
         </Stack>
@@ -216,16 +254,28 @@ const CertificationManagementPage: React.FC<{ open: boolean; onClose: () => void
 
   return (
     <Dialog fullScreen open={open} onClose={onClose}>
-      <AppBar sx={{ position: 'relative', backgroundColor: 'white', color: 'black' }}>
-        <Toolbar sx={{ justifyContent: 'space-between' }}>
+      <AppBar
+        sx={{ position: "relative", backgroundColor: "white", color: "black" }}
+      >
+        <Toolbar sx={{ justifyContent: "space-between" }}>
           <Typography variant="h6">Certification Management</Typography>
-          <IconButton edge="end" color="inherit" onClick={onClose} aria-label="close">
+          <IconButton
+            edge="end"
+            color="inherit"
+            onClick={onClose}
+            aria-label="close"
+          >
             <CloseIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
       <Box sx={{ padding: 2 }}>
-        <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2, justifyContent: 'space-between' }}>
+        <Stack
+          direction="row"
+          spacing={2}
+          alignItems="center"
+          sx={{ mb: 2, justifyContent: "space-between" }}
+        >
           <Stack spacing={2}>
             <Button
               variant="contained"
@@ -243,12 +293,15 @@ const CertificationManagementPage: React.FC<{ open: boolean; onClose: () => void
               size="small"
               value={searchTerm}
               onChange={handleSearchChange}
-              
             />
           </Stack>
           {selectionModel.length > 0 && (
             <Stack direction="row" spacing={2} alignItems="center">
-              <FormControl variant="outlined" size="small" sx={{ minWidth: 150 }}>
+              <FormControl
+                variant="outlined"
+                size="small"
+                sx={{ minWidth: 150 }}
+              >
                 <InputLabel>Nomination Status</InputLabel>
                 <Select
                   label="Nomination Status"
@@ -256,11 +309,11 @@ const CertificationManagementPage: React.FC<{ open: boolean; onClose: () => void
                   onChange={handleNominationStatusChange}
                 >
                   <MenuItem value="Accepting">Accepting</MenuItem>
-                    <MenuItem value="Not Accepting">Not Accepting</MenuItem>
-                    <MenuItem value="Always Accepting">Always Accepting</MenuItem>
+                  <MenuItem value="Not Accepting">Not Accepting</MenuItem>
+                  <MenuItem value="Always Accepting">Always Accepting</MenuItem>
                 </Select>
               </FormControl>
-              {nominationStatus === 'Accepting' && (
+              {nominationStatus === "Accepting" && (
                 <>
                   <TextField
                     label="Nomination Open Date"
@@ -297,12 +350,14 @@ const CertificationManagementPage: React.FC<{ open: boolean; onClose: () => void
             </Stack>
           )}
         </Stack>
-        <Box sx={{ height: 400, width: '100%' }}>
+        <Box sx={{ height: 400, width: "100%" }}>
           <DataGrid
             rows={filteredCertifications}
             columns={columns}
             checkboxSelection
-            onRowSelectionModelChange={(newSelectionModel) => setSelectionModel(newSelectionModel)}
+            onRowSelectionModelChange={(newSelectionModel) =>
+              setSelectionModel(newSelectionModel)
+            }
           />
         </Box>
         {openModal && (
@@ -310,20 +365,22 @@ const CertificationManagementPage: React.FC<{ open: boolean; onClose: () => void
             open={openModal}
             onClose={handleModalClose}
             onSubmit={handleModalSubmit}
-            initialValues={editData || {
-              id: 0,
-              provider: '',
-              certification_name: '',
-              level: '',
-              description: '',
-              official_link: '',
-              critical: '',
-              views: 0,
-              nomination_status: '',
-              nomination_open_date: '',
-              nomination_close_date: '',
-              tags: [],
-            }} // Providing default values
+            initialValues={
+              editData || {
+                id: 0,
+                provider: "",
+                certification_name: "",
+                level: "",
+                description: "",
+                official_link: "",
+                critical: "",
+                views: 0,
+                nomination_status: "",
+                nomination_open_date: "",
+                nomination_close_date: "",
+                tags: [],
+              }
+            } // Providing default values
           />
         )}
       </Box>

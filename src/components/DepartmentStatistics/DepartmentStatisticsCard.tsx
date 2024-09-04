@@ -7,7 +7,7 @@ import { CircularProgress, Box } from '@mui/material';
 
 const DepartmentStatisticsPage: React.FC = () => {
   const [data, setData] = useState<DepartmentStatistics>({
-    department: '',
+    department: "",
     employees: 0,
     certifications: 0,
   });

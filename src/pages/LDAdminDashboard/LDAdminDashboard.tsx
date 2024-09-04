@@ -16,24 +16,24 @@ const LDAdminDashboard = () => {
 
   const ldButtons = [
     {
-      label: 'All Certifications (24)',
+      label: "All Certifications (24)",
       onClick: () => setOpenCertificationModal(true),
     },
     {
-      label: 'User Suggested Certifications (02)',
-      onClick: () => console.log('User Suggested Certifications'),
+      label: "User Suggested Certifications (02)",
+      onClick: () => console.log("User Suggested Certifications"),
     },
     {
-      label: 'Users & Roles (06)',
-      onClick: () => console.log('Users & Roles'),
+      label: "Users & Roles (06)",
+      onClick: () => console.log("Users & Roles"),
     },
     {
-      label: 'Critical Certification (24/34)',
-      onClick: () => console.log('Critical Certification'),
+      label: "Critical Certification (24/34)",
+      onClick: () => console.log("Critical Certification"),
     },
     {
-      label: 'Detailed Statistics',
-      onClick: () => console.log('Detailed Statistics'),
+      label: "Detailed Statistics",
+      onClick: () => console.log("Detailed Statistics"),
     },
   ];
 
@@ -44,10 +44,10 @@ const LDAdminDashboard = () => {
   return (
 
 
-    <Grid container spacing={1} sx={{ padding: ".1rem" }}>
+    <Grid container spacing={-2} sx={{ padding: ".1rem" }}>
       {/* Left Column */}
       <Grid item xs={12} md={8} lg={6}>
-        <Grid container spacing={1} direction="column">
+        <Grid container spacing={.2} direction="column">
           <Grid item>
             <CertificationChartss />
           </Grid>
@@ -58,13 +58,13 @@ const LDAdminDashboard = () => {
       </Grid>
     
       {/* Right Column */}
-      <Grid item xs={12} md={4} lg={5.7}>
-        <PendingNominationsTable
+      <Grid item xs={12} md={4} lg={5.8}>
+      <PendingNominationsTable
           fetchNominations={fetchPendingNominations}
-          itemsPerPage={3}
+          itemsPerPage={7}
           CardComponent={PendingNominationCard}
-          containerHeight="73.6vh"
-          containerWidth="100%" // Use full width of the grid item
+          containerHeight="460px"
+          containerWidth="475vw"
         />
       </Grid>
     
