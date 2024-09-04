@@ -72,13 +72,15 @@ const UserPendingNomination: React.FC = () => {
                 ) : error ? (
                     <Box
                         sx={{
+                            width:'42.5vw',
+                            mt:'2vh',
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "center",
                             p: "1.6rem",
-                            backgroundColor: "#f9f9f9",
+                            backgroundColor: "white",
                             borderRadius: "8px",
-                            height: "50vh",
+                            height: "47vh",
                         }}
                     >
                         <InfoOutlinedIcon
@@ -117,8 +119,8 @@ const UserPendingNomination: React.FC = () => {
                 ) : (
                     <Box
                         sx={{
-                            maxWidth: '550vw',
-                            height: '52vh',
+                            width: '45.3vw',
+                            height: '53vh',
                             mt: 1.5,
                             backgroundColor: 'white',
                             borderRadius: '15px',
@@ -154,10 +156,10 @@ const UserPendingNomination: React.FC = () => {
                                 borderRadius: 2,
                                 p: 0.4,
                                 pt: 1,
-                                height: '170px',
+                                height: '250px',
                             }}
                         >
-                            <Grid container direction="column" spacing={1}>
+                            <Grid container direction="column" spacing={0}>
                                 {displayedActions.map((action) => (
                                     <Grid item key={action.id}>
                                         <UserPendingNominationsForEach certificationName={action.certificationName} nominationId={action.id} />

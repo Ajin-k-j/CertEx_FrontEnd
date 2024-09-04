@@ -18,7 +18,7 @@ const DashboardActions: React.FC<DashboardActionsProps> = ({  buttons }) => {
         borderRadius:'15px',
         padding: { xs: '2vh', sm: '3vh', md: '2vh' },
         textAlign: 'center',
-        maxWidth: { xs: '100%', sm: '80%', md: '45vw' },
+        maxWidth: { xs: '100%', sm: '80%', md: '46.8vw' },
         marginLeft:{xs:'1.1vw', sm: '1.1vw', md: '1vw'},
         
       }}
@@ -55,7 +55,7 @@ const DashboardActions: React.FC<DashboardActionsProps> = ({  buttons }) => {
               textTransform: 'none',
               fontWeight: 'bold',
               lineHeight:'2.5vh',
-              width: { xs: '80%', sm: '30%', md: '31%' }, 
+              width: { xs: '80%', sm: '30%', md: '34%' }, 
               height: { xs: '6vh', sm: '7vh', md: '6vh' },
               fontSize: { xs: '1.7vh', sm: '1.8vh', md: '1.8vh' }, 
               '&:hover': {

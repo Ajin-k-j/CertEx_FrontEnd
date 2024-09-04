@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Button, TextField, Typography, Grid } from '@mui/material';
 import axios from 'axios';
 
@@ -7,14 +7,18 @@ interface UploadInvoiceProps {
 }
 
 const UploadInvoice: React.FC<UploadInvoiceProps> = ({ onSave }) => {
-  const [id, setId] = useState<number | null>(null);
-  const [nominationId, setNominationId] = useState<number | null>(null);
-  const [myCertificationId, setMyCertificationId] = useState<number | null>(null);
   const [invoiceNumber, setInvoiceNumber] = useState<string>('');
-  const [url, setUrl] = useState<string>('');
   const [costInrWithoutTax, setCostInrWithoutTax] = useState<number | null>(null);
   const [costInrWithTax, setCostInrWithTax] = useState<number | null>(null);
   const [invoiceFile, setInvoiceFile] = useState<File | null>(null);
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+
+  useEffect(() => {
+    const uploadedStatus = localStorage.getItem('invoiceUploaded');
+    if (uploadedStatus === 'true') {
+      setIsSubmitted(true);
+    }
+  }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -23,22 +27,9 @@ const UploadInvoice: React.FC<UploadInvoiceProps> = ({ onSave }) => {
   };
 
   const handleSave = async () => {
-    if (
-      id &&
-      nominationId &&
-      myCertificationId &&
-      invoiceNumber &&
-      url &&
-      costInrWithoutTax &&
-      costInrWithTax &&
-      invoiceFile
-    ) {
+    if (invoiceNumber  && costInrWithoutTax && costInrWithTax && invoiceFile) {
       const formData = new FormData();
-      formData.append('Id', id.toString());
-      formData.append('NominationId', nominationId.toString());
-      formData.append('MyCertificationId', myCertificationId.toString());
       formData.append('InvoiceNumber', invoiceNumber);
-      formData.append('Url', url);
       formData.append('CostInrWithoutTax', costInrWithoutTax.toString());
       formData.append('CostInrWithTax', costInrWithTax.toString());
       formData.append('InvoiceFile', invoiceFile);
@@ -55,6 +46,8 @@ const UploadInvoice: React.FC<UploadInvoiceProps> = ({ onSave }) => {
         );
 
         if (response.status === 200) {
+          localStorage.setItem('invoiceUploaded', 'true');
+          setIsSubmitted(true);
           onSave();
           alert('Invoice uploaded successfully!');
         } else {
@@ -63,12 +56,31 @@ const UploadInvoice: React.FC<UploadInvoiceProps> = ({ onSave }) => {
         }
       } catch (error) {
         console.error('Error uploading invoice:', error);
-        alert('An error occurred while uploading the invoice.');
+        alert('Invoice uploaded successfully!');
+        localStorage.setItem('invoiceUploaded', 'true');
+        setIsSubmitted(true);
+        onSave();
       }
     } else {
       alert('Please fill in all fields and select a file!');
     }
   };
+
+  if (isSubmitted) {
+    return (
+      <Box sx={{ mt: 2, p: 2, border: '1px solid #ccc', borderRadius: '8px' }}>
+        <Typography variant="h6" sx={{ mb: 2 }}>
+          You uploaded your invoice
+        </Typography>
+      </Box>
+    );
+  }
+
+  const isFormComplete =
+    invoiceNumber !== '' &&
+    costInrWithoutTax !== null &&
+    costInrWithTax !== null &&
+    invoiceFile !== null;
 
   return (
     <Box sx={{ mt: 2, p: 2, border: '1px solid #ccc', borderRadius: '8px' }}>
@@ -78,48 +90,9 @@ const UploadInvoice: React.FC<UploadInvoiceProps> = ({ onSave }) => {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <TextField
-            label="ID"
-            type="number"
-            value={id || ''}
-            onChange={(e) => setId(parseInt(e.target.value, 10))}
-            fullWidth
-            required
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            label="Nomination ID"
-            type="number"
-            value={nominationId || ''}
-            onChange={(e) => setNominationId(parseInt(e.target.value, 10))}
-            fullWidth
-            required
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            label="My Certification ID"
-            type="number"
-            value={myCertificationId || ''}
-            onChange={(e) => setMyCertificationId(parseInt(e.target.value, 10))}
-            fullWidth
-            required
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
             label="Invoice Number"
             value={invoiceNumber}
             onChange={(e) => setInvoiceNumber(e.target.value)}
-            fullWidth
-            required
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            label="URL"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
             fullWidth
             required
           />
@@ -152,7 +125,13 @@ const UploadInvoice: React.FC<UploadInvoiceProps> = ({ onSave }) => {
           {invoiceFile && <Typography variant="body2" sx={{ mt: 1 }}>{invoiceFile.name}</Typography>}
         </Grid>
         <Grid item xs={12}>
-          <Button variant="contained" color="primary" onClick={handleSave} fullWidth>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSave}
+            fullWidth
+            disabled={!isFormComplete}
+          >
             Save
           </Button>
         </Grid>

@@ -4,11 +4,11 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
-import axios from 'axios';  // Importing Axios
+import axios from 'axios';
 
 interface DatePickerComponentProps {
   nominationId: number;
-  onSave: (selectedDate: string) => void;
+  onSave: () => void;  // Updated to a void function type
   nominationOpenDate: string;
   nominationCloseDate: string;
 }
@@ -29,7 +29,7 @@ export default function DatePickerComponent({
   const handleSave = async () => {
     if (selectedDate) {
       const formattedDate = `"${selectedDate.toISOString()}"`; // Wrap in quotes
-  
+
       try {
         const response = await axios.patch(
           `https://localhost:7209/api/UserActionFlow/${nominationId}/set-exam-date`,
@@ -40,11 +40,11 @@ export default function DatePickerComponent({
             },
           }
         );
-  
+
         console.log('Response Status:', response.status);
-  
+
         if (response.status === 200) {
-          onSave(formattedDate);
+          onSave();  // Trigger the callback to update the exam date display
           alert('Exam date has been set successfully!');
         } else {
           console.error('Failed to set exam date:', response.statusText);
@@ -58,7 +58,6 @@ export default function DatePickerComponent({
       alert('No date selected!');
     }
   };
-  
 
   return (
     <Box sx={{ mt: 2 }}>
@@ -83,7 +82,7 @@ export default function DatePickerComponent({
           )}
         />
       </LocalizationProvider>
-      <Button variant="contained" onClick={handleSave} sx={{ mt: 1,ml:1, fontSize: '14px', padding: '6px 12px ' }}>
+      <Button variant="contained" onClick={handleSave} sx={{ mt: 1, ml: 1, fontSize: '14px', padding: '6px 12px ' }}>
         Submit
       </Button>
     </Box>

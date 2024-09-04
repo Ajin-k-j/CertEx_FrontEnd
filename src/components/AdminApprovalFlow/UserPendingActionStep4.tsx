@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 interface UpdateExamStatusModalProps {
   nominationId: number;
@@ -8,13 +8,32 @@ interface UpdateExamStatusModalProps {
 
 const UpdateExamStatusModal: React.FC<UpdateExamStatusModalProps> = ({ nominationId }) => {
   const [examStatus, setExamStatus] = useState<string>('Not Complete');
+  const [isStatusPosted, setIsStatusPosted] = useState<boolean>(false);
+  const [fetchedStatus, setFetchedStatus] = useState<string | null>(null);
+
+  // Fetch the exam status from the backend
+  const fetchExamStatus = async () => {
+    try {
+      const response = await axios.get(`https://localhost:7209/api/Nomination/${nominationId}/ExamStatus`);
+      const status = response.data;
+      setFetchedStatus(status);
+      setExamStatus(status);
+      setIsStatusPosted(status !== 'Not Complete'); // If status is not "Not Complete", disable further changes
+    } catch (error) {
+      console.error('Error fetching exam status:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchExamStatus();
+  }, [nominationId]);
 
   const handleSave = async () => {
-    if (examStatus) {
+    if (examStatus && !isStatusPosted) {
       try {
         const response = await axios.patch(
           `https://localhost:7209/api/UserActionFlow/${nominationId}/update-exam-status`,
-          examStatus, // Send the status as an object
+          JSON.stringify(examStatus), // Send the status as a string
           {
             headers: {
               'Content-Type': 'application/json',
@@ -24,6 +43,8 @@ const UpdateExamStatusModal: React.FC<UpdateExamStatusModalProps> = ({ nominatio
 
         if (response.status === 200) {
           alert('Exam status has been updated successfully!');
+          setIsStatusPosted(true); // Disable further changes
+          fetchExamStatus(); // Re-fetch the status after updating
         } else {
           console.error('Failed to update exam status:', response.statusText);
           alert(`Failed to update exam status: ${response.statusText}`);
@@ -37,6 +58,33 @@ const UpdateExamStatusModal: React.FC<UpdateExamStatusModalProps> = ({ nominatio
     }
   };
 
+  // Determine button label and color based on exam status
+  const getButtonStyle = () => {
+    let backgroundColor = '';
+    let label = 'Save';
+
+    switch (examStatus) {
+      case 'Passed':
+        backgroundColor = 'green';
+        label = 'Passed';
+        break;
+      case 'Failed':
+        backgroundColor = 'red';
+        label = 'Failed';
+        break;
+      case 'Not Attempted':
+        backgroundColor = 'orange';
+        label = 'Not Attempted';
+        break;
+      default:
+        backgroundColor = 'gray';
+    }
+
+    return { backgroundColor, label };
+  };
+
+  const { backgroundColor, label } = getButtonStyle();
+
   return (
     <Box className="modal">
       <div className="modal-content">
@@ -49,6 +97,7 @@ const UpdateExamStatusModal: React.FC<UpdateExamStatusModalProps> = ({ nominatio
               value="Passed"
               checked={examStatus === 'Passed'}
               onChange={(e) => setExamStatus(e.target.value)}
+              disabled={isStatusPosted} // Disable after posting status
             />
             Passed
           </label>
@@ -59,6 +108,7 @@ const UpdateExamStatusModal: React.FC<UpdateExamStatusModalProps> = ({ nominatio
               value="Failed"
               checked={examStatus === 'Failed'}
               onChange={(e) => setExamStatus(e.target.value)}
+              disabled={isStatusPosted} // Disable after posting status
             />
             Failed
           </label>
@@ -69,13 +119,30 @@ const UpdateExamStatusModal: React.FC<UpdateExamStatusModalProps> = ({ nominatio
               value="Not Attempted"
               checked={examStatus === 'Not Attempted'}
               onChange={(e) => setExamStatus(e.target.value)}
+              disabled={isStatusPosted} // Disable after posting status
             />
             Not Attempted
           </label>
         </div>
         <div className="modal-actions">
-          <button style={{marginTop:'10px'}} onClick={handleSave} >Save</button>
+          <Button
+            onClick={handleSave}
+            style={{
+              marginTop: '10px',
+              backgroundColor: backgroundColor,
+              color: 'white',
+            }}
+            disabled={isStatusPosted} // Disable button after posting status
+          >
+            {label}
+          </Button>
         </div>
+        {/* Display the fetched status if it's not "Not Complete" */}
+        {fetchedStatus && fetchedStatus !== 'Not Complete' && (
+          <div style={{ marginTop: '10px', color: '#007BFF' }}>
+            <strong>You already gave the exam Status</strong>
+          </div>
+        )}
       </div>
     </Box>
   );
