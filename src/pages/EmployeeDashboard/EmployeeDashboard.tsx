@@ -1,5 +1,4 @@
 import React from "react";
-import { Box } from "@mui/material";
 import { Grid } from "@mui/material";
 import SimilarCertifications from "../../components/SimilarCertifications/SimilarCertifications";
 import UpcomingExams from "../../components/UpcomingExams/UpcomingExams";
@@ -43,7 +42,7 @@ const EmployeeDashboard: React.FC = () => {
   </Grid>
 
   {/* Right Column: UserPendingNomination */}
-  <Grid item xs={12} md={6} lg={5.9}>
+  <Grid item xs={12} md={6} lg={5.8}>
     <UserPendingNomination />
   </Grid>
 
