@@ -7,7 +7,7 @@ interface UpdateExamStatusModalProps {
 }
 
 const UpdateExamStatusModal: React.FC<UpdateExamStatusModalProps> = ({ nominationId }) => {
-  const [examStatus, setExamStatus] = useState<string>('Not Complete');
+  const [examStatus, setExamStatus] = useState<string>('Not Completed');
   const [isStatusPosted, setIsStatusPosted] = useState<boolean>(false);
   const [fetchedStatus, setFetchedStatus] = useState<string | null>(null);
 
@@ -18,7 +18,7 @@ const UpdateExamStatusModal: React.FC<UpdateExamStatusModalProps> = ({ nominatio
       const status = response.data;
       setFetchedStatus(status);
       setExamStatus(status);
-      setIsStatusPosted(status !== 'Not Complete'); // If status is not "Not Complete", disable further changes
+      setIsStatusPosted(status !== 'Not Completed'); // If status is not "Not Complete", disable further changes
     } catch (error) {
       console.error('Error fetching exam status:', error);
     }
@@ -138,7 +138,7 @@ const UpdateExamStatusModal: React.FC<UpdateExamStatusModalProps> = ({ nominatio
           </Button>
         </div>
         {/* Display the fetched status if it's not "Not Complete" */}
-        {fetchedStatus && fetchedStatus !== 'Not Complete' && (
+        {fetchedStatus && fetchedStatus !== 'Not Completed' && (
           <div style={{ marginTop: '10px', color: '#007BFF' }}>
             <strong>You already gave the exam Status</strong>
           </div>
