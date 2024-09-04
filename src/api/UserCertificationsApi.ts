@@ -24,14 +24,14 @@ export interface Row {
   expiryDate: string;
   url: string | null;
 }
-import data from "../../public/Data/User1_CertificateData.json"
+
 
 // Function to fetch certifications
 export const fetchCertifications = async (): Promise<Row[]> => {
   try {
     const response = await axios.get<Certification[]>(
-      "https://localhost:7209/api/EmployeeCertification/1"
-    );
+      "../../public/Data/User1_CertificateData.json"    //../../public/Data/User1_CertificateData.json
+    );                                                  //https://localhost:7209/api/EmployeeCertification/1
     const data = response.data;
     return data.map((item) => ({
       id: item.certificationId,

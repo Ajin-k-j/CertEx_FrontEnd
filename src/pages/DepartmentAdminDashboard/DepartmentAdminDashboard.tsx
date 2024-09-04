@@ -25,9 +25,9 @@ const DepartmentAdminDashboard = () => {
         <Grid item xs={12} md={6} lg={6}>
           <PendingNominationsTable
             fetchNominations={fetchPendingNominations}
-            itemsPerPage={3}
+            itemsPerPage={6}
             CardComponent={PendingNominationCard}
-            containerHeight="250px"
+            containerHeight="405px"
             containerWidth="100%" // Make it responsive
           />
         </Grid>

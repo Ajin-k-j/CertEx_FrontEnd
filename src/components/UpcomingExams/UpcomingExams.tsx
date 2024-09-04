@@ -86,7 +86,7 @@ const UpcomingExams: React.FC = () => {
   return (
     <Box
       sx={{
-        maxWidth: 298,
+        maxWidth: 300,
         height: 215,
         m: "2vh",
         backgroundColor: "white",

@@ -1,6 +1,6 @@
-export interface Row {
+export interface RowData {
   nominationId: number;
-  employeeId: number; 
+  employeeId: number;
   employeeName: string;
   email: string;
   department: string;
@@ -13,7 +13,8 @@ export interface Row {
   managerRemarks: string;
   isDepartmentApproved: boolean;
   isLndApproved: boolean;
-  examDate: string;
+  nominationDate: Date;
+  examDate: string | Date;
   examStatus: string;
   uploadCertificateStatus: string;
   skillMatrixStatus: string;
@@ -21,8 +22,4 @@ export interface Row {
   nominationStatus: string;
   financialYear: string;
   costOfCertification: number;
-  createdAt: string;
-  createdBy: string;
-  updatedAt: string;
-  updatedBy: string;
 }

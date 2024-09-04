@@ -1,48 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid, GridColDef, GridEventListener, GridRowParams, GridRowSelectionModel } from '@mui/x-data-grid';
-import { Box, Modal, Typography, Paper, Select, MenuItem, FormControl, InputLabel, TextField, CircularProgress, Button, Accordion, AccordionSummary, AccordionDetails, IconButton, FilledTextFieldProps, OutlinedTextFieldProps, StandardTextFieldProps, TextFieldVariants, Skeleton } from '@mui/material';
+import { Box, Modal, Typography, Paper, Select, MenuItem, FormControl, InputLabel, TextField, CircularProgress, Button, Accordion, AccordionSummary, AccordionDetails, IconButton, FilledTextFieldProps, OutlinedTextFieldProps, StandardTextFieldProps, TextFieldVariants } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import CloseIcon from '@mui/icons-material/Close';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ExcelExport from '../ExportButton/ExportButton';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { parse } from 'date-fns';
-import axios from 'axios';
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { fetchLDNominationData } from '../../api/LdNominationTableApi';
+import { RowData } from '../../types/LdNominations.types';
+import { JSX } from 'react/jsx-runtime';
 
-interface RowData {
-  nominationId: number;
-  employeeId: number;
-  employeeName: string;
-  email: string;
-  department: string;
-  provider: string;
-  certificationName: string;
-  criticality: string;
-  plannedExamMonth: string;
-  motivationDescription: string;
-  managerRecommendation: string;
-  managerRemarks: string;
-  isDepartmentApproved: boolean;
-  isLndApproved: boolean;
-  nominationDate: Date; ///
-  examDate: string | Date; 
-  examStatus: string;
-  uploadCertificateStatus: string;
-  skillMatrixStatus: string;
-  reimbursementStatus: string;
-  nominationStatus: string;
-  financialYear: string;
-  costOfCertification: number;
-}
-
-// Helper function to parse date strings
-const parseDate = (dateString: string) => {
-  return parse(dateString, 'yyyy-MM-dd', new Date());
-};
-
-// Define columns for DataGrid with specific configurations
 const columns: GridColDef[] = [
   { field: 'nominationId', headerName: 'Nomination ID', width: 150 },
   { field: 'employeeId', headerName: 'Employee ID', width: 150 },
@@ -92,46 +61,34 @@ const LdNominationTable: React.FC = () => {
   const getCurrentDateString = () => {
     const date = new Date();
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); 
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-  
+
     return `${year}-${month}-${day}`;
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('../../../public/Data/LDNominationData.json');//'https://localhost:7209/api/LDNomination' , '../../../public/Data/LDNominationData.json'
-        const data = response.data;
+        const data = await fetchLDNominationData();
+        setRows(data);
+        setFilteredRows(data);
 
-        if (Array.isArray(data)) {
-          const parsedData = data.map((row: RowData) => ({
-            ...row,
-            nominationDate: typeof row.examDate === 'string' ? parseDate(row.examDate) : row.examDate,
-            examDate: typeof row.examDate === 'string' ? parseDate(row.examDate) : row.examDate,
-          }));
-          setRows(parsedData);
-          setFilteredRows(parsedData);
+        const uniqueFinancialYears = Array.from(new Set(data.map((row: RowData) => row.financialYear)));
+        setFinancialYears(uniqueFinancialYears);
 
-          const uniqueFinancialYears = Array.from(new Set(parsedData.map((row: RowData) => row.financialYear)));
-          setFinancialYears(uniqueFinancialYears);
+        const uniqueProviders = Array.from(new Set(data.map((row: RowData) => row.provider)));
+        setProviders(uniqueProviders);
 
-          const uniqueProviders = Array.from(new Set(parsedData.map((row: RowData) => row.provider)));
-          setProviders(uniqueProviders);
+        const uniqueCriticalities = Array.from(new Set(data.map((row: RowData) => row.criticality)));
+        setCriticalities(uniqueCriticalities);
 
-          const uniqueCriticalities = Array.from(new Set(parsedData.map((row: RowData) => row.criticality)));
-          setCriticalities(uniqueCriticalities);
-
-          const uniqueDepartments = Array.from(new Set(parsedData.map((row: RowData) => row.department)));
-          setDepartments(uniqueDepartments);
-
-        } else {
-          throw new Error('Data is not in expected array format');
-        }
+        const uniqueDepartments = Array.from(new Set(data.map((row: RowData) => row.department)));
+        setDepartments(uniqueDepartments);
 
         setLoading(false);
-      } catch {
-         setError("Failed to load data");
+      } catch (error) {
+        setError("Failed to load data");
         setLoading(false);
       }
     };
@@ -193,14 +150,14 @@ const LdNominationTable: React.FC = () => {
     setSelectedStartDate(null);
     setSelectedEndDate(null);
   };
-  
+
   const handleSelectionChange = (newSelectionModel: GridRowSelectionModel) => {
     setSelectionModel(newSelectionModel);
   };
 
   const handleRowClick: GridEventListener<'rowClick'> = (params: GridRowParams, event) => {
     const target = event.target as HTMLElement;
-  
+
     if (target.closest('.MuiDataGrid-cellCheckbox')) {
       event.stopPropagation();
     } else {
@@ -228,18 +185,18 @@ const LdNominationTable: React.FC = () => {
   if (error) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height="50vh" p={2} sx={{ backgroundColor: "#f9f9f9", width: '96%', ml: 2 }}>
-      <Typography variant="h6" sx={{color: "#757575", display: "flex", alignItems: "center"}}>
-        <InfoOutlinedIcon sx={{ fontSize: "1.5rem", color: "#757575", mr: 1 }}/>
-        Failed to fetch data
-      </Typography>
-    </Box>
+        <Typography variant="h6" sx={{color: "#757575", display: "flex", alignItems: "center"}}>
+          <InfoOutlinedIcon sx={{ fontSize: "1.5rem", color: "#757575", mr: 1 }}/>
+          {error}
+        </Typography>
+      </Box>
     );
   }
 
   return (
     <Box p={2} ml={2} mr={.1} mt={1} sx={{ backgroundColor: 'white', borderRadius: '8px' }}>
-      <Accordion 
-        expanded={accordionExpanded} 
+      <Accordion
+        expanded={accordionExpanded}
         sx={{ width: '100%', border: 'none', boxShadow: 'none' }}
       >
         <AccordionSummary
@@ -311,10 +268,10 @@ const LdNominationTable: React.FC = () => {
         </AccordionSummary>
 
         <AccordionDetails>
-          <Box 
-            display="flex" 
-            flexDirection="row" 
-            justifyContent="space-between" 
+          <Box
+            display="flex"
+            flexDirection="row"
+            justifyContent="space-between"
             flexWrap="wrap"
             gap={2}
             sx={{ border: 'none', boxShadow: 'none' }}
@@ -425,11 +382,11 @@ const LdNominationTable: React.FC = () => {
             width: "100%",
             '& .MuiDataGrid-cell': {
               overflow: 'hidden',
-              textOverflow: 'ellipsis', 
-              whiteSpace: 'nowrap' ,
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
               '&[title]': {
-              pointerEvents: 'none',
-            }
+                pointerEvents: 'none',
+              }
             },
             '& .MuiDataGrid-cell:focus': {
               outline: 'none'

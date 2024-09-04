@@ -48,7 +48,7 @@ const NominationFormModal: React.FC<NominationFormModalProps> = ({
   const handleSubmit = async (values: typeof initialValues) => {
     try {
       setIsSubmitting(true); // Set submitting state to true
-      const getEmployeeId = () => 3; // Replace with actual logic to get employee ID
+      const getEmployeeId = () => 15; // Replace with actual logic to get employee ID
 
       const newNomination: NominationData = {
         certificationId: id,
@@ -146,7 +146,7 @@ const NominationFormModal: React.FC<NominationFormModalProps> = ({
               <Field
                 as={TextField}
                 name="motivation"
-                label="What motivates you to take this certification?"
+                label="Justification for Certification Choice"
                 type="text"
                 fullWidth
                 variant="outlined"

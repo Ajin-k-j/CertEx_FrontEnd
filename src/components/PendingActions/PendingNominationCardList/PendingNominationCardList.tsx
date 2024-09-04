@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardContent, Grid, Typography, Button } from '@mui/material';
-import PendingNominationModal from "../PendingActionsModal/PendingActionsModal";
+import PendingNominationModal from '../PendingActionsModal/PendingActionsModal';
 
 interface Nomination {
   id: number;
@@ -16,7 +16,6 @@ interface Nomination {
 
 interface PendingNominationCardProps {
   nomination: Nomination;
-  onViewApproveClick: (nomination: Nomination) => void;
 }
 
 const PendingNominationCard: React.FC<PendingNominationCardProps> = ({ nomination }) => {
@@ -32,16 +31,16 @@ const PendingNominationCard: React.FC<PendingNominationCardProps> = ({ nominatio
 
   return (
     <>
-      <Card variant="outlined" sx={{ borderRadius: '8px', backgroundColor: 'white' }}>
+      <Card variant="outlined" sx={{ borderRadius: '8px', backgroundColor: 'white', }}>
         <CardContent sx={{ padding: '8px !important' }}>
-          <Grid container spacing={1.8} alignItems="center" wrap="nowrap">
+          <Grid container spacing={1.8} alignItems="center"  wrap="nowrap">
             <Grid item xs={4}>
-              <Typography variant="subtitle2" sx={{ marginRight: "8px" }} noWrap>
+              <Typography variant="subtitle2" sx={{ marginRight: '8px' }} noWrap>
                 {nomination.title}
               </Typography>
             </Grid>
             <Grid item xs={1}>
-              <Typography variant="body2" sx={{ marginRight: "5px" }} color="textSecondary" fontWeight="bold" noWrap>
+              <Typography variant="body2" sx={{ marginRight: '5px' }} color="textSecondary" fontWeight="bold" noWrap>
                 {nomination.department}
               </Typography>
             </Grid>
@@ -55,7 +54,7 @@ const PendingNominationCard: React.FC<PendingNominationCardProps> = ({ nominatio
                 {nomination.criticality}
               </Typography>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={4}>
               <Button
                 variant="outlined"
                 size="small"
@@ -69,12 +68,11 @@ const PendingNominationCard: React.FC<PendingNominationCardProps> = ({ nominatio
         </CardContent>
       </Card>
 
-      {isModalOpen && (
-        <PendingNominationModal 
-          nomination={nomination} 
-          onClose={handleCloseModal} 
-        />
-      )}
+      <PendingNominationModal
+        nomination={nomination}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </>
   );
 };
