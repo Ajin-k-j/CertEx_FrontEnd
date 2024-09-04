@@ -42,6 +42,7 @@ const steps = [
 interface UserPendingActionModalProps {
   isOpen: boolean;
   onClose: () => void;
+  nominationId: number;  
 }
 
 interface Certification {
@@ -62,7 +63,7 @@ interface Nomination {
   reimbursement_status?: boolean;
 }
 
-export default function UserPendingActionModal({ isOpen, onClose }: UserPendingActionModalProps) {
+export default function UserPendingActionModal({ isOpen, onClose, nominationId}: UserPendingActionModalProps) {
   const [activeStep, setActiveStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
   const [certification, setCertification] = useState<Certification | null>(null);
@@ -77,9 +78,9 @@ export default function UserPendingActionModal({ isOpen, onClose }: UserPendingA
   const [isAccordionOpen, setAccordionOpen] = useState(false);
   const [showCompletionMessage, setShowCompletionMessage] = useState<boolean | null>(false);
   const [isReimbursementCompleted, setReimbursementCompleted] = useState<boolean | null>(false);
-
   useEffect(() => {
     const fetchData = async () => {
+
       try {
         const certificationData = await fetchCertificationById();
         const nominationData = await fetchNominationById(certificationData.id);

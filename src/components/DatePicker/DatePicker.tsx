@@ -1,58 +1,91 @@
 import React, { useState } from 'react';
-import { Box, Button, Modal, Typography } from '@mui/material';
+import { Box, Button, Typography, TextField } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
-import { fetchNominationById } from '../../api/UserPendingActionApi'; // Ensure this is correctly imported
+import axios from 'axios';  // Importing Axios
 
-interface DatePickerModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  nominationId: string;
+interface DatePickerComponentProps {
+  nominationId: number;
   onSave: (selectedDate: string) => void;
+  nominationOpenDate: string;
+  nominationCloseDate: string;
 }
 
-export default function DatePickerModal({
-  isOpen,
-  onClose,
+export default function DatePickerComponent({
   nominationId,
   onSave,
-}: DatePickerModalProps) {
+  nominationOpenDate,
+  nominationCloseDate,
+}: DatePickerComponentProps) {
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs());
-
+  const minDate = dayjs(nominationOpenDate);
+  const maxDate = dayjs(nominationCloseDate);
   const handleDateChange = (date: Dayjs | null) => {
     setSelectedDate(date);
   };
 
   const handleSave = async () => {
     if (selectedDate) {
-      const formattedDate = selectedDate.format('YYYY-MM-DD');
-      // Update the nomination with the new exam date
-      await fetchNominationById(nominationId, { exam_date: formattedDate });
-      onSave(formattedDate);
-      onClose();
+      const formattedDate = `"${selectedDate.toISOString()}"`; // Wrap in quotes
+  
+      try {
+        const response = await axios.patch(
+          `https://localhost:7209/api/UserActionFlow/${nominationId}/set-exam-date`,
+          formattedDate, // Send as raw string with quotes
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+  
+        console.log('Response Status:', response.status);
+  
+        if (response.status === 200) {
+          onSave(formattedDate);
+          alert('Exam date has been set successfully!');
+        } else {
+          console.error('Failed to set exam date:', response.statusText);
+          alert(`Failed to set exam date: ${response.statusText}`);
+        }
+      } catch (error) {
+        console.error('Error setting exam date:', error);
+        alert('An error occurred while setting the exam date.');
+      }
+    } else {
+      alert('No date selected!');
     }
   };
+  
 
   return (
-    <Modal open={isOpen} onClose={onClose}>
-      <Box sx={{ maxWidth: 400, bgcolor: 'background.paper', p: 4, m: 'auto', mt: 10 }}>
-        <Typography variant="h6" sx={{ mb: 2 }}>
-          Choose Exam Date
-        </Typography>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            value={selectedDate}
-            onChange={handleDateChange}
-            disablePast
-            renderInput={(params) => <input {...params} />}
-          />
-        </LocalizationProvider>
-        <Button variant="contained" onClick={handleSave} sx={{ mt: 2 }}>
-          Submit
-        </Button>
-      </Box>
-    </Modal>
+    <Box sx={{ mt: 2 }}>
+      <Typography variant="h6" sx={{ mb: 1 }}>
+        Enter Exam Date
+      </Typography>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DatePicker
+          value={selectedDate}
+          onChange={handleDateChange}
+          minDate={minDate}
+          maxDate={maxDate}
+          disablePast
+          format="DD/MM/YYYY"
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant="outlined"
+              fullWidth
+              sx={{ fontSize: '14px' }}
+            />
+          )}
+        />
+      </LocalizationProvider>
+      <Button variant="contained" onClick={handleSave} sx={{ mt: 1,ml:1, fontSize: '14px', padding: '6px 12px ' }}>
+        Submit
+      </Button>
+    </Box>
   );
 }

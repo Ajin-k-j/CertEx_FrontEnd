@@ -12,8 +12,9 @@ export const fetchCertificationById = async (
     const response = await axios.get(
       `${baseURL}/certification?certification_id=${certification_id}`
     );
+    console.log(response.data)
     const certificationData = response.data;
-
+  
     if (certificationData.length > 0) {
       return certificationData[0];
     } else {
@@ -49,6 +50,7 @@ export const fetchNominationById = async (
         `${baseURL}/nominations/${id}`,
         updateData
       );
+      console.log(response.data)
       return response.data;
     } else {
       const response = await axios.get(`${baseURL}/nominations/${id}`);
