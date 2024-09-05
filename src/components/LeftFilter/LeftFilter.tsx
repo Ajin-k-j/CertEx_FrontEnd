@@ -66,7 +66,7 @@ const LeftFilter: React.FC<LeftFilterProps> = ({
     <Box
       sx={{
         backgroundColor: "#ffffff",
-        padding: 2,
+        padding: 1,
         paddingLeft:3,
         paddingRight: 3, 
         borderRadius: 1, // Optional: Add rounded corners
