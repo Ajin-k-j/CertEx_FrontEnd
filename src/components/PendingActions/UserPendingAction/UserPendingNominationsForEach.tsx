@@ -1,20 +1,24 @@
+// UserPendingNominationsForEach.tsx
+
 import React, { useState } from 'react';
 import { Button, Card, CardContent, Grid, Typography } from '@mui/material';
-import UserPendingActionModal from '../UserPendingActionModal/UserPendingActionModal';
+import UserPendingActionModals from '../UserPendingActionModal/UserPendingActionModals';
 
 interface UserPendingNominationsProps {
     certificationName: string;
+    nominationId: number;
 }
 
-const UserPendingNominationsForEach: React.FC<UserPendingNominationsProps> = ({ certificationName }) => {
-    const [isOpen, setIsOpen] = useState(false);
+const UserPendingNominationsForEach: React.FC<UserPendingNominationsProps> = ({ certificationName, nominationId }) => {
 
-    const handleClickOpen = () => {
-        setIsOpen(true);
+    const [isModalOpen, setModalOpen] = useState(false);
+
+    const handleOpenModal = () => {
+        setModalOpen(true);
     };
 
-    const handleClose = () => {
-        setIsOpen(false);
+    const handleCloseModal = () => {
+        setModalOpen(false);
     };
 
     return (
@@ -36,7 +40,7 @@ const UserPendingNominationsForEach: React.FC<UserPendingNominationsProps> = ({ 
                                     variant="outlined"
                                     size="small"
                                     sx={{ fontSize: '0.75rem', padding: '4px 8px', borderRadius: '8px', marginRight: '1px' }}
-                                    onClick={handleClickOpen}
+                                    onClick={handleOpenModal}
                                 >
                                     View
                                 </Button>
@@ -46,7 +50,9 @@ const UserPendingNominationsForEach: React.FC<UserPendingNominationsProps> = ({ 
                 </Card>
             </Grid>
 
-            <UserPendingActionModal isOpen={isOpen} onClose={handleClose} />
+            {isModalOpen && (
+                <UserPendingActionModals isOpen={isModalOpen} onClose={handleCloseModal} nominationId={nominationId} />
+            )}
         </>
     );
 };

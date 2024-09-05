@@ -194,7 +194,7 @@ const LdNominationTable: React.FC = () => {
   }
 
   return (
-    <Box p={2} ml={2} mr={.1} mt={1} sx={{ backgroundColor: 'white', borderRadius: '8px' }}>
+    <Box p={2} ml={2} mr={1.7} mt={-2} sx={{ backgroundColor: 'white', borderRadius: '15px' }}>
       <Accordion
         expanded={accordionExpanded}
         sx={{ width: '100%', border: 'none', boxShadow: 'none' }}

@@ -84,6 +84,6 @@ const App: React.FC = () => {
       {shouldDisplayNavbarFooter && <Footer />}
     </>
   );
-};
+}
 
 export default App;

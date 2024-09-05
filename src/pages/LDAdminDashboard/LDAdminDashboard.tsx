@@ -45,7 +45,9 @@ const LDAdminDashboard = () => {
   };
 
   return (
-    <Grid container spacing={-2} sx={{ padding: ".1rem" }}>
+
+
+    <Grid container spacing={3} sx={{ padding: ".1rem" }}>
       {/* Left Column */}
       <Grid item xs={12} md={8} lg={6}>
         <Grid container spacing={.2} direction="column">
@@ -62,10 +64,10 @@ const LDAdminDashboard = () => {
       <Grid item xs={12} md={4} lg={5.8}>
       <PendingNominationsTable
           fetchNominations={fetchPendingNominations}
-          itemsPerPage={7}
+          itemsPerPage={6}
           CardComponent={PendingNominationCard}
-          containerHeight="460px"
-          containerWidth="475vw"
+          containerHeight="435px"
+          containerWidth="580px"
         />
       </Grid>
     
