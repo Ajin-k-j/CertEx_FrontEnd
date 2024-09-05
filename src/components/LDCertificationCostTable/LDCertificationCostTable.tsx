@@ -4,7 +4,7 @@ import Box from '@mui/joy/Box';
 import Sheet from '@mui/joy/Sheet';
 import Table from '@mui/joy/Table';
 import axios from 'axios';
-import { Dialog, DialogContent, DialogTitle, IconButton, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, IconButton, MenuItem, Select, FormControl, InputLabel, CircularProgress } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import ExcelExport from '../ExportButton/ExportButton';
 
@@ -38,8 +38,10 @@ export default function LDCertificationCostTable({ open, onClose }: { open: bool
   const [financialYears, setFinancialYears] = useState<string[]>([]);
   const [selectedYear, setSelectedYear] = useState<string>('');
   const [grandTotals, setGrandTotals] = useState({ totalCount: 0, totalEstimatedCost: 0, totalActualCost: 0 });
+  const [loading, setLoading] = useState(true); // New loading state
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get('../../../public/Data/CertificationCost.json') // Replace with your actual API endpoint
       .then((response) => {
@@ -47,10 +49,11 @@ export default function LDCertificationCostTable({ open, onClose }: { open: bool
           const data = response.data as RowData[];
           setRows(data);
 
-          const years = Array.from(new Set(data.map(row => row.FinancialYear)));
+          let years = Array.from(new Set(data.map(row => row.FinancialYear)));
+          years.sort((a, b) => parseInt(b) - parseInt(a)); // Sort years in descending order
           setFinancialYears(years);
 
-          const mostRecentYear = years[years.length - 1]; // Assuming years are in ascending order
+          const mostRecentYear = years[0]; // The most recent year will now be the first in the sorted array
           setSelectedYear(mostRecentYear);
           filterRowsByYear(data, mostRecentYear);
         } else {
@@ -59,6 +62,9 @@ export default function LDCertificationCostTable({ open, onClose }: { open: bool
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
+      })
+      .finally(() => {
+        setLoading(false); // Set loading to false when fetching is done
       });
   }, []);
 
@@ -137,140 +143,146 @@ export default function LDCertificationCostTable({ open, onClose }: { open: bool
       </DialogTitle>
 
       <DialogContent>
-        <Box sx={{ width: '100%', height: '50vh' }}>
-          <Sheet
-            variant="outlined"
-            sx={() => ({
-              '--TableCell-height': '40px',
-              '--TableHeader-height': 'calc(1 * var(--TableCell-height))',
-              '--Table-secondColumnWidth': '150px',
-              '--Table-lastColumnWidth': '250px',
-              '--TableRow-stripeBackground': 'rgba(0 0 0 / 0.04)',
-              '--TableRow-hoverBackground': 'rgba(0 0 0 / 0.08)',
-              overflow: 'auto',
-              whiteSpace: 'nowrap',
-              width: '100%',
-              backgroundColor: 'background.surface',
-            })}
-          >
-            <Table
-              borderAxis="bothBetween"
-              stripe="odd"
-              hoverRow
-              sx={{
-                '& tr > *:first-child': {
-                  position: 'sticky',
-                  left: 0,
-                  zIndex: 10,
-                  boxShadow: '1px 0 var(--TableCell-borderColor)',
-                  bgcolor: 'background.surface',
-                },
-                '& tr > *:nth-last-child(3)': {
-                  position: 'sticky',
-                  right: '178px',
-                  bgcolor: 'background.surface',
-                  zIndex: 3,
-                  overflowX: 'hidden'
-                },
-                '& tr > *:nth-last-child(2)': {
-                  position: 'sticky',
-                  right: '88px',
-                  bgcolor: 'background.surface',
-                  zIndex: 3,
-                  overflowX: 'hidden'
-                },
-                '& tr > *:last-child': {
-                  position: 'sticky',
-                  right: 0,
-                  bgcolor: 'var(--TableCell-headBackground)',
-                  overflowX: 'hidden'
-                },
-                '& thead th': {
-                  position: 'sticky',
-                  top: 0,
-                  backgroundColor: 'background.surface',
-                  zIndex: 4,
-                  color: 'grey', 
-                }
-              }}
+        {loading ? ( // Conditionally render CircularProgress
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <Box sx={{ width: '100%', height: '50vh' }}>
+            <Sheet
+              variant="outlined"
+              sx={() => ({
+                '--TableCell-height': '40px',
+                '--TableHeader-height': 'calc(1 * var(--TableCell-height))',
+                '--Table-secondColumnWidth': '150px',
+                '--Table-lastColumnWidth': '250px',
+                '--TableRow-stripeBackground': 'rgba(0 0 0 / 0.04)',
+                '--TableRow-hoverBackground': 'rgba(0 0 0 / 0.08)',
+                overflow: 'auto',
+                whiteSpace: 'nowrap',
+                width: '100%',
+                backgroundColor: 'background.surface',
+              })}
             >
-              <thead>
-                <tr>
-                  <th style={{ width: 'var(--Table-secondColumnWidth)', color: 'grey' }} rowSpan={2}>Provider</th>
-                  {[
-                    'January', 'February', 'March', 'April', 'May', 'June',
-                    'July', 'August', 'September', 'October', 'November', 'December'
-                  ].map((month) => (
-                    <th key={month} colSpan={3} style={{ width: 450, textAlign: 'center', color: 'grey' }}>
-                      {month}
-                    </th>
-                  ))}
-                  <th aria-label="last" style={{ width: 'var(--Table-lastColumnWidth)', textAlign: 'center', color: 'grey' }} colSpan={3}>Yearly Total</th>
-                </tr>
-                <tr>
-                  {Array.from({ length: 12 }).map((_, index) => (
-                    <React.Fragment key={index}>
-                      <th style={{ width: 150, zIndex: 2, color: 'grey' }}>Count</th>
-                      <th style={{ width: 150, zIndex: 2, color: 'grey' }}>Estimated Cost</th>
-                      <th style={{ width: 150, zIndex: 2, color: 'grey' }}>Actual Cost</th>
-                    </React.Fragment>
-                  ))}
-                  <th style={{ width: 'var(--Table-lastColumnWidth)', color: 'grey' }}>Count</th>
-                  <th style={{ width: 'var(--Table-lastColumnWidth)', color: 'grey' }}>Estimated Cost</th>
-                  <th style={{ width: 'var(--Table-lastColumnWidth)', color: 'grey' }}>Actual Cost</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredRows.map((row, index) => (
-                  <tr key={index}>
-                    <td style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: 'white' }}>
-                      {row.provider}
-                    </td>
+              <Table
+                borderAxis="bothBetween"
+                stripe="odd"
+                hoverRow
+                sx={{
+                  '& tr > *:first-child': {
+                    position: 'sticky',
+                    left: 0,
+                    zIndex: 10,
+                    boxShadow: '1px 0 var(--TableCell-borderColor)',
+                    bgcolor: 'background.surface',
+                  },
+                  '& tr > *:nth-last-child(3)': {
+                    position: 'sticky',
+                    right: '178px',
+                    bgcolor: 'background.surface',
+                    zIndex: 3,
+                    overflowX: 'hidden'
+                  },
+                  '& tr > *:nth-last-child(2)': {
+                    position: 'sticky',
+                    right: '88px',
+                    bgcolor: 'background.surface',
+                    zIndex: 3,
+                    overflowX: 'hidden'
+                  },
+                  '& tr > *:last-child': {
+                    position: 'sticky',
+                    right: 0,
+                    bgcolor: 'var(--TableCell-headBackground)',
+                    overflowX: 'hidden'
+                  },
+                  '& thead th': {
+                    position: 'sticky',
+                    top: 0,
+                    backgroundColor: 'background.surface',
+                    zIndex: 4,
+                    color: 'grey', 
+                  }
+                }}
+              >
+                <thead>
+                  <tr>
+                    <th style={{ width: 'var(--Table-secondColumnWidth)', color: 'grey' }} rowSpan={2}>Provider</th>
                     {[
                       'January', 'February', 'March', 'April', 'May', 'June',
                       'July', 'August', 'September', 'October', 'November', 'December'
-                    ].map((month) => {
-                      const monthlyData = row[month as keyof RowData] as MonthlyData; // Type assertion here
-                      return (
-                        <React.Fragment key={month}>
-                          <td>{monthlyData.Count || 0}</td>
-                          <td>{monthlyData.EstimatedCost || 0}</td>
-                          <td>{monthlyData.ActualCost || 0}</td>
-                        </React.Fragment>
-                      );
-                    })}
-                    <td style={{ textAlign: 'center' }}>
-                      {calculateYearlyTotals(row).totalCount}
+                    ].map((month) => (
+                      <th key={month} colSpan={3} style={{ width: 450, textAlign: 'center', color: 'grey' }}>
+                        {month}
+                      </th>
+                    ))}
+                    <th aria-label="last" style={{ width: 'var(--Table-lastColumnWidth)', textAlign: 'center', color: 'grey' }} colSpan={3}>Yearly Total</th>
+                  </tr>
+                  <tr>
+                    {Array.from({ length: 12 }).map((_, index) => (
+                      <React.Fragment key={index}>
+                        <th style={{ width: 150, zIndex: 2, color: 'grey' }}>Count</th>
+                        <th style={{ width: 150, zIndex: 2, color: 'grey' }}>Estimated Cost</th>
+                        <th style={{ width: 150, zIndex: 2, color: 'grey' }}>Actual Cost</th>
+                      </React.Fragment>
+                    ))}
+                    <th style={{ width: 'var(--Table-lastColumnWidth)', color: 'grey' }}>Count</th>
+                    <th style={{ width: 'var(--Table-lastColumnWidth)', color: 'grey' }}>Estimated Cost</th>
+                    <th style={{ width: 'var(--Table-lastColumnWidth)', color: 'grey' }}>Actual Cost</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredRows.map((row, index) => (
+                    <tr key={index}>
+                      <td style={{ position: 'sticky', left: 0, zIndex: 1, backgroundColor: 'white' }}>
+                        {row.provider}
+                      </td>
+                      {[
+                        'January', 'February', 'March', 'April', 'May', 'June',
+                        'July', 'August', 'September', 'October', 'November', 'December'
+                      ].map((month) => {
+                        const monthlyData = row[month as keyof RowData] as MonthlyData; // Type assertion here
+                        return (
+                          <React.Fragment key={month}>
+                            <td>{monthlyData.Count || 0}</td>
+                            <td>{monthlyData.EstimatedCost || 0}</td>
+                            <td>{monthlyData.ActualCost || 0}</td>
+                          </React.Fragment>
+                        );
+                      })}
+                      <td style={{ textAlign: 'center' }}>
+                        {calculateYearlyTotals(row).totalCount}
+                      </td>
+                      <td style={{ textAlign: 'center' }}>
+                        {calculateYearlyTotals(row).totalEstimatedCost.toFixed(2)}
+                      </td>
+                      <td style={{ textAlign: 'center' }}>
+                        {calculateYearlyTotals(row).totalActualCost.toFixed(2)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td style={{ textAlign: 'center', fontWeight: 'bold', backgroundColor: 'background.surface' }}>Total</td>
+                    {Array.from({ length: 12 * 3 }).map((_, index) => (
+                      <td key={index} style={{ textAlign: 'center', backgroundColor: 'background.surface' }}></td>
+                    ))}
+                    <td style={{ textAlign: 'center', fontWeight: 'bold', backgroundColor: 'background.surface' }}>
+                      {grandTotals.totalCount}
                     </td>
-                    <td style={{ textAlign: 'center' }}>
-                      {calculateYearlyTotals(row).totalEstimatedCost.toFixed(2)}
+                    <td style={{ textAlign: 'center', fontWeight: 'bold', backgroundColor: 'background.surface' }}>
+                      {grandTotals.totalEstimatedCost.toFixed(2)}
                     </td>
-                    <td style={{ textAlign: 'center' }}>
-                      {calculateYearlyTotals(row).totalActualCost.toFixed(2)}
+                    <td style={{ textAlign: 'center', fontWeight: 'bold', backgroundColor: 'background.surface' }}>
+                      {grandTotals.totalActualCost.toFixed(2)}
                     </td>
                   </tr>
-                ))}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td style={{ textAlign: 'center', fontWeight: 'bold', backgroundColor: 'background.surface' }}>Yearly Total</td>
-                  {Array.from({ length: 12 * 3 }).map((_, index) => (
-                    <td key={index} style={{ textAlign: 'center', backgroundColor: 'background.surface' }}></td>
-                  ))}
-                  <td style={{ textAlign: 'center', fontWeight: 'bold', backgroundColor: 'background.surface' }}>
-                    {grandTotals.totalCount}
-                  </td>
-                  <td style={{ textAlign: 'center', fontWeight: 'bold', backgroundColor: 'background.surface' }}>
-                    {grandTotals.totalEstimatedCost.toFixed(2)}
-                  </td>
-                  <td style={{ textAlign: 'center', fontWeight: 'bold', backgroundColor: 'background.surface' }}>
-                    {grandTotals.totalActualCost.toFixed(2)}
-                  </td>
-                </tr>
-              </tfoot>
-            </Table>
-          </Sheet>
-        </Box>
+                </tfoot>
+              </Table>
+            </Sheet>
+          </Box>
+        )}
       </DialogContent>
     </Dialog>
   );
