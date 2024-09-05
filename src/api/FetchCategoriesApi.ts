@@ -7,7 +7,7 @@ interface Tag {
 
 export const fetchCategoriesjson = async (): Promise<Tag[]> => {
   try {
-    const response = await axios.get("http://localhost:5000/providers");
+    const response = await axios.get("http://localhost:5000/categories");
 
     // Accessing the providers property if it exists
     if (response.data) {
@@ -22,7 +22,7 @@ export const fetchCategoriesjson = async (): Promise<Tag[]> => {
 };
 export const createCategoryjson = async (name: string) => {
   try {
-    const response = await axios.post("http://localhost:5000/providers", {
+    const response = await axios.post("http://localhost:5000/categories", {
       name,
     });
     return response.data;

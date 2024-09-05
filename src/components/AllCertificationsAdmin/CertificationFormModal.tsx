@@ -277,16 +277,16 @@ const CertificationFormModal: React.FC<CertificationFormModalProps> = ({
                   <InputLabel
                     sx={{ backgroundColor: "white", padding: "0 4px" }}
                   >
-                    Criticality
+                    Level
                   </InputLabel>
                   <Select
                     value={criticality}
                     required
                     onChange={handleCriticalityChange}
                   >
-                    <MenuItem value="High">High</MenuItem>
-                    <MenuItem value="Medium">Medium</MenuItem>
-                    <MenuItem value="Low">Low</MenuItem>
+                    <MenuItem value="High">Beginner</MenuItem>
+                    <MenuItem value="Medium">Intermediate</MenuItem>
+                    <MenuItem value="Low">Expert</MenuItem>
                   </Select>
                 </FormControl>
                 <TextField

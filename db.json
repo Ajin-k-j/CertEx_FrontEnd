@@ -1,20 +1,6 @@
 {
   "certifications": [
-    {
-      "certification_name": "AWS Certified Solutions Architect – Associate by ajin",
-      "description": "Learn the essentials of building secure and reliable applications on the AWS platform.",
-      "critical": "High",
-      "official_link": "https://aws.amazon.com/certification/certified-solutions-architect-associate/",
-      "provider": "Google",
-      "tags": [
-        "IBM",
-        "Google"
-      ],
-      "nomination_status": "Accepting",
-      "nomination_open_date": "2024-09-03T18:30:00.000Z",
-      "nomination_close_date": "2024-09-10T18:30:00.000Z",
-      "id": "1"
-    },
+    
     {
       "id": "2",
       "provider": "Microsoft-high",
@@ -54,20 +40,6 @@
       "nomination_close_date": "2025-06-30"
     },
     {
-      "certification_name": "AWS Certified Solutions Architect – Associate",
-      "description": "Learn the essentials of building secure and reliable applications on the AWS platform.",
-      "critical": "Medium",
-      "official_link": "https://aws.amazon.com/certification/certified-solutions-architect-associate/",
-      "provider": "AWS",
-      "tags": [
-        "AWS"
-      ],
-      "nomination_status": "Not Accepting",
-      "nomination_open_date": "2024-06-29T18:30:00.000Z",
-      "nomination_close_date": "2025-06-29T18:30:00.000Z",
-      "id": "4"
-    },
-    {
       "id": "5",
       "provider": "Microsoft",
       "certification_name": "Microsoft Certified: Azure Fundamentals",
@@ -81,6 +53,7 @@
       "official_link": "https://learn.microsoft.com/en-us/certifications/azure-fundamentals/",
       "critical": "medium",
       "views": 100,
+      "nomination_status": "Always Accepting",
       "nomination_open_date": "2024-06-30",
       "nomination_close_date": "2025-06-30"
     },
@@ -98,6 +71,7 @@
       "official_link": "https://cloud.google.com/certification/data-engineer",
       "critical": "low",
       "views": 100,
+      "nomination_status": "Always Accepting",
       "nomination_open_date": "2024-06-30",
       "nomination_close_date": "2025-06-30"
     },
@@ -115,6 +89,7 @@
       "official_link": "https://cloud.google.com/certification/data-engineer",
       "critical": "low",
       "views": 100,
+      "nomination_status": "Always Accepting",
       "nomination_open_date": "2024-06-30",
       "nomination_close_date": "2025-06-30"
     },
@@ -132,6 +107,7 @@
       "official_link": "https://aws.amazon.com/certification/certified-solutions-architect-associate/",
       "critical": "high",
       "views": 100,
+      "nomination_status": "Always Accepting",
       "nomination_open_date": "2024-06-30",
       "nomination_close_date": "2025-06-30"
     },
@@ -149,6 +125,7 @@
       "official_link": "https://learn.microsoft.com/en-us/certifications/azure-fundamentals/",
       "critical": "medium",
       "views": 100,
+      "nomination_status": "Always Accepting",
       "nomination_open_date": "2024-06-30",
       "nomination_close_date": "2025-06-30"
     },
@@ -166,6 +143,7 @@
       "official_link": "https://cloud.google.com/certification/data-engineer",
       "critical": "low",
       "views": 100,
+      "nomination_status": "Always Accepting",
       "nomination_open_date": "2024-06-30",
       "nomination_close_date": "2025-06-30"
     },
@@ -1866,26 +1844,6 @@
     {
       "id": "4",
       "name": "IBM"
-    },
-    {
-      "id": "5",
-      "name": "Oracle"
-    },
-    {
-      "id": "f76c",
-      "name": "none"
-    },
-    {
-      "id": "29fd",
-      "name": "tew"
-    },
-    {
-      "id": "f0df",
-      "name": "new"
-    },
-    {
-      "id": "2441",
-      "name": "ghjcjf"
     }
   ],
   "categories": [
@@ -1928,14 +1886,6 @@
     {
       "id": "10",
       "name": "Blockchain"
-    },
-    {
-      "id": "b984",
-      "name": "ajin"
-    },
-    {
-      "id": "1d2f",
-      "name": "new"
     }
   ]
 }
