@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Box, Button } from '@mui/material';
-
+import { showToast } from "../../utils/toastUtils";
 interface UpdateExamStatusModalProps {
   nominationId: number;
 }
@@ -42,7 +42,7 @@ const UpdateExamStatusModal: React.FC<UpdateExamStatusModalProps> = ({ nominatio
         );
 
         if (response.status === 200) {
-          alert('Exam status has been updated successfully!');
+          showToast("Exam status has been updated successfully!","success");
           setIsStatusPosted(true); // Disable further changes
           fetchExamStatus(); // Re-fetch the status after updating
         } else {
@@ -51,7 +51,7 @@ const UpdateExamStatusModal: React.FC<UpdateExamStatusModalProps> = ({ nominatio
         }
       } catch (error) {
         console.error('Error updating exam status:', error);
-        alert('An error occurred while updating the exam status.');
+        showToast("error", "error");
       }
     } else {
       alert('Please select an exam status!');

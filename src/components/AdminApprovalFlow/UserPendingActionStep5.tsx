@@ -5,6 +5,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import axios from 'axios';
+import { showToast } from "../../utils/toastUtils";
 
 interface UploadCertificateProps {
   onSave: (id: number) => void;
@@ -60,7 +61,7 @@ const UploadCertificate: React.FC<UploadCertificateProps> = ({ onSave }) => {
         if (response.status === 200) {
           const newId = response.data.id;
           onSave(newId);
-          alert('Certification uploaded successfully!');
+          showToast("Certification uploaded successfully!","success");
           localStorage.setItem('certificationUploaded', 'true');
           setIsUploaded(true);
         } else {

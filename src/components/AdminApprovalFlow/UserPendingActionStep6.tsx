@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, TextField, Typography, Grid } from '@mui/material';
 import axios from 'axios';
-
+import { showToast } from "../../utils/toastUtils";
 interface UploadInvoiceProps {
   onSave: () => void;
 }
@@ -49,7 +49,7 @@ const UploadInvoice: React.FC<UploadInvoiceProps> = ({ onSave }) => {
           localStorage.setItem('invoiceUploaded', 'true');
           setIsSubmitted(true);
           onSave();
-          alert('Invoice uploaded successfully!');
+          showToast("Invoice uploaded successfully!","success");
         } else {
           console.error('Failed to upload invoice:', response.statusText);
           alert(`Failed to upload invoice: ${response.statusText}`);
