@@ -264,7 +264,7 @@ export default function LDCertificationCostTable({ open, onClose }: { open: bool
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td style={{ textAlign: 'center', fontWeight: 'bold', backgroundColor: 'background.surface' }}>Yearly Total</td>
+                    <td style={{ textAlign: 'center', fontWeight: 'bold', backgroundColor: 'background.surface' }}>Total</td>
                     {Array.from({ length: 12 * 3 }).map((_, index) => (
                       <td key={index} style={{ textAlign: 'center', backgroundColor: 'background.surface' }}></td>
                     ))}

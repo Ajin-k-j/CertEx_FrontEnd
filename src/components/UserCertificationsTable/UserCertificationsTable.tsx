@@ -157,7 +157,7 @@ const UserCertificationsTable: React.FC = () => {
     {
       field: "expiryDate",
       headerName: "Expiry Date",
-      width: isMobile ? 80 : isTablet ? 90 : 180,
+      width: isMobile ? 80 : isTablet ? 90 : 150,
     },
     {
       field: "action",
