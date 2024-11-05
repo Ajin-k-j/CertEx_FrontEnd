@@ -16,6 +16,7 @@ import {
   useMediaQuery,
   useTheme,
   SelectChangeEvent,
+  CircularProgress,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -40,49 +41,61 @@ const UserCertificationsTable: React.FC = () => {
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
 
   const formatDate = (dateString: string) => {
-    // Check if dateString is a valid ISO 8601 date string
     if (!dateString || isNaN(Date.parse(dateString))) {
       return "Invalid Date";
     }
-  
     const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   };
-  
+
   useEffect(() => {
     const loadCertifications = async () => {
       try {
         const data = await fetchCertifications();
-        const formattedData = data.map(row => ({
+        const formattedData = data.map((row, index) => ({
           ...row,
+          id: index + 1, // Adding unique `id` for each row
           fromDate: formatDate(row.fromDate),
           expiryDate: formatDate(row.expiryDate),
         }));
         setRows(formattedData);
         setFilteredRows(formattedData);
       } catch {
-        setError("Failed to load data");
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>;
       } finally {
         setLoading(false);
       }
     };
-  
+
     loadCertifications();
   }, []);
-  
 
   useEffect(() => {
     const lowercasedQuery = searchQuery.toLowerCase();
-    const filtered = rows.filter(
-      (row) =>
-        (selectedProvider === "" || row.providerName === selectedProvider) &&
-        Object.values(row).some((value) =>
-          String(value).toLowerCase().includes(lowercasedQuery)
-        )
-    );
+    const filtered = rows.filter((row) => {
+      const matchesProvider =
+        selectedProvider === "" || row.providerName === selectedProvider;
+      const matchesQuery = Object.values(row).some((value) =>
+        String(value).toLowerCase().includes(lowercasedQuery)
+      );
+      console.log("Row:", row); // Log each row
+      console.log("Matches Provider:", matchesProvider);
+      console.log("Matches Query:", matchesQuery);
+      return matchesProvider && matchesQuery;
+    });
+    console.log("Filtered Rows:", filtered);
     setFilteredRows(filtered);
   }, [searchQuery, selectedProvider, rows]);
 
@@ -157,7 +170,7 @@ const UserCertificationsTable: React.FC = () => {
     {
       field: "expiryDate",
       headerName: "Expiry Date",
-      width: isMobile ? 80 : isTablet ? 90 : 150,
+      width: isMobile ? 80 : isTablet ? 90 : 180,
     },
     {
       field: "action",
@@ -175,7 +188,19 @@ const UserCertificationsTable: React.FC = () => {
     },
   ];
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   if (error) return <div>{error}</div>;
 
   return (
@@ -290,26 +315,25 @@ const UserCertificationsTable: React.FC = () => {
             </Box>
           ) : (
             <Box sx={{ height: 300, width: "100%" }}>
-<DataGrid
-  rows={filteredRows}
-  columns={columns}
-  rowHeight={40}
-  sx={{
-    width: "100%",
-    "& .MuiDataGrid-cell": {
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      whiteSpace: "nowrap",
-      "&[title]": {
-        pointerEvents: "none",
-      },
-    },
-    "& .MuiDataGrid-cell:focus": {
-      outline: "none",
-    },
-  }}
-/>
-
+              <DataGrid
+                rows={filteredRows}
+                columns={columns}
+                rowHeight={40}
+                sx={{
+                  width: "100%",
+                  "& .MuiDataGrid-cell": {
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    "&[title]": {
+                      pointerEvents: "none",
+                    },
+                  },
+                  "& .MuiDataGrid-cell:focus": {
+                    outline: "none",
+                  },
+                }}
+              />
             </Box>
           )}
         </Paper>
@@ -383,4 +407,3 @@ const UserCertificationsTable: React.FC = () => {
 };
 
 export default UserCertificationsTable;
-
