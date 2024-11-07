@@ -1,3 +1,7 @@
+import dayjs, { Dayjs } from "dayjs";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
@@ -10,7 +14,6 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Box from "@mui/material/Box";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import axios from "axios";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -22,16 +25,19 @@ import { Alert, AlertTitle } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 import InfoIcon from "@mui/icons-material/Info";
 
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isSameOrBefore);
+
 interface RowData {
   nominationId: number;
   certificationName: string;
   provider: string;
   criticality: string;
-  appliedDate: Date | null;
+  appliedDate: Dayjs | null;
   plannedExamMonth: string;
   isDepartmentApproved: boolean;
   isLndApproved: boolean;
-  examDate: Date | null;
+  examDate: Dayjs | null;
   examStatus: string;
   uploadCertificateStatus: string;
   skillMatrixStatus: string;
@@ -72,12 +78,11 @@ const UserNominationHistory: React.FC<UserNominationHistoryDialogProps> = ({
   const [isFiltering, setIsFiltering] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Filter states
   const [selectedProvider, setSelectedProvider] = useState<string | null>(null);
   const [selectedCriticality, setSelectedCriticality] = useState<string | null>(null);
   const [selectedExamStatus, setSelectedExamStatus] = useState<string | null>(null);
-  const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(null);
-  const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
+  const [selectedStartDate, setSelectedStartDate] = useState<Dayjs | null>(null);
+  const [selectedEndDate, setSelectedEndDate] = useState<Dayjs | null>(null);
 
   const [providers, setProviders] = useState<string[]>([]);
   const [criticalities, setCriticalities] = useState<string[]>([]);
@@ -91,12 +96,20 @@ const UserNominationHistory: React.FC<UserNominationHistoryDialogProps> = ({
       try {
         const response = await axios.get<RowData[]>("/Data/NominationHistory.json");
         const data = response.data || [];
-        setRows(data);
-        setFilteredRows(data);
 
-        const uniqueProviders = Array.from(new Set(data.map((item) => item.provider)));
-        const uniqueCriticalities = Array.from(new Set(data.map((item) => item.criticality)));
-        const uniqueExamStatuses = Array.from(new Set(data.map((item) => item.examStatus)));
+        // Transform appliedDate and examDate to Dayjs objects
+        const transformedData = data.map((item) => ({
+          ...item,
+          appliedDate: item.appliedDate ? dayjs(item.appliedDate) : null,
+          examDate: item.examDate ? dayjs(item.examDate) : null,
+        }));
+
+        setRows(transformedData);
+        setFilteredRows(transformedData);
+
+        const uniqueProviders = Array.from(new Set(transformedData.map((item) => item.provider))) as string[];
+        const uniqueCriticalities = Array.from(new Set(transformedData.map((item) => item.criticality))) as string[];
+        const uniqueExamStatuses = Array.from(new Set(transformedData.map((item) => item.examStatus))) as string[];
 
         setProviders(uniqueProviders);
         setCriticalities(uniqueCriticalities);
@@ -121,8 +134,10 @@ const UserNominationHistory: React.FC<UserNominationHistoryDialogProps> = ({
         const matchesProvider = selectedProvider ? row.provider === selectedProvider : true;
         const matchesCriticality = selectedCriticality ? row.criticality === selectedCriticality : true;
         const matchesExamStatus = selectedExamStatus ? row.examStatus === selectedExamStatus : true;
-        const matchesStartDate = selectedStartDate ? row.appliedDate && new Date(row.appliedDate) >= selectedStartDate : true;
-        const matchesEndDate = selectedEndDate ? row.appliedDate && new Date(row.appliedDate) <= selectedEndDate : true;
+
+        // Ensure appliedDate is a Dayjs object and compare
+        const matchesStartDate = selectedStartDate ? row.appliedDate?.isSameOrAfter(selectedStartDate) : true;
+        const matchesEndDate = selectedEndDate ? row.appliedDate?.isSameOrBefore(selectedEndDate) : true;
 
         return matchesSearch && matchesProvider && matchesCriticality && matchesExamStatus && matchesStartDate && matchesEndDate;
       });
@@ -245,13 +260,11 @@ const UserNominationHistory: React.FC<UserNominationHistoryDialogProps> = ({
                       label="Start Date"
                       value={selectedStartDate}
                       onChange={(date) => setSelectedStartDate(date)}
-                      renderInput={(params) => <TextField {...params} variant="outlined" sx={{ minWidth: 250 }} />}
                     />
                     <DatePicker
                       label="End Date"
                       value={selectedEndDate}
                       onChange={(date) => setSelectedEndDate(date)}
-                      renderInput={(params) => <TextField {...params} variant="outlined" sx={{ minWidth: 250 }} />}
                     />
                   </LocalizationProvider>
                   <Button onClick={handleClearDateFilters}>Clear</Button>
@@ -272,9 +285,6 @@ const UserNominationHistory: React.FC<UserNominationHistoryDialogProps> = ({
                     rows={filteredRows}
                     getRowId={(row) => row.nominationId}
                     disableRowSelectionOnClick
-
-                    
-       
                     sx={{
                       height: "100%",
                       "& .MuiDataGrid-columnHeaders": { position: "sticky", top: 0, zIndex: 1 },
