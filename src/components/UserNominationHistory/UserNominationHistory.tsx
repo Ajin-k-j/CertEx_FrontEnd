@@ -135,10 +135,10 @@ const UserNominationHistory: React.FC<UserNominationHistoryDialogProps> = ({
 
         // Ensure appliedDate is a Dayjs object and compare
         const matchesStartDate = selectedStartDate
-          ? row.appliedDate?.isSameOrAfter(selectedStartDate)
+          ? row.createdAt?.isSameOrAfter(selectedStartDate)
           : true;
         const matchesEndDate = selectedEndDate
-          ? row.appliedDate?.isSameOrBefore(selectedEndDate)
+          ? row.createdAt?.isSameOrBefore(selectedEndDate)
           : true;
 
         return (
@@ -354,19 +354,24 @@ const UserNominationHistory: React.FC<UserNominationHistoryDialogProps> = ({
                   }}
                 >
                   <DataGrid
-                    columns={columns}
-                    rows={filteredRows}
-                    getRowId={(row) => row.nominationId}
-                    disableRowSelectionOnClick
-                    sx={{
-                      height: "100%",
-                      "& .MuiDataGrid-columnHeaders": {
-                        position: "sticky",
-                        top: 0,
-                        zIndex: 1,
-                      },
-                    }}
-                  />
+  columns={columns}
+  rows={filteredRows}
+  getRowId={(row) => row.nominationId}
+  disableRowSelectionOnClick
+  initialState={{
+    pagination: { paginationModel: { pageSize: 5 } },
+  }}
+  pageSizeOptions={[5, 10, 25, { value: -1, label: "All" }]}
+  sx={{
+    height: "100%",
+    "& .MuiDataGrid-columnHeaders": {
+      position: "sticky",
+      top: 0,
+      zIndex: 1,
+    },
+  }}
+/>
+
                 </Box>
               )}
             </Box>

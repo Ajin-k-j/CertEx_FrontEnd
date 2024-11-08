@@ -5,7 +5,7 @@ export interface RowData {
   certificationName: string;
   provider: string;
   criticality: string;
-  appliedDate: Dayjs | null;
+  createdAt: Dayjs | null;
   plannedExamMonth: string;
   isDepartmentApproved: boolean;
   isLndApproved: boolean;
