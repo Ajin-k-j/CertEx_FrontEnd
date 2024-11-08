@@ -18,7 +18,12 @@ import MenuItem from "@mui/material/MenuItem";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import Button from "@mui/material/Button";
-import { CircularProgress, Typography } from "@mui/material";
+import {
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  Typography,
+} from "@mui/material";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
 import { Alert, AlertTitle } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
@@ -206,7 +211,16 @@ const UserNominationHistory: React.FC<UserNominationHistoryDialogProps> = ({
             <Accordion
               sx={{ backgroundColor: "transparent", boxShadow: "none" }}
             >
-              <AccordionSummary>
+              <AccordionSummary
+                sx={{
+                  "&.Mui-focusVisible": {
+                    backgroundColor: "transparent", // Removes grey focus background
+                  },
+                  "&:focus": {
+                    backgroundColor: "transparent", // Removes grey background when focused
+                  },
+                }}
+              >
                 <Box
                   display="flex"
                   justifyContent="space-between"
@@ -259,54 +273,79 @@ const UserNominationHistory: React.FC<UserNominationHistoryDialogProps> = ({
                   alignItems="center"
                   gap={2}
                 >
-                  <Select
-                    value={selectedProvider || ""}
-                    onChange={(e) => setSelectedProvider(e.target.value)}
-                    displayEmpty
-                    variant="outlined"
+                  {/* Provider Filter */}
+                  <FormControl
                     sx={{
                       minWidth: { xs: "100%", sm: "250px" },
                     }}
                   >
-                    <MenuItem value="">All Providers</MenuItem>
-                    {providers.map((provider) => (
-                      <MenuItem key={provider} value={provider}>
-                        {provider}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <Select
-                    value={selectedCriticality || ""}
-                    onChange={(e) => setSelectedCriticality(e.target.value)}
-                    displayEmpty
-                    variant="outlined"
+                    <InputLabel shrink sx={{ backgroundColor: "white" }}>
+                      Provider
+                    </InputLabel>
+                    <Select
+                      value={selectedProvider || ""}
+                      onChange={(e) => setSelectedProvider(e.target.value)}
+                      variant="outlined"
+                      label="Provider"
+                    >
+                      <MenuItem value="">All Providers</MenuItem>
+                      {providers.map((provider) => (
+                        <MenuItem key={provider} value={provider}>
+                          {provider}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+
+                  {/* Criticality Filter */}
+                  <FormControl
                     sx={{
                       minWidth: { xs: "100%", sm: "250px" },
                     }}
                   >
-                    <MenuItem value="">All Criticalities</MenuItem>
-                    {criticalities.map((criticality) => (
-                      <MenuItem key={criticality} value={criticality}>
-                        {criticality}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <Select
-                    value={selectedExamStatus || ""}
-                    onChange={(e) => setSelectedExamStatus(e.target.value)}
-                    displayEmpty
-                    variant="outlined"
+                    <InputLabel shrink sx={{ backgroundColor: "white" }}>
+                      Criticality
+                    </InputLabel>
+                    <Select
+                      value={selectedCriticality || ""}
+                      onChange={(e) => setSelectedCriticality(e.target.value)}
+                      variant="outlined"
+                      label="Criticality"
+                    >
+                      <MenuItem value="">All Criticalities</MenuItem>
+                      {criticalities.map((criticality) => (
+                        <MenuItem key={criticality} value={criticality}>
+                          {criticality}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+
+                  {/* Exam Status Filter */}
+                  <FormControl
                     sx={{
                       minWidth: { xs: "100%", sm: "250px" },
                     }}
                   >
-                    <MenuItem value="">All Exam Statuses</MenuItem>
-                    {examStatuses.map((examStatus) => (
-                      <MenuItem key={examStatus} value={examStatus}>
-                        {examStatus}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                    <InputLabel shrink sx={{ backgroundColor: "white" }}>
+                      Exam Status
+                    </InputLabel>
+                    <Select
+                      value={selectedExamStatus || ""}
+                      onChange={(e) => setSelectedExamStatus(e.target.value)}
+                      variant="outlined"
+                      label="Exam Status"
+                    >
+                      <MenuItem value="">All Exam Statuses</MenuItem>
+                      {examStatuses.map((examStatus) => (
+                        <MenuItem key={examStatus} value={examStatus}>
+                          {examStatus}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+
+                  {/* Date Pickers */}
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                       label="Start Date"
@@ -325,12 +364,16 @@ const UserNominationHistory: React.FC<UserNominationHistoryDialogProps> = ({
                       }}
                     />
                   </LocalizationProvider>
+
+                  {/* Clear Button */}
                   <Button
                     onClick={handleClearDateFilters}
                     sx={{ mt: { xs: 2, sm: 0 } }}
                   >
                     Clear
                   </Button>
+
+                  {/* Loading Indicator */}
                   {isFiltering && <CircularProgress size={20} sx={{ ml: 2 }} />}
                 </Box>
               </AccordionDetails>

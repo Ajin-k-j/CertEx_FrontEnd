@@ -4,7 +4,7 @@ import { parse } from 'date-fns';
 
 export const fetchLDNominationData = async (): Promise<RowData[]> => {
   try {
-    const response = await axios.get('../../../public/Data/LDNominationData.json'); //https://localhost:7209/api/LDNomination,//../../../public/Data/LDNominationData.json
+    const response = await axios.get('https://localhost:7209/api/LDNomination'); //https://localhost:7209/api/LDNomination,//../../../public/Data/LDNominationData.json
     const data = response.data;
 
     if (Array.isArray(data)) {

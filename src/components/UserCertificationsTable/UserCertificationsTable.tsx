@@ -33,7 +33,7 @@ const UserCertificationsTable: React.FC = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [selectedRow, setSelectedRow] = useState<Row | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
 
   const navigate = useNavigate();
   const theme = useTheme();
