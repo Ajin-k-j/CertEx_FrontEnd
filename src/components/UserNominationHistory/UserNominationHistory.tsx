@@ -214,7 +214,7 @@ const UserNominationHistory: React.FC<UserNominationHistoryDialogProps> = ({
               <AccordionSummary
                 sx={{
                   "&.Mui-focusVisible": {
-                    backgroundColor: "transparent", // Removes grey focus background
+                    backgroundColor: "transparent",
                   },
                   "&:focus": {
                     backgroundColor: "transparent", // Removes grey background when focused
