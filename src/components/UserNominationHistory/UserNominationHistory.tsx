@@ -24,12 +24,13 @@ import { Alert, AlertTitle } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 import InfoIcon from "@mui/icons-material/Info";
 import { fetchNominationHistory } from "../../api/UserNominationHistoryApi";
-import { RowData, UserNominationHistoryDialogProps } from "../../types/UserNominationHistory.types";
+import {
+  RowData,
+  UserNominationHistoryDialogProps,
+} from "../../types/UserNominationHistory.types";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
-
-
 
 const columns: GridColDef[] = [
   { field: "nominationId", headerName: "Nomination ID", width: 130 },
@@ -100,9 +101,15 @@ const UserNominationHistory: React.FC<UserNominationHistoryDialogProps> = ({
         setRows(data);
         setFilteredRows(data);
 
-        const uniqueProviders = Array.from(new Set(data.map((item) => item.provider))) as string[];
-        const uniqueCriticalities = Array.from(new Set(data.map((item) => item.criticality))) as string[];
-        const uniqueExamStatuses = Array.from(new Set(data.map((item) => item.examStatus))) as string[];
+        const uniqueProviders = Array.from(
+          new Set(data.map((item) => item.provider))
+        ) as string[];
+        const uniqueCriticalities = Array.from(
+          new Set(data.map((item) => item.criticality))
+        ) as string[];
+        const uniqueExamStatuses = Array.from(
+          new Set(data.map((item) => item.examStatus))
+        ) as string[];
 
         setProviders(uniqueProviders);
         setCriticalities(uniqueCriticalities);
@@ -354,24 +361,23 @@ const UserNominationHistory: React.FC<UserNominationHistoryDialogProps> = ({
                   }}
                 >
                   <DataGrid
-  columns={columns}
-  rows={filteredRows}
-  getRowId={(row) => row.nominationId}
-  disableRowSelectionOnClick
-  initialState={{
-    pagination: { paginationModel: { pageSize: 5 } },
-  }}
-  pageSizeOptions={[5, 10, 25, { value: -1, label: "All" }]}
-  sx={{
-    height: "100%",
-    "& .MuiDataGrid-columnHeaders": {
-      position: "sticky",
-      top: 0,
-      zIndex: 1,
-    },
-  }}
-/>
-
+                    columns={columns}
+                    rows={filteredRows}
+                    getRowId={(row) => row.nominationId}
+                    disableRowSelectionOnClick
+                    initialState={{
+                      pagination: { paginationModel: { pageSize: 5 } },
+                    }}
+                    pageSizeOptions={[5, 10, 25, { value: -1, label: "All" }]}
+                    sx={{
+                      height: "100%",
+                      "& .MuiDataGrid-columnHeaders": {
+                        position: "sticky",
+                        top: 0,
+                        zIndex: 1,
+                      },
+                    }}
+                  />
                 </Box>
               )}
             </Box>
